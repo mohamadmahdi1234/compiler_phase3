@@ -105,5 +105,10 @@ public enum NodeType {
     PROTOTYPES,
     PROTOTYPE,
     EXPRESSIONS,
-    START
+    START,
+    FUNC,
+    LINE,
+    Macros,
+    Decls,
+    MACRO_STATEMENT
 }

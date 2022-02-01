@@ -1,10 +1,14 @@
 package compiler;
-import java_cup.runtime.*;
+import compiler.java_cup.runtime.*;
+import compiler.AST.*;
 parser code {:
 	private Scanner_phase1 scanner;
+	protected Program root;
 	public parser (Scanner_phase1 scanner){
 		this.scanner = scanner;
 	}
+	void setRoot(Program p) { this.root = p; }
+    public Program getRoot() { return this.root; }
 :}
 scan with {:return scanner.next_token();:}
 init with {::}
@@ -30,7 +34,7 @@ FunctionDecl,Formals,ClassDecl,Field,AccessMode,StmtBlock,
 Stmt,IfStmt,WhileStmt,ForStmt,ReturnStmt,BreakStmt,ContinueStmt,
 PrintStmt,Expr,LValue,Call,Actuals,Constant;
 //NON_TERMINALS we defined
-nonterminal MacroStar,DeclStar,VariableComma,FieldStar,VariableDeclPlus,StmtPlus,Expr_zero_one,ExprComma;
+nonterminal identifier,MacroPlus,DeclPlus,VariableComma,FieldPlus,VariableDeclPlus,StmtPlus,Expr_zero_one,ExprComma;
 
 //end
 //precedence and assosiatives
@@ -48,49 +52,795 @@ precedence left     DOT, OPENBRACKET;
 precedence left     OPENBRACE;
 //grammer
 start with Program;
-Program ::= MacroStar Decl DeclStar;
-MacroStar ::= Macro MacroStar | ;
-DeclStar ::= Decl DeclStar | ;
-Macro ::= IMPORT T_STRINGLITERAL ;
-Decl ::= VariableDecl | FunctionDecl | ClassDecl;
-VariableDecl ::= Variable SEMICOLON;
-Variable ::= Type T_ID;
-Type ::= INT | DOUBLE | BOOL | STRING | T_ID | Type OP_CL_BRACKET;
-FunctionDecl ::= Type T_ID OPENBRACE Formals CLOSEBRACE StmtBlock
-                 | VOID T_ID OPENBRACE Formals CLOSEBRACE StmtBlock;
-Formals ::=  Variable VariableComma | ;
-VariableComma ::= COMMA Variable VariableComma | ;
-ClassDecl ::= CLASS T_ID OPENCURLY FieldStar CLOSECURLY;
-FieldStar ::= Field FieldStar | ;
-Field ::= AccessMode VariableDecl | AccessMode FunctionDecl;
-AccessMode ::= PRIVATE | PUBLIC | ;
+Program ::= DeclPlus:dp
+            {:
+                RESULT = new Program();
+                RESULT.addChild(dp);
+                dp.setParent(RESULT);
+                setRoot((Program)RESULT);
+            :}
+            |MacroPlus:mp DeclPlus:dp
+            {:
+                RESULT = new Program();
+                RESULT.addChild(mp);
+                RESULT.addChild(dp);
+                mp.setParent(RESULT);
+                dp.setParent(RESULT);
+                setRoot((Program)RESULT);
+                        :}
+            ;
+MacroPlus ::= MacroPlus:mp Macro:m
+            {:
+               RESULT = mp;
+               RESULT.addChild(m);
+               m.setParent(RESULT);
+            :}
+            | Macro:m
+            {:
+               RESULT = new BaseASTNode(NodeType.Macros);
+               RESULT.addChild(m);
+               m.setParent(RESULT);
+            :};
+DeclPlus ::=  Decl :d DeclPlus:dp
+            {:
+              RESULT = dp;
+              RESULT.addChild(d);
+              d.setParent(RESULT);
+            :}
+            |Decl:d
+             {:
+                RESULT = new BaseASTNode(NodeType.Decls);
+                RESULT.addChild(d);
+                d.setParent(RESULT);
+             :};
+Macro ::= IMPORT T_STRINGLITERAL {:RESULT = new BaseASTNode(NodeType.MACRO_STATEMENT);:} ;
+identifier ::= T_ID:i
+        {: RESULT = new IdentifierNode(i); :};
+Decl ::= VariableDecl:v {: RESULT = v;:}
+         | FunctionDecl : f {: RESULT = f;:}
+         | ClassDecl : c {: RESULT = c;:} ;
+VariableDecl ::= Variable : v SEMICOLON {: RESULT = v;:} ;
+Variable ::= Type : t identifier : i
+            {:
+                RESULT = new BaseASTNode(NodeType.VARIABLE_DECLARATION);
+                RESULT.addChild(t);
+                RESULT.addChild(i);
+                t.setParent(RESULT);
+                i.setParent(RESULT);
+             :};
+Type ::= INT  {: RESULT = new TypeNode(NodeType.INT_TYPE, PrimitiveType.INT); :}
+       | DOUBLE  {: RESULT = new TypeNode(NodeType.DOUBLE_TYPE, PrimitiveType.DOUBLE); :}
+       | BOOL  {: RESULT = new TypeNode(NodeType.BOOLEAN_TYPE, PrimitiveType.BOOL); :}
+       | STRING  {: RESULT = new TypeNode(NodeType.STRING_TYPE, PrimitiveType.STRING); :}
+       | identifier :i {: RESULT = i ; :}
+       | Type : t OP_CL_BRACKET
+       {:
+         RESULT = t;
+         ASTNode e = new BaseASTNode(NodeType.EMPTY_ARRAY);
+         RESULT.addChild(e);
+         e.setParent(RESULT);
+       :};
+FunctionDecl ::= Type : t identifier : i OPENBRACE Formals : f CLOSEBRACE StmtBlock :s
+                 {:
+                    RESULT = new BaseASTNode(NodeType.METHOD_DECLARATION);
+                    RESULT.addChild(t, i, f, s);
+                    t.setParent(RESULT);
+                    i.setParent(RESULT);
+                    f.setParent(RESULT);
+                    s.setParent(RESULT);
+                 :}
+                 | VOID identifier : i OPENBRACE Formals :f CLOSEBRACE StmtBlock:s
+                 {:
+                    RESULT = new BaseASTNode(NodeType.METHOD_DECLARATION);
+                    ASTNode t = new TypeNode(NodeType.VOID, PrimitiveType.VOID);
+                    RESULT.addChild(t, i, f, s);
+                    t.setParent(RESULT);
+                    i.setParent(RESULT);
+                    f.setParent(RESULT);
+                    s.setParent(RESULT);
+                 :}
+                 |Type : t identifier : i OPENBRACE CLOSEBRACE StmtBlock :s
+                 {:
+                    RESULT = new BaseASTNode(NodeType.METHOD_DECLARATION);
+                    ASTNode f = new BaseASTNode(NodeType.ARGUMENTS);
+                    RESULT.addChild(t, i, f, s);
+                    t.setParent(RESULT);
+                    i.setParent(RESULT);
+                    f.setParent(RESULT);
+                    s.setParent(RESULT);
+                 :}
+                 |VOID identifier : i OPENBRACE CLOSEBRACE StmtBlock:s
+                 {:
+                    RESULT = new BaseASTNode(NodeType.METHOD_DECLARATION);
+                    ASTNode t = new TypeNode(NodeType.VOID, PrimitiveType.VOID);
+                    ASTNode f = new BaseASTNode(NodeType.ARGUMENTS);
+                    RESULT.addChild(t, i, f, s);
+                    t.setParent(RESULT);
+                    i.setParent(RESULT);
+                    f.setParent(RESULT);
+                    s.setParent(RESULT);
+                 :};
+Formals ::=  Variable :v
+            {:
+                RESULT = new BaseASTNode(NodeType.ARGUMENTS);
+                ASTNode a = new BaseASTNode(NodeType.ARGUMENT);
+                RESULT.addChild(a);
+                a.setParent(RESULT);
+                a.addChild(v);
+                v.setParent(a);
+            :}
+            | Variable:v COMMA Formals :f
+            {:
+                RESULT = f;
+                ASTNode a = new BaseASTNode(NodeType.ARGUMENT);
+                RESULT.addChild(a);
+                a.setParent(RESULT);
+                a.addChild(v);
+                v.setParent(a);
+            :};
+ClassDecl ::= CLASS identifier:i OPENCURLY CLOSECURLY
+               {:
+                 RESULT = new ClassNode();
+                 RESULT.addChild(i);
+                 i.setParent(RESULT);
+               :}
+              |CLASS identifier:i OPENCURLY FieldPlus:fp CLOSECURLY
+              {:
+                RESULT = new ClassNode();
+                RESULT.addChild(i);
+                RESULT.addChild(fp);
+                i.setParent(RESULT);
+                fp.setParent(RESULT);
+              :}
+              ;
+FieldPlus ::= FieldPlus:fp Field:f
+            {:
+              RESULT = fp;
+              RESULT.addChild(f);
+              f.setParent(RESULT);
+            :}
+            | Field :f
+            {:
+                RESULT = new BaseASTNode(NodeType.FIELDS);
+                RESULT.addChild(f);
+                f.setParent(RESULT);
+            :};
+Field ::= AccessMode:am VariableDecl:vd
+        {:
+           RESULT = new BaseASTNode(NodeType.FIELD_DECLARATION);
+           RESULT.addChild(am);
+           RESULT.addChild(vd);
+           am.setParent(RESULT);
+           vd.setParent(RESULT);
+        :}
+        | AccessMode :am FunctionDecl:fd
+        {:
+           RESULT = new BaseASTNode(NodeType.FIELD_DECLARATION);
+           RESULT.addChild(am);
+           RESULT.addChild(fd);
+           am.setParent(RESULT);
+           fd.setParent(RESULT);
+        :}
+        |VariableDecl:vd
+        {:
+            RESULT = new BaseASTNode(NodeType.FIELD_DECLARATION);
+            RESULT.addChild(vd);
+            vd.setParent(RESULT);
+        :}
+        |FunctionDecl:fd
+        {:
+            RESULT = new BaseASTNode(NodeType.FIELD_DECLARATION);
+            RESULT.addChild(fd);
+            fd.setParent(RESULT);
+        :};
+AccessMode ::= PRIVATE
+            {:
+                RESULT = new BaseASTNode(NodeType.METHOD_ACCESS);
+                ASTNode t = new BaseASTNode(NodeType.PRIVATE_ACCESS);
+                RESULT.addChild(t);
+                t.setParent(RESULT);
+            :}
+            | PUBLIC
+            {:
+                RESULT = new BaseASTNode(NodeType.METHOD_ACCESS);
+                ASTNode t = new BaseASTNode(NodeType.PUBLIC_ACCESS);
+                RESULT.addChild(t);
+                t.setParent(RESULT);
+            :};
 StmtBlock ::=  OPENCURLY CLOSECURLY
-                          | OPENCURLY VariableDeclPlus CLOSECURLY
-                          | OPENCURLY StmtPlus CLOSECURLY
-                          | OPENCURLY VariableDeclPlus StmtPlus CLOSECURLY;
-VariableDeclPlus ::= VariableDeclPlus VariableDecl | VariableDecl;
-StmtPlus ::= StmtPlus Stmt | Stmt ;
-Stmt ::= Expr SEMICOLON | SEMICOLON | IfStmt | WhileStmt | ForStmt | BreakStmt | ContinueStmt
-            | ReturnStmt | PrintStmt | StmtBlock;
-IfStmt ::= IF OPENBRACE Expr CLOSEBRACE Stmt | IF OPENBRACE Expr CLOSEBRACE Stmt ELSE Stmt;
-WhileStmt ::= WHILE OPENBRACE Expr CLOSEBRACE Stmt;
-ForStmt ::= FOR OPENBRACE Expr_zero_one SEMICOLON Expr SEMICOLON Expr_zero_one CLOSEBRACE Stmt;
-ReturnStmt ::= RETURN Expr_zero_one SEMICOLON;
-BreakStmt ::= BREAK SEMICOLON;
-ContinueStmt ::= CONTINUE SEMICOLON;
-Expr_zero_one ::= Expr | ;
-PrintStmt ::= PRINT OPENBRACE Expr ExprComma CLOSEBRACE SEMICOLON;
-ExprComma ::= COMMA Expr ExprComma | ;
-Expr ::= LValue ASSIGN Expr
-         | LValue PLUS_ASSIGN Expr | LValue MINUS_ASSIGN Expr | LValue TIME_ASSIGN Expr | LValue DIVIDE_ASSIGN Expr
-         | Constant | LValue | THIS | Call | OPENBRACE Expr CLOSEBRACE
-         | Expr PLUS Expr | Expr MINUS Expr | Expr TIME Expr | Expr DIVIDE Expr | Expr MODE Expr | MINUS Expr
-         | Expr LESS Expr | Expr LESS_EQUAL Expr | Expr GREATER Expr | Expr GREATER_EQUAL Expr | Expr EQUAL Expr | Expr NOT_EQUAL Expr
-         | Expr AND Expr | Expr OR Expr | NOT Expr
-         | READINTEGER OPENBRACE CLOSEBRACE | NEW T_ID | READLINE OPENBRACE CLOSEBRACE | NEWARRAY OPENBRACE Expr COMMA Type CLOSEBRACE
-         | ITOD OPENBRACE Expr CLOSEBRACE | DTOI OPENBRACE Expr CLOSEBRACE | ITOB OPENBRACE Expr CLOSEBRACE | BTOI OPENBRACE Expr CLOSEBRACE
-         | LINE | FUNC;
-LValue ::= T_ID | Expr DOT T_ID | Expr OPENBRACKET Expr CLOSEBRACKET;
-Call ::= T_ID OPENBRACE Actuals CLOSEBRACE | Expr DOT T_ID OPENBRACE Actuals CLOSEBRACE;
-Actuals ::= Expr ExprComma | ;
-Constant ::= T_INTLITERAL | T_DOUBLELITERAL | T_BOOLEANLITERAL | T_STRINGLITERAL | NULL;
+                {:
+                    RESULT = new BaseASTNode(NodeType.BLOCK);
+                :}
+               | OPENCURLY VariableDeclPlus:vdp CLOSECURLY
+               {:
+                    RESULT = new BaseASTNode(NodeType.BLOCK);
+                    RESULT.addChild(vdp);
+                    vdp.setParent(RESULT);
+               :}
+               | OPENCURLY StmtPlus CLOSECURLY
+               {:
+                    RESULT = new BaseASTNode(NodeType.BLOCK);
+                    RESULT.addChild(sp);
+                    sp.setParent(RESULT);
+               :}
+               | OPENCURLY VariableDeclPlus:vdp StmtPlus:sp CLOSECURLY
+               {:
+                    RESULT = new BaseASTNode(NodeType.BLOCK);
+                    RESULT.addChild(vdp);
+                    RESULT.addChild(sp);
+                    vdp.setParent(RESULT);
+                    sp.setParent(RESULT);
+               :};
+VariableDeclPlus ::= VariableDeclPlus:vdp VariableDecl :vd
+                    {:
+                        RESULT = vdp;
+                        RESULT.addChild(vd);
+                        vd.setParent(RESULT);
+                    :}
+                    | VariableDecl:vd
+                    {:
+                        RESULT = new BaseASTNode(NodeType.VARIABLES);;
+                        RESULT.addChild(vd);
+                        vd.setParent(RESULT);
+                    :};
+StmtPlus ::= StmtPlus:sp Stmt:s
+            {:
+                    RESULT = sp;
+                    RESULT.addChild(s);
+                    s.setParent(RESULT);
+             :}
+            | Stmt:s
+             {:
+                        RESULT = new BaseASTNode(NodeType.STATEMENTS);
+                        RESULT.addChild(s);
+                        s.setParent(RESULT);
+             :};
+Stmt ::= Expr:e SEMICOLON
+         {:
+                     RESULT = new BaseASTNode(NodeType.STATEMENT);
+                     RESULT.addChild(e);
+                     e.setParent(RESULT);
+         :}
+         | SEMICOLON
+         {:
+                     ASTNode t = new BaseASTNode(NodeType.EMPTY_STATEMENT);
+                     RESULT = new BaseASTNode(NodeType.STATEMENT);
+                     RESULT.addChild(t);
+                     t.setParent(RESULT);
+         :}
+         | IfStmt :ifs
+         {:
+                     RESULT = new BaseASTNode(NodeType.STATEMENT);
+                     RESULT.addChild(ifs);
+                     ifs.setParent(RESULT);
+         :}
+         | WhileStmt :ws
+         {:
+                     RESULT = new BaseASTNode(NodeType.STATEMENT);
+                     RESULT.addChild(ws);
+                     ws.setParent(RESULT);
+                  :}
+         | ForStmt :fs
+         {:
+                     RESULT = new BaseASTNode(NodeType.STATEMENT);
+                     RESULT.addChild(fs);
+                     fs.setParent(RESULT);
+                  :}
+         | BreakStmt :bs
+         {:
+                     RESULT = new BaseASTNode(NodeType.STATEMENT);
+                     RESULT.addChild(bs);
+                     bs.setParent(RESULT);
+                  :}
+         | ContinueStmt:cs
+         {:
+                     RESULT = new BaseASTNode(NodeType.STATEMENT);
+                     RESULT.addChild(cs);
+                     cs.setParent(RESULT);
+                  :}
+         | ReturnStmt:rns
+         {:
+                     RESULT = new BaseASTNode(NodeType.STATEMENT);
+                     RESULT.addChild(rns);
+                     rns.setParent(RESULT);
+                  :}
+         | PrintStmt:ps
+         {:
+                     RESULT = new BaseASTNode(NodeType.STATEMENT);
+                     RESULT.addChild(ps);
+                     ps.setParent(RESULT);
+                  :}
+         | StmtBlock:sbl
+         {:
+                     RESULT = new BaseASTNode(NodeType.STATEMENT);
+                     RESULT.addChild(sbl);
+                     sbl.setParent(RESULT);
+                  :};
+IfStmt ::= IF OPENBRACE Expr:e CLOSEBRACE Stmt :s_one
+          {:
+                RESULT = new BaseASTNode(NodeType.IF_STATEMENT);
+                RESULT.addChild(e, s_one);
+                e.setParent(RESULT);
+                s_one.setParent(RESULT);
+           :}
+          | IF OPENBRACE Expr:e CLOSEBRACE Stmt :s_one ELSE Stmt:s_two
+          {:
+                RESULT = new BaseASTNode(NodeType.IF_STATEMENT);
+                RESULT.addChild(e, s_one,s_two);
+                e.setParent(RESULT);
+                s_one.setParent(RESULT);
+                s_two.setParent(RESULT);
+          :};
+WhileStmt ::= WHILE OPENBRACE Expr:e CLOSEBRACE Stmt:s
+            {:
+                RESULT = new BaseASTNode(NodeType.WHILE_STATEMENT);
+                RESULT.addChild(e, s);
+                e.setParent(RESULT);
+                s.setParent(RESULT);
+            :};
+ForStmt ::= FOR OPENBRACE Expr:e_one SEMICOLON Expr:e_two SEMICOLON Expr:e_three CLOSEBRACE Stmt:s
+            {:
+                    RESULT = new BaseASTNode(NodeType.FOR_STATEMENT);
+                    RESULT.addChild(e_one,e_two,s,e_three);
+                    e_one.setParent(RESULT);
+                    e_two.setParent(RESULT);
+                    e_three.setParent(RESULT);
+                    s.setParent(RESULT);
+            :}
+            |FOR OPENBRACE Expr:e_one SEMICOLON Expr:e_two SEMICOLON CLOSEBRACE Stmt:s
+            {:
+                                RESULT = new BaseASTNode(NodeType.FOR_STATEMENT);
+                                RESULT.addChild(e_one,e_two,s);
+                                e_one.setParent(RESULT);
+                                e_two.setParent(RESULT);
+                                s.setParent(RESULT);
+             :}
+            |FOR OPENBRACE SEMICOLON Expr:e_one SEMICOLON Expr:e_two CLOSEBRACE Stmt:s
+            {:
+                        RESULT = new BaseASTNode(NodeType.FOR_STATEMENT);
+                        RESULT.addChild(e_one,e_two,s);
+                        e_one.setParent(RESULT);
+                        e_two.setParent(RESULT);
+                        s.setParent(RESULT);
+            :}
+            |FOR OPENBRACE SEMICOLON Expr:e_one SEMICOLON CLOSEBRACE Stmt:s
+            {:
+                        RESULT = new BaseASTNode(NodeType.FOR_STATEMENT);
+                        RESULT.addChild(e_one,s);
+                        e_one.setParent(RESULT);
+                        s.setParent(RESULT);
+            :};
+ReturnStmt ::= RETURN Expr:e SEMICOLON
+                {:
+                        RESULT = new BaseASTNode(NodeType.RETURN_STATEMENT);
+                        RESULT.addChild(e);
+                        e.setParent(RESULT);
+                :}|RETURN SEMICOLON
+                {:
+                        RESULT = new BaseASTNode(NodeType.RETURN_STATEMENT);
+                :};
+BreakStmt ::= BREAK SEMICOLON
+              {:
+                        RESULT = new BaseASTNode(NodeType.BREAK_STATEMENT);
+              :};
+ContinueStmt ::= CONTINUE SEMICOLON
+               {:
+                        RESULT = new BaseASTNode(NodeType.CONTINUE_STATEMENT);
+               :};
+PrintStmt ::= PRINT OPENBRACE ExprComma :ec CLOSEBRACE SEMICOLON
+            {:
+                        RESULT = new BaseASTNode(NodeType.PRINT_STATEMENT);
+                        RESULT.addChild(ec);
+                        ec.setParent(RESULT);
+             :};
+ExprComma ::= ExprComma:ec COMMA Expr:e
+            {:
+                        RESULT = ec;
+                        RESULT.addChild(e);
+                        e.setParent(RESULT);
+            :}
+            | Expr:e
+            {:
+                        RESULT = new BaseASTNode(NodeType.EXPRESSIONS);
+                        RESULT.addChild(e);
+                        e.setParent(RESULT);
+            :};
+Expr ::= LValue:l ASSIGN Expr:e
+         {:
+                     ASTNode t = new BaseASTNode(NodeType.ASSIGN);
+                     t.addChild(l);
+                     t.addChild(e);
+                     l.setParent(t);
+                     e.setParent(t);
+                     RESULT = new ExpressionNode();
+                     RESULT.addChild(t);
+                     t.setParent(RESULT);
+         :}
+         | LValue:l PLUS_ASSIGN Expr:e
+         {:
+                    ASTNode t = new BaseASTNode(NodeType.ADD_ASSIGN);
+                    t.addChild(l);
+                    t.addChild(e);
+                    l.setParent(t);
+                    e.setParent(t);
+                    RESULT = new ExpressionNode();
+                    RESULT.addChild(t);
+                    t.setParent(RESULT);
+         :}
+         | LValue:l MINUS_ASSIGN Expr:e
+         {:
+                             ASTNode t = new BaseASTNode(NodeType.SUB_ASSIGN);
+                             t.addChild(l);
+                             t.addChild(e);
+                             l.setParent(t);
+                             e.setParent(t);
+                             RESULT = new ExpressionNode();
+                             RESULT.addChild(t);
+                             t.setParent(RESULT);
+                  :}
+         | LValue:l TIME_ASSIGN Expr:e
+         {:
+                             ASTNode t = new BaseASTNode(NodeType.MULT_ASSIGN);
+                             t.addChild(l);
+                             t.addChild(e);
+                             l.setParent(t);
+                             e.setParent(t);
+                             RESULT = new ExpressionNode();
+                             RESULT.addChild(t);
+                             t.setParent(RESULT);
+                  :}
+         | LValue :l DIVIDE_ASSIGN Expr:e
+         {:
+                            ASTNode t = new BaseASTNode(NodeType.DIV_ASSIGN);
+                            t.addChild(l);
+                            t.addChild(e);
+                            l.setParent(t);
+                            e.setParent(t);
+                            RESULT = new ExpressionNode();
+                            RESULT.addChild(t);
+                            t.setParent(RESULT);
+                           :}
+         | Constant:c
+         {:
+                     RESULT = new ExpressionNode();
+                     RESULT.addChild(c);
+                     c.setParent(RESULT);
+         :}
+         | LValue:l
+         {:
+                     RESULT = new ExpressionNode();
+                     RESULT.addChild(l);
+                     l.setParent(RESULT);
+          :}
+         | THIS
+         {:
+                     RESULT = new ExpressionNode();
+                     ASTNode t = new BaseASTNode(NodeType.THIS);
+                     RESULT.addChild(t);
+                     t.setParent(RESULT);
+                 :}
+         | Call:c
+         {:
+                     RESULT = new ExpressionNode();
+                     RESULT.addChild(c);
+                     c.setParent(RESULT);
+                 :}
+         | OPENBRACE Expr:e CLOSEBRACE
+         {:
+                     RESULT = e;
+                 :}
+         | Expr:e1 PLUS Expr:e2
+         {:
+                     RESULT = new ExpressionNode();
+                     ASTNode t = new BaseASTNode(NodeType.ADDITION);
+                     t.addChild(e1);
+                     t.addChild(e2);
+                     RESULT.addChild(t);
+                     e1.setParent(t);
+                     e2.setParent(t);
+                     t.setParent(RESULT);
+         :}
+         | Expr :e1 MINUS Expr:e2
+         {:
+                     RESULT = new ExpressionNode();
+                     ASTNode t = new BaseASTNode(NodeType.SUBTRACTION);
+                     t.addChild(e1);
+                     t.addChild(e2);
+                     RESULT.addChild(t);
+                     e1.setParent(t);
+                     e2.setParent(t);
+                     t.setParent(RESULT);
+         :}
+         | Expr:e1 TIME Expr:e2
+         {:
+                     RESULT = new ExpressionNode();
+                     ASTNode t = new BaseASTNode(NodeType.MULTIPLICATION);
+                     t.addChild(e1);
+                     t.addChild(e2);
+                     RESULT.addChild(t);
+                     e1.setParent(t);
+                     e2.setParent(t);
+                     t.setParent(RESULT);
+                 :}
+         | Expr :e1 DIVIDE Expr:e2
+         {:
+                     RESULT = new ExpressionNode();
+                     ASTNode t = new BaseASTNode(NodeType.DIVISION);
+                     t.addChild(e1);
+                     t.addChild(e2);
+                     RESULT.addChild(t);
+                     e1.setParent(t);
+                     e2.setParent(t);
+                     t.setParent(RESULT);
+                 :}
+         | Expr:e1 MODE Expr:e2
+         {:
+                     RESULT = new ExpressionNode();
+                     ASTNode t = new BaseASTNode(NodeType.MOD);
+                     t.addChild(e1);
+                     t.addChild(e2);
+                     RESULT.addChild(t);
+                     e1.setParent(t);
+                     e2.setParent(t);
+                     t.setParent(RESULT);
+                 :}
+         | MINUS Expr:e
+         {:
+                    RESULT = new ExpressionNode();
+                    ASTNode t = new BaseASTNode(NodeType.NEGATIVE);
+                    t.addChild(e);
+                    RESULT.addChild(t);
+                    t.setParent(RESULT);
+                    e.setParent(t);
+         :}
+         | Expr:e1 LESS Expr:e2
+         {:
+                     ASTNode t = new BaseASTNode(NodeType.LESS_THAN);
+                     RESULT = new ExpressionNode();
+                     t.addChild(e1);
+                     t.addChild(e2);
+                     RESULT.addChild(t);
+                     e1.setParent(t);
+                     e2.setParent(t);
+                     t.setParent(RESULT);
+                 :}
+         | Expr:e1 LESS_EQUAL Expr:e2
+         {:
+                     ASTNode t = new BaseASTNode(NodeType.LESS_THAN_OR_EQUAL);
+                     RESULT = new ExpressionNode();
+                     t.addChild(e1);
+                     t.addChild(e2);
+                     RESULT.addChild(t);
+                     e1.setParent(t);
+                     e2.setParent(t);
+                     t.setParent(RESULT);
+                 :}
+         | Expr:e1 GREATER Expr:e2
+         {:
+                     ASTNode t = new BaseASTNode(NodeType.GREATER_THAN);
+                     RESULT = new ExpressionNode();
+                     t.addChild(e1);
+                     t.addChild(e2);
+                     RESULT.addChild(t);
+                     e1.setParent(t);
+                     e2.setParent(t);
+                     t.setParent(RESULT);
+                 :}
+         | Expr:e1 GREATER_EQUAL Expr:e2
+         {:
+                     ASTNode t = new BaseASTNode(NodeType.GREATER_THAN_OR_EQUAL);
+                     RESULT = new ExpressionNode();
+                     t.addChild(e1);
+                     t.addChild(e2);
+                     RESULT.addChild(t);
+                     e1.setParent(t);
+                     e2.setParent(t);
+                     t.setParent(RESULT);
+                 :}
+         | Expr:e1 EQUAL Expr:e2
+         {:
+                     ASTNode t = new BaseASTNode(NodeType.EQUAL);
+                     RESULT = new ExpressionNode();
+                     t.addChild(e1);
+                     t.addChild(e2);
+                     RESULT.addChild(t);
+                     e1.setParent(t);
+                     e2.setParent(t);
+                     t.setParent(RESULT);
+                 :}
+         | Expr:e1 NOT_EQUAL Expr:e2
+         {:
+                     ASTNode t = new BaseASTNode(NodeType.NOT_EQUAL);
+                     RESULT = new ExpressionNode();
+                     t.addChild(e1);
+                     t.addChild(e2);
+                     RESULT.addChild(t);
+                     e1.setParent(t);
+                     e2.setParent(t);
+                     t.setParent(RESULT);
+                 :}
+         | Expr:e1 AND Expr:e2
+         {:
+                     ASTNode t = new BaseASTNode(NodeType.BOOLEAN_AND);
+                     RESULT = new ExpressionNode();
+                     t.addChild(e1);
+                     t.addChild(e2);
+                     RESULT.addChild(t);
+                     e1.setParent(t);
+                     e2.setParent(t);
+                     t.setParent(RESULT);
+                 :}
+         | Expr:e1 OR Expr:e2
+         {:
+                     ASTNode t = new BaseASTNode(NodeType.BOOLEAN_OR);
+                     RESULT = new ExpressionNode();
+                     t.addChild(e1);
+                     t.addChild(e2);
+                     RESULT.addChild(t);
+                     e1.setParent(t);
+                     e2.setParent(t);
+                     t.setParent(RESULT);
+                 :}
+         | NOT Expr:e
+         {:
+                     ASTNode t = new BaseASTNode(NodeType.BOOLEAN_NOT);
+                     RESULT = new ExpressionNode();
+                     t.addChild(e);
+                     RESULT.addChild(t);
+                     e.setParent(t);
+                     t.setParent(RESULT);
+                 :}
+         | READINTEGER OPENBRACE CLOSEBRACE
+         {:
+                     ASTNode t = new BaseASTNode(NodeType.READ_INTEGER);
+                     RESULT = new ExpressionNode();
+                     RESULT.addChild(t);
+                     t.setParent(RESULT);
+                 :}
+         | NEW identifier:i
+         {:
+                     ASTNode t = new BaseASTNode(NodeType.NEW_IDENTIFIER);
+                     RESULT = new ExpressionNode();
+                     t.addChild(i);
+                     RESULT.addChild(t);
+                     t.setParent(RESULT);
+                     i.setParent(t);
+                 :}
+         | READLINE OPENBRACE CLOSEBRACE
+         {:
+                     ASTNode t = new BaseASTNode(NodeType.READ_LINE);
+                     RESULT = new ExpressionNode();
+                     RESULT.addChild(t);
+                     t.setParent(RESULT);
+                 :}
+         | NEWARRAY OPENBRACE Expr:e COMMA Type:tp CLOSEBRACE
+         {:
+                     ASTNode t = new BaseASTNode(NodeType.NEW_ARRAY);
+                     RESULT = new ExpressionNode();
+                     t.addChild(e);
+                     t.addChild(tp);
+                     RESULT.addChild(t);
+                     t.setParent(RESULT);
+                     e.setParent(t);
+                     tp.setParent(t);
+                 :}
+         | ITOD OPENBRACE Expr:e CLOSEBRACE
+         {:
+                     ASTNode t = new BaseASTNode(NodeType.ITOD);
+                     RESULT = new ExpressionNode();
+                     t.addChild(e);
+                     RESULT.addChild(t);
+                     t.setParent(RESULT);
+                     e.setParent(t);
+                 :}
+         | DTOI OPENBRACE Expr:e CLOSEBRACE
+         {:
+                     ASTNode t = new BaseASTNode(NodeType.DTOI);
+                     RESULT = new ExpressionNode();
+                     t.addChild(e);
+                     RESULT.addChild(t);
+                     t.setParent(RESULT);
+                     e.setParent(t);
+                 :}
+         | ITOB OPENBRACE Expr:e CLOSEBRACE
+         {:
+                     ASTNode t = new BaseASTNode(NodeType.ITOB);
+                     RESULT = new ExpressionNode();
+                     t.addChild(e);
+                     RESULT.addChild(t);
+                     t.setParent(RESULT);
+                     e.setParent(t);
+                 :}
+         | BTOI OPENBRACE Expr:e CLOSEBRACE
+         {:
+                     ASTNode t = new BaseASTNode(NodeType.BTOI);
+                     RESULT = new ExpressionNode();
+                     t.addChild(e);
+                     RESULT.addChild(t);
+                     t.setParent(RESULT);
+                     e.setParent(t);
+                 :}
+         | LINE
+         {:
+                    RESULT = new ExpressionNode();
+                    ASTNode t = new BaseASTNode(NodeType.LINE);
+                    RESULT.addChild(t);
+                    t.setParent(RESULT);
+                                      :}
+         | FUNC
+         {:
+                    RESULT = new ExpressionNode();
+                    ASTNode t = new BaseASTNode(NodeType.FUNC);
+                    RESULT.addChild(t);
+                    t.setParent(RESULT);
+                             :};
+LValue ::= identifier:i
+            {:
+                        RESULT = new BaseASTNode(NodeType.LVALUE);
+                        RESULT.addChild(i);
+                        i.setParent(RESULT);
+                    :}
+            | Expr:e DOT identifier:i
+            {:
+                        RESULT = new BaseASTNode(NodeType.LVALUE);
+                        RESULT.addChild(i);
+                        RESULT.addChild(e);
+                        i.setParent(RESULT);
+                        e.setParent(RESULT);
+                    :}
+            | Expr:e1 OPENBRACKET Expr:e2 CLOSEBRACKET
+            {:
+                        RESULT = new BaseASTNode(NodeType.LVALUE);
+                        RESULT.addChild(e1);
+                        RESULT.addChild(e2);
+                        e1.setParent(RESULT);
+                        e2.setParent(RESULT);
+                    :};
+Call ::= identifier:i OPENBRACE Actuals:a CLOSEBRACE
+            {:
+                        RESULT = new BaseASTNode(NodeType.CALL);
+                        RESULT.addChild(i);
+                        RESULT.addChild(a);
+                        i.setParent(RESULT);
+                        a.setParent(RESULT);
+                    :}
+          | Expr:e DOT identifier:i OPENBRACE Actuals:a CLOSEBRACE
+          {:
+                      RESULT = new BaseASTNode(NodeType.CALL);
+                      RESULT.addChild(e);
+                      RESULT.addChild(i);
+                      RESULT.addChild(a);
+                      e.setParent(RESULT);
+                      i.setParent(RESULT);
+                      a.setParent(RESULT);
+                  :}
+          |identifier:i OPENBRACE CLOSEBRACE
+          {:
+                      RESULT = new BaseASTNode(NodeType.CALL);
+                      RESULT.addChild(i);
+                      i.setParent(RESULT);
+                  :}
+          |Expr:e DOT identifier:i OPENBRACE CLOSEBRACE
+          {:
+                      RESULT = new BaseASTNode(NodeType.CALL);
+                      RESULT.addChild(e);
+                      RESULT.addChild(i);
+                      e.setParent(RESULT);
+                      i.setParent(RESULT);
+                  :};
+Actuals ::= ExprComma:ec
+            {:
+                            RESULT = new BaseASTNode(NodeType.ACTUALS);
+                            RESULT.addChild(ec);
+                            ec.setParent(RESULT);
+                        :};
+Constant ::= T_INTLITERAL:t_i
+            {: RESULT = new IntegerLiteralNode(t_i); :}
+            | T_DOUBLELITERAL:t_d
+             {: RESULT = new DoubleLiteralNode(t_d); :}
+            | T_BOOLEANLITERAL:tb
+            {: RESULT = new BooleanLiteralNode(tb); :}
+            | T_STRINGLITERAL:s
+            {: RESULT = new StringLiteralNode(s); :}
+            | NULL
+            {: RESULT = new BaseASTNode(NodeType.NULL_LITERAL); :};
