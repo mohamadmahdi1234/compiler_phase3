@@ -5,7 +5,7 @@
 
 package compiler;
 
-import compiler.java_cup.runtime.*;
+import java_cup.runtime.*;
 import compiler.AST.*;
 import java_cup.runtime.XMLElement;
 

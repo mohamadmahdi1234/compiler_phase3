@@ -1,5 +1,5 @@
 package compiler;
-import compiler.java_cup.runtime.*;
+import java_cup.runtime.*;
 import compiler.AST.*;
 parser code {:
 	private Scanner_phase1 scanner;
