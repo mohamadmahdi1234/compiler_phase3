@@ -951,7 +951,7 @@ class CUP$parser$actions {
               Object RESULT =null;
 		int start_valleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int start_valright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object start_val = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode start_val = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		RESULT = start_val;
               CUP$parser$result = parser.getSymbolFactory().newSymbol("$START",0, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -962,10 +962,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 1: // Program ::= DeclPlus 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int dpleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int dpright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object dp = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode dp = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                 RESULT = new Program();
                 RESULT.addChild(dp);
@@ -979,13 +979,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 2: // Program ::= MacroPlus DeclPlus 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int mpleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int mpright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object mp = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode mp = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		int dpleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int dpright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object dp = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode dp = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                 RESULT = new Program();
                 RESULT.addChild(mp);
@@ -1001,13 +1001,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 3: // MacroPlus ::= MacroPlus Macro 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int mpleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int mpright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object mp = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode mp = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		int mleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int mright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object m = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode m = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                RESULT = mp;
                RESULT.addChild(m);
@@ -1020,10 +1020,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 4: // MacroPlus ::= Macro 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int mleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int mright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object m = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode m = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                RESULT = new BaseASTNode(NodeType.Macros);
                RESULT.addChild(m);
@@ -1036,13 +1036,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 5: // DeclPlus ::= Decl DeclPlus 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int dleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int dright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object d = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode d = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		int dpleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int dpright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object dp = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode dp = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
               RESULT = dp;
               RESULT.addChild(d);
@@ -1055,10 +1055,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 6: // DeclPlus ::= Decl 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int dleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int dright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object d = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode d = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                 RESULT = new BaseASTNode(NodeType.Decls);
                 RESULT.addChild(d);
@@ -1071,7 +1071,7 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 7: // Macro ::= IMPORT T_STRINGLITERAL 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		RESULT = new BaseASTNode(NodeType.MACRO_STATEMENT);
               CUP$parser$result = parser.getSymbolFactory().newSymbol("Macro",1, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1080,10 +1080,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 8: // identifier ::= T_ID 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object i = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		String i = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 RESULT = new IdentifierNode(i); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("identifier",25, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1092,10 +1092,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 9: // Decl ::= VariableDecl 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int vleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int vright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object v = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode v = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 RESULT = v;
               CUP$parser$result = parser.getSymbolFactory().newSymbol("Decl",2, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1104,10 +1104,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 10: // Decl ::= FunctionDecl 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int fleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int fright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object f = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode f = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 RESULT = f;
               CUP$parser$result = parser.getSymbolFactory().newSymbol("Decl",2, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1116,10 +1116,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 11: // Decl ::= ClassDecl 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int cleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int cright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object c = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode c = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 RESULT = c;
               CUP$parser$result = parser.getSymbolFactory().newSymbol("Decl",2, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1128,10 +1128,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 12: // VariableDecl ::= Variable SEMICOLON 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int vleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int vright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object v = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode v = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		 RESULT = v;
               CUP$parser$result = parser.getSymbolFactory().newSymbol("VariableDecl",3, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1140,13 +1140,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 13: // Variable ::= Type identifier 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int tleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object t = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode t = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object i = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode i = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                 RESULT = new BaseASTNode(NodeType.VARIABLE_DECLARATION);
                 RESULT.addChild(t);
@@ -1161,7 +1161,7 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 14: // Type ::= INT 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		 RESULT = new TypeNode(NodeType.INT_TYPE, PrimitiveType.INT); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("Type",5, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1170,7 +1170,7 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 15: // Type ::= DOUBLE 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		 RESULT = new TypeNode(NodeType.DOUBLE_TYPE, PrimitiveType.DOUBLE); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("Type",5, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1179,7 +1179,7 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 16: // Type ::= BOOL 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		 RESULT = new TypeNode(NodeType.BOOLEAN_TYPE, PrimitiveType.BOOL); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("Type",5, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1188,7 +1188,7 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 17: // Type ::= STRING 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		 RESULT = new TypeNode(NodeType.STRING_TYPE, PrimitiveType.STRING); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("Type",5, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1197,10 +1197,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 18: // Type ::= identifier 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object i = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode i = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 RESULT = i ; 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("Type",5, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -1209,10 +1209,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 19: // Type ::= Type OP_CL_BRACKET 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int tleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object t = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode t = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
          RESULT = t;
          ASTNode e = new BaseASTNode(NodeType.EMPTY_ARRAY);
@@ -1226,19 +1226,19 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 20: // FunctionDecl ::= Type identifier OPENBRACE Formals CLOSEBRACE StmtBlock 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int tleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).right;
-		Object t = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-5)).value;
+		ASTNode t = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-5)).value;
 		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).right;
-		Object i = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
+		ASTNode i = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
 		int fleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int fright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object f = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode f = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int sleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int sright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object s = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode s = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                     RESULT = new BaseASTNode(NodeType.METHOD_DECLARATION);
                     RESULT.addChild(t, i, f, s);
@@ -1254,16 +1254,16 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 21: // FunctionDecl ::= VOID identifier OPENBRACE Formals CLOSEBRACE StmtBlock 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).right;
-		Object i = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
+		ASTNode i = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
 		int fleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int fright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object f = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode f = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int sleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int sright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object s = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode s = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                     RESULT = new BaseASTNode(NodeType.METHOD_DECLARATION);
                     ASTNode t = new TypeNode(NodeType.VOID, PrimitiveType.VOID);
@@ -1280,16 +1280,16 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 22: // FunctionDecl ::= Type identifier OPENBRACE CLOSEBRACE StmtBlock 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int tleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).left;
 		int tright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).right;
-		Object t = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
+		ASTNode t = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
 		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
-		Object i = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
+		ASTNode i = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
 		int sleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int sright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object s = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode s = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                     RESULT = new BaseASTNode(NodeType.METHOD_DECLARATION);
                     ASTNode f = new BaseASTNode(NodeType.ARGUMENTS);
@@ -1306,13 +1306,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 23: // FunctionDecl ::= VOID identifier OPENBRACE CLOSEBRACE StmtBlock 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
-		Object i = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
+		ASTNode i = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
 		int sleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int sright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object s = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode s = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                     RESULT = new BaseASTNode(NodeType.METHOD_DECLARATION);
                     ASTNode t = new TypeNode(NodeType.VOID, PrimitiveType.VOID);
@@ -1330,10 +1330,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 24: // Formals ::= Variable 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int vleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int vright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object v = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode v = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                 RESULT = new BaseASTNode(NodeType.ARGUMENTS);
                 ASTNode a = new BaseASTNode(NodeType.ARGUMENT);
@@ -1349,13 +1349,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 25: // Formals ::= Variable COMMA Formals 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int vleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int vright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object v = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode v = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int fleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int fright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object f = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode f = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                 RESULT = f;
                 ASTNode a = new BaseASTNode(NodeType.ARGUMENT);
@@ -1371,10 +1371,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 26: // ClassDecl ::= CLASS identifier OPENCURLY CLOSECURLY 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object i = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode i = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		
                  RESULT = new ClassNode();
                  RESULT.addChild(i);
@@ -1387,13 +1387,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 27: // ClassDecl ::= CLASS identifier OPENCURLY FieldPlus CLOSECURLY 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
-		Object i = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
+		ASTNode i = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
 		int fpleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int fpright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object fp = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode fp = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
                 RESULT = new ClassNode();
                 RESULT.addChild(i);
@@ -1408,13 +1408,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 28: // FieldPlus ::= FieldPlus Field 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int fpleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int fpright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object fp = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode fp = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		int fleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int fright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object f = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode f = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
               RESULT = fp;
               RESULT.addChild(f);
@@ -1427,10 +1427,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 29: // FieldPlus ::= Field 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int fleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int fright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object f = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode f = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                 RESULT = new BaseASTNode(NodeType.FIELDS);
                 RESULT.addChild(f);
@@ -1443,13 +1443,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 30: // Field ::= AccessMode VariableDecl 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int amleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int amright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object am = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode am = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		int vdleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int vdright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object vd = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode vd = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
            RESULT = new BaseASTNode(NodeType.FIELD_DECLARATION);
            RESULT.addChild(am);
@@ -1464,13 +1464,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 31: // Field ::= AccessMode FunctionDecl 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int amleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int amright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object am = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode am = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		int fdleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int fdright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object fd = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode fd = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
            RESULT = new BaseASTNode(NodeType.FIELD_DECLARATION);
            RESULT.addChild(am);
@@ -1485,10 +1485,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 32: // Field ::= VariableDecl 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int vdleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int vdright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object vd = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode vd = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
             RESULT = new BaseASTNode(NodeType.FIELD_DECLARATION);
             RESULT.addChild(vd);
@@ -1501,10 +1501,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 33: // Field ::= FunctionDecl 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int fdleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int fdright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object fd = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode fd = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
             RESULT = new BaseASTNode(NodeType.FIELD_DECLARATION);
             RESULT.addChild(fd);
@@ -1517,7 +1517,7 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 34: // AccessMode ::= PRIVATE 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		
                 RESULT = new BaseASTNode(NodeType.METHOD_ACCESS);
                 ASTNode t = new BaseASTNode(NodeType.PRIVATE_ACCESS);
@@ -1531,7 +1531,7 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 35: // AccessMode ::= PUBLIC 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		
                 RESULT = new BaseASTNode(NodeType.METHOD_ACCESS);
                 ASTNode t = new BaseASTNode(NodeType.PUBLIC_ACCESS);
@@ -1545,7 +1545,7 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 36: // StmtBlock ::= OPENCURLY CLOSECURLY 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		
                     RESULT = new BaseASTNode(NodeType.BLOCK);
                 
@@ -1556,10 +1556,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 37: // StmtBlock ::= OPENCURLY VariableDeclPlus CLOSECURLY 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int vdpleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int vdpright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object vdp = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode vdp = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
                     RESULT = new BaseASTNode(NodeType.BLOCK);
                     RESULT.addChild(vdp);
@@ -1572,7 +1572,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 38: // StmtBlock ::= OPENCURLY StmtPlus CLOSECURLY 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
+		int spleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
+		int spright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
+		ASTNode sp = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
                     RESULT = new BaseASTNode(NodeType.BLOCK);
                     RESULT.addChild(sp);
@@ -1585,13 +1588,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 39: // StmtBlock ::= OPENCURLY VariableDeclPlus StmtPlus CLOSECURLY 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int vdpleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int vdpright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object vdp = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode vdp = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int spleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int spright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object sp = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode sp = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
                     RESULT = new BaseASTNode(NodeType.BLOCK);
                     RESULT.addChild(vdp);
@@ -1606,13 +1609,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 40: // VariableDeclPlus ::= VariableDeclPlus VariableDecl 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int vdpleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int vdpright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object vdp = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode vdp = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		int vdleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int vdright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object vd = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode vd = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                         RESULT = vdp;
                         RESULT.addChild(vd);
@@ -1625,10 +1628,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 41: // VariableDeclPlus ::= VariableDecl 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int vdleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int vdright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object vd = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode vd = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                         RESULT = new BaseASTNode(NodeType.VARIABLES);;
                         RESULT.addChild(vd);
@@ -1641,13 +1644,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 42: // StmtPlus ::= StmtPlus Stmt 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int spleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int spright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object sp = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode sp = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		int sleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int sright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object s = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode s = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                     RESULT = sp;
                     RESULT.addChild(s);
@@ -1660,10 +1663,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 43: // StmtPlus ::= Stmt 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int sleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int sright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object s = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode s = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                         RESULT = new BaseASTNode(NodeType.STATEMENTS);
                         RESULT.addChild(s);
@@ -1676,10 +1679,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 44: // Stmt ::= Expr SEMICOLON 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
                      RESULT = new BaseASTNode(NodeType.STATEMENT);
                      RESULT.addChild(e);
@@ -1692,7 +1695,7 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 45: // Stmt ::= SEMICOLON 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		
                      ASTNode t = new BaseASTNode(NodeType.EMPTY_STATEMENT);
                      RESULT = new BaseASTNode(NodeType.STATEMENT);
@@ -1706,10 +1709,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 46: // Stmt ::= IfStmt 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int ifsleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int ifsright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object ifs = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode ifs = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      RESULT = new BaseASTNode(NodeType.STATEMENT);
                      RESULT.addChild(ifs);
@@ -1722,10 +1725,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 47: // Stmt ::= WhileStmt 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int wsleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int wsright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object ws = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode ws = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      RESULT = new BaseASTNode(NodeType.STATEMENT);
                      RESULT.addChild(ws);
@@ -1738,10 +1741,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 48: // Stmt ::= ForStmt 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int fsleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int fsright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object fs = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode fs = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      RESULT = new BaseASTNode(NodeType.STATEMENT);
                      RESULT.addChild(fs);
@@ -1754,10 +1757,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 49: // Stmt ::= BreakStmt 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int bsleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int bsright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object bs = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode bs = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      RESULT = new BaseASTNode(NodeType.STATEMENT);
                      RESULT.addChild(bs);
@@ -1770,10 +1773,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 50: // Stmt ::= ContinueStmt 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int csleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int csright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object cs = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode cs = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      RESULT = new BaseASTNode(NodeType.STATEMENT);
                      RESULT.addChild(cs);
@@ -1786,10 +1789,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 51: // Stmt ::= ReturnStmt 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int rnsleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int rnsright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object rns = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode rns = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      RESULT = new BaseASTNode(NodeType.STATEMENT);
                      RESULT.addChild(rns);
@@ -1802,10 +1805,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 52: // Stmt ::= PrintStmt 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int psleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int psright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object ps = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode ps = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      RESULT = new BaseASTNode(NodeType.STATEMENT);
                      RESULT.addChild(ps);
@@ -1818,10 +1821,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 53: // Stmt ::= StmtBlock 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int sblleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int sblright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object sbl = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode sbl = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      RESULT = new BaseASTNode(NodeType.STATEMENT);
                      RESULT.addChild(sbl);
@@ -1834,13 +1837,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 54: // IfStmt ::= IF OPENBRACE Expr CLOSEBRACE Stmt 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int s_oneleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int s_oneright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object s_one = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode s_one = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                 RESULT = new BaseASTNode(NodeType.IF_STATEMENT);
                 RESULT.addChild(e, s_one);
@@ -1854,16 +1857,16 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 55: // IfStmt ::= IF OPENBRACE Expr CLOSEBRACE Stmt ELSE Stmt 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
 		int s_oneleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int s_oneright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object s_one = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode s_one = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int s_twoleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int s_tworight = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object s_two = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode s_two = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                 RESULT = new BaseASTNode(NodeType.IF_STATEMENT);
                 RESULT.addChild(e, s_one,s_two);
@@ -1878,13 +1881,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 56: // WhileStmt ::= WHILE OPENBRACE Expr CLOSEBRACE Stmt 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int sleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int sright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object s = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode s = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                 RESULT = new BaseASTNode(NodeType.WHILE_STATEMENT);
                 RESULT.addChild(e, s);
@@ -1898,19 +1901,19 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 57: // ForStmt ::= FOR OPENBRACE Expr SEMICOLON Expr SEMICOLON Expr CLOSEBRACE Stmt 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int e_oneleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-6)).left;
 		int e_oneright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-6)).right;
-		Object e_one = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-6)).value;
+		ASTNode e_one = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-6)).value;
 		int e_twoleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).left;
 		int e_tworight = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).right;
-		Object e_two = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
+		ASTNode e_two = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
 		int e_threeleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int e_threeright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object e_three = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode e_three = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int sleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int sright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object s = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode s = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                     RESULT = new BaseASTNode(NodeType.FOR_STATEMENT);
                     RESULT.addChild(e_one,e_two,s,e_three);
@@ -1926,16 +1929,16 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 58: // ForStmt ::= FOR OPENBRACE Expr SEMICOLON Expr SEMICOLON CLOSEBRACE Stmt 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int e_oneleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).left;
 		int e_oneright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).right;
-		Object e_one = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-5)).value;
+		ASTNode e_one = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-5)).value;
 		int e_twoleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
 		int e_tworight = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
-		Object e_two = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
+		ASTNode e_two = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
 		int sleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int sright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object s = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode s = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                                 RESULT = new BaseASTNode(NodeType.FOR_STATEMENT);
                                 RESULT.addChild(e_one,e_two,s);
@@ -1950,16 +1953,16 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 59: // ForStmt ::= FOR OPENBRACE SEMICOLON Expr SEMICOLON Expr CLOSEBRACE Stmt 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int e_oneleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).left;
 		int e_oneright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).right;
-		Object e_one = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
+		ASTNode e_one = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
 		int e_twoleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int e_tworight = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object e_two = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode e_two = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int sleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int sright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object s = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode s = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                         RESULT = new BaseASTNode(NodeType.FOR_STATEMENT);
                         RESULT.addChild(e_one,e_two,s);
@@ -1974,13 +1977,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 60: // ForStmt ::= FOR OPENBRACE SEMICOLON Expr SEMICOLON CLOSEBRACE Stmt 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int e_oneleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
 		int e_oneright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
-		Object e_one = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
+		ASTNode e_one = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
 		int sleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int sright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object s = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode s = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                         RESULT = new BaseASTNode(NodeType.FOR_STATEMENT);
                         RESULT.addChild(e_one,s);
@@ -1994,10 +1997,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 61: // ReturnStmt ::= RETURN Expr SEMICOLON 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
                         RESULT = new BaseASTNode(NodeType.RETURN_STATEMENT);
                         RESULT.addChild(e);
@@ -2010,7 +2013,7 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 62: // ReturnStmt ::= RETURN SEMICOLON 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		
                         RESULT = new BaseASTNode(NodeType.RETURN_STATEMENT);
                 
@@ -2021,7 +2024,7 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 63: // BreakStmt ::= BREAK SEMICOLON 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		
                         RESULT = new BaseASTNode(NodeType.BREAK_STATEMENT);
               
@@ -2032,7 +2035,7 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 64: // ContinueStmt ::= CONTINUE SEMICOLON 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		
                         RESULT = new BaseASTNode(NodeType.CONTINUE_STATEMENT);
                
@@ -2043,10 +2046,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 65: // PrintStmt ::= PRINT OPENBRACE ExprComma CLOSEBRACE SEMICOLON 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int ecleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int ecright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object ec = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode ec = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		
                         RESULT = new BaseASTNode(NodeType.PRINT_STATEMENT);
                         RESULT.addChild(ec);
@@ -2059,13 +2062,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 66: // ExprComma ::= ExprComma COMMA Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int ecleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int ecright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object ec = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode ec = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                         RESULT = ec;
                         RESULT.addChild(e);
@@ -2078,10 +2081,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 67: // ExprComma ::= Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                         RESULT = new BaseASTNode(NodeType.EXPRESSIONS);
                         RESULT.addChild(e);
@@ -2094,13 +2097,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 68: // Expr ::= LValue ASSIGN Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int lleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int lright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object l = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode l = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      ASTNode t = new BaseASTNode(NodeType.ASSIGN);
                      t.addChild(l);
@@ -2118,13 +2121,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 69: // Expr ::= LValue PLUS_ASSIGN Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int lleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int lright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object l = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode l = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                     ASTNode t = new BaseASTNode(NodeType.ADD_ASSIGN);
                     t.addChild(l);
@@ -2142,13 +2145,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 70: // Expr ::= LValue MINUS_ASSIGN Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int lleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int lright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object l = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode l = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                              ASTNode t = new BaseASTNode(NodeType.SUB_ASSIGN);
                              t.addChild(l);
@@ -2166,13 +2169,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 71: // Expr ::= LValue TIME_ASSIGN Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int lleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int lright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object l = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode l = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                              ASTNode t = new BaseASTNode(NodeType.MULT_ASSIGN);
                              t.addChild(l);
@@ -2190,13 +2193,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 72: // Expr ::= LValue DIVIDE_ASSIGN Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int lleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int lright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object l = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode l = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                             ASTNode t = new BaseASTNode(NodeType.DIV_ASSIGN);
                             t.addChild(l);
@@ -2214,10 +2217,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 73: // Expr ::= Constant 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int cleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int cright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object c = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode c = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      RESULT = new ExpressionNode();
                      RESULT.addChild(c);
@@ -2230,10 +2233,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 74: // Expr ::= LValue 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int lleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int lright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object l = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode l = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      RESULT = new ExpressionNode();
                      RESULT.addChild(l);
@@ -2246,7 +2249,7 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 75: // Expr ::= THIS 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		
                      RESULT = new ExpressionNode();
                      ASTNode t = new BaseASTNode(NodeType.THIS);
@@ -2260,10 +2263,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 76: // Expr ::= Call 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int cleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int cright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object c = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode c = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      RESULT = new ExpressionNode();
                      RESULT.addChild(c);
@@ -2276,10 +2279,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 77: // Expr ::= OPENBRACE Expr CLOSEBRACE 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
                      RESULT = e;
                  
@@ -2290,13 +2293,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 78: // Expr ::= Expr PLUS Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object e1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode e1 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int e2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e2 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      RESULT = new ExpressionNode();
                      ASTNode t = new BaseASTNode(NodeType.ADDITION);
@@ -2314,13 +2317,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 79: // Expr ::= Expr MINUS Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object e1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode e1 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int e2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e2 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      RESULT = new ExpressionNode();
                      ASTNode t = new BaseASTNode(NodeType.SUBTRACTION);
@@ -2338,13 +2341,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 80: // Expr ::= Expr TIME Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object e1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode e1 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int e2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e2 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      RESULT = new ExpressionNode();
                      ASTNode t = new BaseASTNode(NodeType.MULTIPLICATION);
@@ -2362,13 +2365,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 81: // Expr ::= Expr DIVIDE Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object e1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode e1 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int e2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e2 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      RESULT = new ExpressionNode();
                      ASTNode t = new BaseASTNode(NodeType.DIVISION);
@@ -2386,13 +2389,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 82: // Expr ::= Expr MODE Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object e1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode e1 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int e2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e2 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      RESULT = new ExpressionNode();
                      ASTNode t = new BaseASTNode(NodeType.MOD);
@@ -2410,10 +2413,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 83: // Expr ::= MINUS Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                     RESULT = new ExpressionNode();
                     ASTNode t = new BaseASTNode(NodeType.NEGATIVE);
@@ -2429,13 +2432,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 84: // Expr ::= Expr LESS Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object e1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode e1 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int e2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e2 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      ASTNode t = new BaseASTNode(NodeType.LESS_THAN);
                      RESULT = new ExpressionNode();
@@ -2453,13 +2456,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 85: // Expr ::= Expr LESS_EQUAL Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object e1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode e1 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int e2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e2 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      ASTNode t = new BaseASTNode(NodeType.LESS_THAN_OR_EQUAL);
                      RESULT = new ExpressionNode();
@@ -2477,13 +2480,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 86: // Expr ::= Expr GREATER Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object e1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode e1 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int e2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e2 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      ASTNode t = new BaseASTNode(NodeType.GREATER_THAN);
                      RESULT = new ExpressionNode();
@@ -2501,13 +2504,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 87: // Expr ::= Expr GREATER_EQUAL Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object e1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode e1 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int e2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e2 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      ASTNode t = new BaseASTNode(NodeType.GREATER_THAN_OR_EQUAL);
                      RESULT = new ExpressionNode();
@@ -2525,13 +2528,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 88: // Expr ::= Expr EQUAL Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object e1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode e1 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int e2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e2 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      ASTNode t = new BaseASTNode(NodeType.EQUAL);
                      RESULT = new ExpressionNode();
@@ -2549,13 +2552,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 89: // Expr ::= Expr NOT_EQUAL Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object e1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode e1 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int e2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e2 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      ASTNode t = new BaseASTNode(NodeType.NOT_EQUAL);
                      RESULT = new ExpressionNode();
@@ -2573,13 +2576,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 90: // Expr ::= Expr AND Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object e1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode e1 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int e2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e2 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      ASTNode t = new BaseASTNode(NodeType.BOOLEAN_AND);
                      RESULT = new ExpressionNode();
@@ -2597,13 +2600,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 91: // Expr ::= Expr OR Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object e1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode e1 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int e2left = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e2 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      ASTNode t = new BaseASTNode(NodeType.BOOLEAN_OR);
                      RESULT = new ExpressionNode();
@@ -2621,10 +2624,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 92: // Expr ::= NOT Expr 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      ASTNode t = new BaseASTNode(NodeType.BOOLEAN_NOT);
                      RESULT = new ExpressionNode();
@@ -2640,7 +2643,7 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 93: // Expr ::= READINTEGER OPENBRACE CLOSEBRACE 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		
                      ASTNode t = new BaseASTNode(NodeType.READ_INTEGER);
                      RESULT = new ExpressionNode();
@@ -2654,10 +2657,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 94: // Expr ::= NEW identifier 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object i = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode i = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                      ASTNode t = new BaseASTNode(NodeType.NEW_IDENTIFIER);
                      RESULT = new ExpressionNode();
@@ -2673,7 +2676,7 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 95: // Expr ::= READLINE OPENBRACE CLOSEBRACE 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		
                      ASTNode t = new BaseASTNode(NodeType.READ_LINE);
                      RESULT = new ExpressionNode();
@@ -2687,13 +2690,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 96: // Expr ::= NEWARRAY OPENBRACE Expr COMMA Type CLOSEBRACE 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
 		int tpleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int tpright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object tp = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode tp = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
                      ASTNode t = new BaseASTNode(NodeType.NEW_ARRAY);
                      RESULT = new ExpressionNode();
@@ -2711,10 +2714,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 97: // Expr ::= ITOD OPENBRACE Expr CLOSEBRACE 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
                      ASTNode t = new BaseASTNode(NodeType.ITOD);
                      RESULT = new ExpressionNode();
@@ -2730,10 +2733,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 98: // Expr ::= DTOI OPENBRACE Expr CLOSEBRACE 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
                      ASTNode t = new BaseASTNode(NodeType.DTOI);
                      RESULT = new ExpressionNode();
@@ -2749,10 +2752,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 99: // Expr ::= ITOB OPENBRACE Expr CLOSEBRACE 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
                      ASTNode t = new BaseASTNode(NodeType.ITOB);
                      RESULT = new ExpressionNode();
@@ -2768,10 +2771,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 100: // Expr ::= BTOI OPENBRACE Expr CLOSEBRACE 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
                      ASTNode t = new BaseASTNode(NodeType.BTOI);
                      RESULT = new ExpressionNode();
@@ -2787,7 +2790,7 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 101: // Expr ::= LINE 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		
                     RESULT = new ExpressionNode();
                     ASTNode t = new BaseASTNode(NodeType.LINE);
@@ -2801,7 +2804,7 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 102: // Expr ::= FUNC 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		
                     RESULT = new ExpressionNode();
                     ASTNode t = new BaseASTNode(NodeType.FUNC);
@@ -2815,10 +2818,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 103: // LValue ::= identifier 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object i = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode i = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                         RESULT = new BaseASTNode(NodeType.LVALUE);
                         RESULT.addChild(i);
@@ -2831,13 +2834,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 104: // LValue ::= Expr DOT identifier 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object i = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode i = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                         RESULT = new BaseASTNode(NodeType.LVALUE);
                         RESULT.addChild(i);
@@ -2852,13 +2855,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 105: // LValue ::= Expr OPENBRACKET Expr CLOSEBRACKET 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int e1left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
 		int e1right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
-		Object e1 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
+		ASTNode e1 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
 		int e2left = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int e2right = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object e2 = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode e2 = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
                         RESULT = new BaseASTNode(NodeType.LVALUE);
                         RESULT.addChild(e1);
@@ -2873,13 +2876,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 106: // Call ::= identifier OPENBRACE Actuals CLOSEBRACE 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
-		Object i = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
+		ASTNode i = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
 		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object a = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode a = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
                         RESULT = new BaseASTNode(NodeType.CALL);
                         RESULT.addChild(i);
@@ -2894,16 +2897,16 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 107: // Call ::= Expr DOT identifier OPENBRACE Actuals CLOSEBRACE 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-5)).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-5)).value;
 		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
-		Object i = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
+		ASTNode i = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
 		int aleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object a = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		ASTNode a = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
                       RESULT = new BaseASTNode(NodeType.CALL);
                       RESULT.addChild(e);
@@ -2920,10 +2923,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 108: // Call ::= identifier OPENBRACE CLOSEBRACE 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object i = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode i = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		
                       RESULT = new BaseASTNode(NodeType.CALL);
                       RESULT.addChild(i);
@@ -2936,13 +2939,13 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 109: // Call ::= Expr DOT identifier OPENBRACE CLOSEBRACE 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int eleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).left;
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).right;
-		Object e = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
+		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
 		int ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int iright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object i = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		ASTNode i = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		
                       RESULT = new BaseASTNode(NodeType.CALL);
                       RESULT.addChild(e);
@@ -2957,10 +2960,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 110: // Actuals ::= ExprComma 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int ecleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int ecright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object ec = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		ASTNode ec = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
                             RESULT = new BaseASTNode(NodeType.ACTUALS);
                             RESULT.addChild(ec);
@@ -2973,10 +2976,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 111: // Constant ::= T_INTLITERAL 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int t_ileft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int t_iright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object t_i = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		Integer t_i = (Integer)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 RESULT = new IntegerLiteralNode(t_i); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("Constant",24, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2985,10 +2988,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 112: // Constant ::= T_DOUBLELITERAL 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int t_dleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int t_dright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object t_d = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		Float t_d = (Float)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 RESULT = new DoubleLiteralNode(t_d); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("Constant",24, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2997,10 +3000,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 113: // Constant ::= T_BOOLEANLITERAL 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int tbleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int tbright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object tb = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		Boolean tb = (Boolean)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 RESULT = new BooleanLiteralNode(tb); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("Constant",24, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -3009,10 +3012,10 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 114: // Constant ::= T_STRINGLITERAL 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		int sleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
 		int sright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Object s = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		String s = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 RESULT = new StringLiteralNode(s); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("Constant",24, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -3021,7 +3024,7 @@ class CUP$parser$actions {
           /*. . . . . . . . . . . . . . . . . . . .*/
           case 115: // Constant ::= NULL 
             {
-              Object RESULT =null;
+              ASTNode RESULT =null;
 		 RESULT = new BaseASTNode(NodeType.NULL_LITERAL); 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("Constant",24, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }

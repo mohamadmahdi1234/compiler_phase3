@@ -17,9 +17,12 @@ terminal FUNC,LINE,BOOL,BREAK,BTOI,CLASS,CONTINUE,DEFINE,DOUBLE,
 DTOI,ELSE,FOR,IF,IMPORT,INT,ITOB,ITOD,NEW,NEWARRAY,NULL,PRINT,
 PRIVATE,PUBLIC,READINTEGER,READLINE,RETURN,STRING,THIS,VOID,WHILE;
 //IDENTIFIER terminals
-terminal T_ID;
+terminal String T_ID;
 //literiall terminals
-terminal T_STRINGLITERAL,T_BOOLEANLITERAL,T_INTLITERAL,T_DOUBLELITERAL;
+terminal String T_STRINGLITERAL;
+terminal Boolean T_BOOLEANLITERAL;
+terminal Integer T_INTLITERAL;
+terminal Float T_DOUBLELITERAL;
 //arithmatic operator terminals
 terminal MODE,DIVIDE,DIVIDE_ASSIGN,
 TIME,TIME_ASSIGN,PLUS,PLUS_ASSIGN,MINUS,MINUS_ASSIGN,ASSIGN;
@@ -29,12 +32,41 @@ terminal NOT,NOT_EQUAL,AND,OR,LESS,LESS_EQUAL,GREATER,GREATER_EQUAL,EQUAL;
 terminal DOT,COMMA,SEMICOLON,OPENBRACE,CLOSEBRACE,OPENCURLY,CLOSECURLY,
 OPENBRACKET,CLOSEBRACKET,OP_CL_BRACKET;
 //NON_TERMINALS IN ORIGIN GRAMMER
-nonterminal Program,Macro,Decl, VariableDecl, Variable,Type,
-FunctionDecl,Formals,ClassDecl,Field,AccessMode,StmtBlock,
-Stmt,IfStmt,WhileStmt,ForStmt,ReturnStmt,BreakStmt,ContinueStmt,
-PrintStmt,Expr,LValue,Call,Actuals,Constant;
+nonterminal ASTNode Program;
+nonterminal ASTNode Macro;
+nonterminal ASTNode Decl;
+nonterminal ASTNode VariableDecl;
+nonterminal ASTNode Variable;
+nonterminal ASTNode Type;
+nonterminal ASTNode FunctionDecl;
+nonterminal ASTNode Formals;
+nonterminal ASTNode ClassDecl;
+nonterminal ASTNode Field;
+nonterminal ASTNode AccessMode;
+nonterminal ASTNode StmtBlock;
+nonterminal ASTNode Stmt;
+nonterminal ASTNode IfStmt;
+nonterminal ASTNode WhileStmt;
+nonterminal ASTNode ForStmt;
+nonterminal ASTNode ReturnStmt;
+nonterminal ASTNode BreakStmt;
+nonterminal ASTNode ContinueStmt;
+nonterminal ASTNode PrintStmt;
+nonterminal ASTNode Expr;
+nonterminal ASTNode LValue;
+nonterminal ASTNode Call;
+nonterminal ASTNode Actuals;
+nonterminal ASTNode Constant;
 //NON_TERMINALS we defined
-nonterminal identifier,MacroPlus,DeclPlus,VariableComma,FieldPlus,VariableDeclPlus,StmtPlus,Expr_zero_one,ExprComma;
+nonterminal ASTNode identifier;
+nonterminal ASTNode MacroPlus;
+nonterminal ASTNode DeclPlus;
+nonterminal ASTNode VariableComma;
+nonterminal ASTNode FieldPlus;
+nonterminal ASTNode VariableDeclPlus;
+nonterminal ASTNode StmtPlus;
+nonterminal ASTNode Expr_zero_one;
+nonterminal ASTNode ExprComma;
 
 //end
 //precedence and assosiatives
@@ -257,7 +289,7 @@ StmtBlock ::=  OPENCURLY CLOSECURLY
                     RESULT.addChild(vdp);
                     vdp.setParent(RESULT);
                :}
-               | OPENCURLY StmtPlus CLOSECURLY
+               | OPENCURLY StmtPlus:sp CLOSECURLY
                {:
                     RESULT = new BaseASTNode(NodeType.BLOCK);
                     RESULT.addChild(sp);
