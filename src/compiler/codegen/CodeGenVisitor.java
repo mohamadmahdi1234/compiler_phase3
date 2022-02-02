@@ -18,21 +18,15 @@ import compiler.Vtable.VtableGenerator;
 public class CodeGenVisitor implements SimpleVisitor {
     private PrintStream stream;
     private int labelIndex;
-    private String className;
-    private ClassNode classNode;
-    private boolean returnGenerated;
     private List<Function> functions = VtableGenerator.functions;
     private List<ClassDecaf> classes = VtableGenerator.classes;
     private HashMap<String, String> stringLiterals = new HashMap<>();
     private SymbolTable symbolTable = new SymbolTable();
     private int blockIndex;
     private int arrayNumbers = 0;
-
-
     private int DtoItoBLabel = 0;
     private int tempLiteralCounter = 0;
     private int tempLabelCounter = 0;
-
     private int tempRegsNumber = 8;
     private int tempfRegsNumber = 0;
     List<String> regs = Arrays.asList(
@@ -1130,37 +1124,26 @@ public class CodeGenVisitor implements SimpleVisitor {
 
 
     private void ArithmeticOp1(ASTNode node, String type) throws Exception {
-
-
         setParentSymbolInfo(node, node.getChild(0));
         SymbolInfo first = node.getSymbolInfo();
         int firstType = first.getType().getAlign();
-
-
         int tempReg = firstType == 4 ? tempRegsNumber : tempfRegsNumber;
         List<String> reg = firstType == 4 ? regs : fregs;
-
         if (!(firstType == 4 || firstType == 8)) {
             throw new Exception("bad parameters for this " + type);
         }
-
         String op = firstType == 4 ? type + " " : type + ".s ";
         String op2 = firstType == 4 ? "move " : "mov.s ";
         String op3 = firstType == 4 ? "sw " : "s.s ";
         String op4 = firstType == 4 ? "lw " : "l.s ";
-
         textSegment += "\t\t" + op2 + reg.get(tempReg + 1) + ", " + reg.get(tempReg) + "\n";
         textSegment += "\t\t" + op3 + reg.get(tempReg + 1) + ", 0($sp)\n";
         textSegment += "\t\taddi $sp, $sp, 4\n";
-
-
         setParentSymbolInfo(node, node.getChild(1));
         SymbolInfo second = node.getSymbolInfo();
         String secondType = second.getType().getSignature();
-
         textSegment += "\t\taddi $sp, $sp, -4\n";
         textSegment += "\t\t" + op4 + reg.get(tempReg + 1) + " 0($sp)\n";
-
         if (isTypesEqual(first, second)) {
             textSegment += "\t\t" + op + reg.get(tempReg + 1) + ", " + reg.get(tempReg + 1) + ", " + reg.get(tempReg) + "\n";
         } else {
