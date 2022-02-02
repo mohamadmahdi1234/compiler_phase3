@@ -2,15 +2,12 @@ package compiler.codegen;
 
 import compiler.AST.*;
 
-
 import java.io.PrintStream;
 import java.util.*;
 
 import compiler.Vtable.ClassDecaf;
 import compiler.Vtable.Function;
-import compiler.AST.ClassNode;
 import compiler.Vtable.VtableGenerator;
-
 
 /**
  * An AST visitor which generates Jasmin code.
@@ -18,21 +15,15 @@ import compiler.Vtable.VtableGenerator;
 public class CodeGenVisitor implements SimpleVisitor {
     private PrintStream stream;
     private int labelIndex;
-    private String className;
-    private ClassNode classNode;
-    private boolean returnGenerated;
     private List<Function> functions = VtableGenerator.functions;
     private List<ClassDecaf> classes = VtableGenerator.classes;
     private HashMap<String, String> stringLiterals = new HashMap<>();
     private SymbolTable symbolTable = new SymbolTable();
     private int blockIndex;
     private int arrayNumbers = 0;
-
-
     private int DtoItoBLabel = 0;
     private int tempLiteralCounter = 0;
     private int tempLabelCounter = 0;
-
     private int tempRegsNumber = 8;
     private int tempfRegsNumber = 0;
     List<String> regs = Arrays.asList(
@@ -54,15 +45,12 @@ public class CodeGenVisitor implements SimpleVisitor {
     );
 
     private Stack<String> labels = new Stack<>();
-
-
     private static String dataSegment = ".data \n\ttrue: .asciiz \"true\"\n\tfalse : .asciiz \"false\"\n\n";
     private static String textSegment = "";
 
     public CodeGenVisitor(PrintStream stream) {
         this.stream = stream;
     }
-
 
     @Override
     public void visit(ASTNode node) throws Exception {
@@ -173,6 +161,7 @@ public class CodeGenVisitor implements SimpleVisitor {
             case METHOD_DECLARATION:
                 visitMethodDeclarationNode(node);
                 break;
+            case CLASS :
             case Class_DECLARATION:
                 visitClassDeclarationNode(node);
                 break;
@@ -221,7 +210,9 @@ public class CodeGenVisitor implements SimpleVisitor {
                 break;
             case IDENTIFIER:
                 IdentifierNode idNode = (IdentifierNode) node;
-                node.setSymbolInformation(new SymbolInfo(node, new IdentifierType(idNode.getValue())));
+                SymbolInfo ss=new SymbolInfo(node, new IdentifierType(idNode.getValue()));
+                ss.setValue(idNode.getValue());
+                node.setSymbolInformation(ss);
                 node.getSymbolInfo().setDimensionArray(node.getChildren().size());
                 break;
             case METHOD_ACCESS:
@@ -247,16 +238,9 @@ public class CodeGenVisitor implements SimpleVisitor {
                 break;
             case VAR_USE:
                 break;
-            case CLASS:
-                visitClassDeclarationNode(node);
-                break;
             case Interface:
                 break;
             case NULL_LITERAL:
-                break;
-            case EXTEND:
-                break;
-            case IMPLEMENT:
                 break;
             case FIELDS:
                 visitAllChildren(node);
@@ -318,91 +302,60 @@ public class CodeGenVisitor implements SimpleVisitor {
             throw new Exception("Invalid type for " + node.getNodeType().toString() + " operation");
         }
         textSegment += "\t\tbeq $t0 ,0 ItoB" + DtoItoBLabel + "\n";
-
         textSegment += "\t\tli $t0, 1\n";
         textSegment += "\t\tj exit_ItoB" + DtoItoBLabel + "\n";
-
         textSegment += "ItoB" + DtoItoBLabel + ":\n";
         textSegment += "\t\tli $t0, 0\n";
-
         textSegment += "exit_ItoB" + (DtoItoBLabel++) + ":\n";
-
-
         node.getSymbolInfo().setType(PrimitiveType.BOOL);
     }
 
     //**************************************************************
 
     private void visitDtoI(ASTNode node) throws Exception {
+        System.out.println("dtoi");
         setParentSymbolInfo(node, node.getChild(0));
         if (!(node.getChild(0).getSymbolInfo().getType().getAlign() == 8)) {
             throw new Exception("Invalid type for " + node.getNodeType().toString() + " operation");
         }
-
-
         node.getSymbolInfo().setType(PrimitiveType.INT);
-
-
         textSegment += "\t\ts.s $f1, 0($sp)\n";
         textSegment += "\t\taddi $sp, $sp, 4\n";
         textSegment += "\t\ts.s $f2, 0($sp)\n";
         textSegment += "\t\taddi $sp, $sp, 4\n";
-
-
         textSegment += "\t\tmov.s $f1, $f0\n";
         textSegment += "\t\tcvt.w.s $f1, $f1\n";
-
         textSegment += "\t\tmfc1 $t0 $f1\n";
         textSegment += "\t\tmtc1 $t0 $f1\n";
         textSegment += "\t\tcvt.s.w $f1 $f1\n";
-
-
         textSegment += "\t\tsub.s $f1, $f0, $f1\n";
-
-
-        //textSegment += "\t\tli.s $f2, 0.5\n";
         dataSegment += "\t" + symbolTable.getCurrentScopeName() + "_temp" + tempLiteralCounter + ": .float " + "0.5" + "\n";
         textSegment += "\t\tla $a0, " + symbolTable.getCurrentScopeName() + "_temp" + (tempLiteralCounter++) + '\n';
         textSegment += "\t\tl.s $f2, 0($a0)\n";
-
-
         textSegment += "\t\tc.eq.s $f1 $f2\n";
         textSegment += "\t\tbc1t " + "half_DtoI" + DtoItoBLabel + "\n";
         textSegment += "\t\tbc1f " + "nhalf_DtoI" + DtoItoBLabel + "\n";
-
-
         textSegment += "half_DtoI" + DtoItoBLabel + ":\n";
         textSegment += "\t\tceil.w.s $f0 $f0\n";
         textSegment += "\t\tmfc1 $t0 $f0\n";
         textSegment += "\t\tj exit_DtoI" + DtoItoBLabel + "\n";
-
-
         textSegment += "nhalf_DtoI" + DtoItoBLabel + ":\n";
-
-
-        //textSegment += "\t\tli.s $f3, -0.5\n";
         dataSegment += "\t" + symbolTable.getCurrentScopeName() + "_temp" + tempLiteralCounter + ": .float " + "-0.5" + "\n";
         textSegment += "\t\tla $a0, " + symbolTable.getCurrentScopeName() + "_temp" + (tempLiteralCounter++) + '\n';
         textSegment += "\t\tl.s $f2, 0($a0)\n";
-
         textSegment += "\t\tc.eq.s $f1 $f2\n";
         textSegment += "\t\tbc1f " + "else_DtoI" + DtoItoBLabel + "\n";
         textSegment += "\t\tcvt.w.s $f0 $f0\n";
         textSegment += "\t\tmfc1 $t0 $f0\n";
         textSegment += "\t\tj exit_DtoI" + DtoItoBLabel + "\n";
-
         textSegment += "else_DtoI" + DtoItoBLabel + ":\n";
-
         textSegment += "\t\tround.w.s $f0 $f0\n";
         textSegment += "\t\tmfc1 $t0 $f0\n";
-
         textSegment += "exit_DtoI" + (DtoItoBLabel++) + ":\n";
-
         textSegment += "\t\taddi $sp, $sp, -4\n";
         textSegment += "\t\tl.s $f2, 0($sp)\n";
         textSegment += "\t\taddi $sp, $sp, -4\n";
         textSegment += "\t\tl.s $f1, 0($sp)\n";
-
     }
 
     //**************************************************************
@@ -413,10 +366,8 @@ public class CodeGenVisitor implements SimpleVisitor {
             throw new Exception("Invalid type for " + node.getNodeType().toString() + " operation");
         }
         node.getSymbolInfo().setType(PrimitiveType.DOUBLE);
-
         textSegment += "\t\tmtc1 $t0 $f0\n";
         textSegment += "\t\tcvt.s.w $f0 $f0\n";
-
     }
 
     //**************************************************************
@@ -432,20 +383,15 @@ public class CodeGenVisitor implements SimpleVisitor {
         if (!(node.getChild(0).getSymbolInfo().getType().getAlign() == 1)) {
             throw new Exception("Invalid type for " + node.getNodeType().toString() + " operation");
         }
-
         textSegment += "\t\t" + "move $t1" + ", " + "$t0" + "\n";
         textSegment += "\t\t" + "sw " + "$t1" + ", 0($sp)\n";
         textSegment += "\t\taddi $sp, $sp, 4\n";
-
         setParentSymbolInfo(node, node.getChild(1));
-
         textSegment += "\t\taddi $sp, $sp, -4\n";
         textSegment += "\t\t" + "lw " + "$t1" + ", 0($sp)\n";
-
         if (isTypesEqual(node.getChild(0).getSymbolInfo(), node.getChild(1).getSymbolInfo())) {
             textSegment += "\t\t" + op + " $t1, $t1, $t0\n";
         }
-
         textSegment += "\t\t" + "move $t0, $t1\n";
     }
 
@@ -456,9 +402,7 @@ public class CodeGenVisitor implements SimpleVisitor {
         if (!(node.getChild(0).getSymbolInfo().getType().getAlign() == 1)) {
             throw new Exception("Invalid type for " + node.getNodeType().toString() + " operation");
         }
-//        textSegment += "\t\t" + "move $t0, $t0\n";
         textSegment += "\t\t" + "xori $t0, $t0, 1\n";
-//        textSegment += "\t\t" + "move $t0, $t1\n";
     }
 
     //**************************************************************
@@ -470,36 +414,26 @@ public class CodeGenVisitor implements SimpleVisitor {
     //**************************************************************
 
     private void LogicalOp2(ASTNode node, String type) throws Exception {
-
         setParentSymbolInfo(node, node.getChild(0));
         SymbolInfo first = node.getSymbolInfo();
         int firstType = first.getType().getAlign();
-
         if (!(node.getChild(0).getSymbolInfo().getType().getAlign() == 4 || node.getChild(0).getSymbolInfo().getType().getAlign() == 8) && (!(type.equals("ne") || type.equals("eq")))) {
             throw new Exception("Invalid type for " + node.getNodeType().toString() + " operation");
         }
-
-
         int tempReg = firstType != 8 ? tempRegsNumber : tempfRegsNumber;
         List<String> reg = firstType != 8 ? regs : fregs;
-
         String op = firstType != 8 ? "s" + type + " " : "c." + type + ".s ";
         String op2 = firstType != 8 ? "move " : "mov.s ";
         String op3 = firstType != 8 ? "sw " : "swc1 ";
         String op4 = firstType != 8 ? "lw " : "lwc1 ";
-
         textSegment += "\t\t" + op2 + reg.get(tempReg + 1) + ", " + reg.get(tempReg) + "\n";
         textSegment += "\t\t" + op3 + reg.get(tempReg + 1) + ", 0($sp)\n";
         textSegment += "\t\taddi $sp, $sp, 4\n";
-
-
         setParentSymbolInfo(node, node.getChild(1));
         SymbolInfo second = node.getSymbolInfo();
         String secondType = second.getType().getSignature();
-
         textSegment += "\t\taddi $sp, $sp, -4\n";
         textSegment += "\t\t" + op4 + reg.get(tempReg + 1) + " 0($sp)\n";
-
         if (isTypesEqual(node.getChild(0).getSymbolInfo(), node.getChild(1).getSymbolInfo())) {
             if (node.getChild(0).getSymbolInfo().getType().getAlign() == 8) {
                 switch (op) {
@@ -515,7 +449,6 @@ public class CodeGenVisitor implements SimpleVisitor {
                     default:
                         textSegment += "\t\t" + op + reg.get(tempReg + 1) + ", " + reg.get(tempReg) + "\n";
                 }
-
                 textSegment += "\t\tbc1f L_CondFalse" + tempLabelCounter + "\n";
                 if (!op.equals("c.ne.s ")) {
                     textSegment += "\t\tli $t0 1\n";
@@ -543,167 +476,32 @@ public class CodeGenVisitor implements SimpleVisitor {
 
     private void visitGreaterThanEqualNode(ASTNode node) throws Exception {
         LogicalOp2(node, "ge");
-//        node.getChild(0).accept(this);
-//        switch (node.getChild(0).getSymbolInfo().getType().getAlign()) {
-//            case 4: //int
-//                textSegment += "\t\tmove $t1, $t0\n";
-//                node.getChild(1).accept(this);
-//                textSegment += "\t\tsge $t0, $t0, $t1\n";
-//                break;
-//            case 8: //double //TODO
-//                textSegment += "\t\tmov.s $f1, $f0\n";
-//                node.getChild(1).accept(this);
-//                textSegment += "\t\tc.le.s $f1, $f0\n";
-//                textSegment += "\t\tmovf $t0, $zero\n";
-//                break;
-//            default:
-//                throw new Exception("invalid types for equal");
-//        }
-//        if (isTypesEqual(node.getChild(0).getSymbolInfo(), node.getChild(1).getSymbolInfo()))
-//            node.setSymbolInfo(new SymbolInfo(node, PrimitiveType.BOOL));
-//        else
-//            throw new Exception("types does not match");
     }
 
     //**************************************************************
-
     private void visitGreaterThanNode(ASTNode node) throws Exception {
         LogicalOp2(node, "gt");
-//        node.getChild(0).accept(this);
-//        switch (node.getChild(0).getSymbolInfo().getType().getAlign()) {
-//            case 4: //int
-//                textSegment += "\t\tmove $t1, $t0\n";
-//                node.getChild(1).accept(this);
-//                textSegment += "\t\tsgt $t0, $t0, $t1\n";
-//                break;
-//            case 8: //double //TODO
-//                textSegment += "\t\tmov.s $f1, $f0\n";
-//                node.getChild(1).accept(this);
-//                textSegment += "\t\tc.lt.s $f1, $f0\n";
-//                textSegment += "\t\tmovf $t0, $zero\n";
-//                break;
-//            default:
-//                throw new Exception("invalid types for equal");
-//        }
-//        if (isTypesEqual(node.getChild(0).getSymbolInfo(), node.getChild(1).getSymbolInfo()))
-//            node.setSymbolInfo(new SymbolInfo(node, PrimitiveType.BOOL));
-//        else
-//            throw new Exception("types does not match");
-
     }
 
     //**************************************************************
 
     private void visitLessThanEqualNode(ASTNode node) throws Exception {
         LogicalOp2(node, "le");
-//        node.getChild(0).accept(this);
-//        switch (node.getChild(0).getSymbolInfo().getType().getAlign()) {
-//            case 4: //int
-//                textSegment += "\t\tmove $t1, $t0\n";
-//                node.getChild(1).accept(this);
-//                textSegment += "\t\tsle $t0, $t0, $t1\n";
-//                break;
-//            case 8: //double //TODO
-//                textSegment += "\t\tmov.s $f1, $f0\n";
-//                node.getChild(1).accept(this);
-//                textSegment += "\t\tc.le.s $f0, $f1\n";
-//                textSegment += "\t\tmovf $t0, $zero\n";
-//                break;
-//            default:
-//                throw new Exception("invalid types for equal");
-//        }
-//        if (isTypesEqual(node.getChild(0).getSymbolInfo(), node.getChild(1).getSymbolInfo()))
-//            node.setSymbolInfo(new SymbolInfo(node, PrimitiveType.BOOL));
-//        else
-//            throw new Exception("types does not match");
     }
-
     //**************************************************************
 
     private void visitLessThanNode(ASTNode node) throws Exception {
         LogicalOp2(node, "lt");
-
-//        node.getChild(0).accept(this);
-//        switch (node.getChild(0).getSymbolInfo().getType().getAlign()) {
-//            case 4: //int
-//                textSegment += "\t\tmove $t1, $t0\n";
-//                node.getChild(1).accept(this);
-//                textSegment += "\t\tslt $t0, $t0, $t1\n";
-//                break;
-//            case 8: //double //TODO
-//                textSegment += "\t\tmov.s $f1, $f0\n";
-//                node.getChild(1).accept(this);
-//                textSegment += "\t\tc.lt.s $f0, $f1\n";
-//                textSegment += "\t\tmovf $t0, $zero\n";
-//                break;
-//            default:
-//                throw new Exception("invalid types for equal");
-//        }
-//        if (isTypesEqual(node.getChild(0).getSymbolInfo(), node.getChild(1).getSymbolInfo()))
-//            node.setSymbolInfo(new SymbolInfo(node, PrimitiveType.BOOL));
-//        else
-//            throw new Exception("types does not match");
     }
-
     //**************************************************************
 
     private void visitNotEqualNode(ASTNode node) throws Exception {
         LogicalOp2(node, "ne");
-
-//        node.getChild(0).accept(this);
-//        switch (node.getChild(0).getSymbolInfo().getType().getAlign()) {
-//            case 4: //int
-//            case 6://string
-//            case 10: //class
-//                textSegment += "\t\tmove $t1, $t0\n";
-//                node.getChild(1).accept(this);
-//                textSegment += "\t\tsne $t0, $t0, $t1\n";
-//                textSegment += "\t\tmovf $t0, $zero\n";
-//                break;
-//            case 8: //double //TODO
-//                textSegment += "\t\tmov.s $f1, $f0\n";
-//                node.getChild(1).accept(this);
-//                textSegment += "\t\tc.eq.s $f0, $f1\n";
-//                textSegment += "\t\tmovt $t0, $zero\n";
-//                break;
-//            default:
-//                throw new Exception("invalid types for equal");
-//        }
-//        if (isTypesEqual(node.getChild(0).getSymbolInfo(), node.getChild(1).getSymbolInfo()))
-//            node.setSymbolInfo(new SymbolInfo(node, PrimitiveType.BOOL));
-//        else
-//            throw new Exception("types does not match");
-
     }
-
     //**************************************************************
 
     private void visitEqualNode(ASTNode node) throws Exception {
         LogicalOp2(node, "eq");
-
-//        node.getChild(0).accept(this);
-//        switch (node.getChild(0).getSymbolInfo().getType().getAlign()) {
-//            case 4: //int
-//            case 6://string
-//            case 10: //class
-//                textSegment += "\t\tmove $t1, $t0\n";
-//                node.getChild(1).accept(this);
-//                textSegment += "\t\tseq $t0, $t0, $t1\n";
-//                break;
-//            case 8: //double //TODO
-//                textSegment += "\t\tmov.s $f1, $f0\n";
-//                node.getChild(1).accept(this);
-//                textSegment += "\t\tc.eq.s $f0, $f1\n";
-//                textSegment += "\t\tmovf $t0, $zero\n";
-//                break;
-//
-//            default:
-//                throw new Exception("invalid types for equal");
-//        }
-//        if (isTypesEqual(node.getChild(0).getSymbolInfo(), node.getChild(1).getSymbolInfo()))
-//            node.setSymbolInfo(new SymbolInfo(node, PrimitiveType.BOOL));
-//        else
-//            throw new Exception("types does not match");
     }
 
     //**************************************************************
@@ -720,7 +518,6 @@ public class CodeGenVisitor implements SimpleVisitor {
             Literal literalNode = (Literal) node.getChild(0).getChild(0);
             type = literalNode.getType().getAlign();
         }
-
         if (type == 4) {
             textSegment += "\t\tneg $t0, $t0\n";
         } else if (type == 8) {
@@ -731,9 +528,7 @@ public class CodeGenVisitor implements SimpleVisitor {
     //**************************************************************
 
     private void visitNewArrayNode(ASTNode node) throws Exception {
-
         int literalNumber = ((IntegerLiteralNode) node.getChild(0).getChild(0)).getValue();
-
         setParentSymbolInfo(node, node.getChild(1));
         node.getSymbolInfo().setDimensionArray(node.getSymbolInfo().getDimensionArray() + 1);
         if (literalNumber <= 0)
@@ -745,7 +540,6 @@ public class CodeGenVisitor implements SimpleVisitor {
         textSegment += "\t\tli $t2, " + literalNumber + "\n";
         textSegment += "\t\tsw $t2, 0($t0)\n";
     }
-
     //**************************************************************
 
     private void visitLiteralNode(ASTNode node) {
@@ -754,9 +548,9 @@ public class CodeGenVisitor implements SimpleVisitor {
         switch (literalNode.getType().getAlign()) {
             case 6: //string
                 String str = ((StringLiteralNode) literalNode).getValue();
-                System.out.println(str);
-                str = str.replace("\\t","\\\\t");
-                str = str.replace("\\n","\\\\n");
+                System.out.println(str+"from literal aya hamun ke fekr?");
+                str = str.replace("\\t", "\\\\t");
+                str = str.replace("\\n", "\\\\n");
                 String str_raw = str.substring(1, str.length() - 1);
                 String label = "";
                 if (!stringLiterals.keySet().contains(str_raw)) {
@@ -779,7 +573,6 @@ public class CodeGenVisitor implements SimpleVisitor {
                 dataSegment += "\t" + symbolTable.getCurrentScopeName() + "_temp" + tempLiteralCounter + ": .float " + node + "\n";
                 textSegment += "\t\tla $a0, " + symbolTable.getCurrentScopeName() + "_temp" + (tempLiteralCounter++) + '\n';
                 textSegment += "\t\tl.s $f0, 0($a0)\n";
-//                textSegment += "\t\tli.s " + fregs.get(tempfRegsNumber) + ", " + node + "\n";
                 break;
         }
     }
@@ -812,7 +605,6 @@ public class CodeGenVisitor implements SimpleVisitor {
                     throw new Exception(varName + " function doesn't exist");
             }
             if (child.getNodeType().equals(NodeType.ACTUALS)) {
-
                 for (ASTNode childChild : child.getChild(0).getChildren()) {
                     childChild.accept(this);
                     SymbolInfo si = childChild.getSymbolInfo();
@@ -844,7 +636,6 @@ public class CodeGenVisitor implements SimpleVisitor {
             throw new Exception("expected " + method.getArgumentsType().size() + " args but " + argNumber + " passed");
         textSegment += "\t\tjal " + method.getScope().getName() + "_" + method.getName() + "\n";
         textSegment += "\t\taddi $sp, $sp, " + (argNumber) * (-4) + "\n";
-
         node.setSymbolInformation(method.getReturnType());
     }
 
@@ -866,7 +657,6 @@ public class CodeGenVisitor implements SimpleVisitor {
     //**************************************************************
 
     private void visitIfStatement(ASTNode node) throws Exception {
-
         String ifFalseLabel = labelGenerator();
         tempRegsNumber = 8; // assigning the expStmt into register $t0
         String ifType;
@@ -875,7 +665,6 @@ public class CodeGenVisitor implements SimpleVisitor {
         } else {
             ifType = node.getChildren().size() == 3 ? "if_else" : "invalid";
         }
-
         //it is if statement, so next child is expStmt which is the 0 child
         node.getChild(0).accept(this);
         if (node.getChild(0).getSymbolInfo().getType().getAlign() == 1) {
@@ -883,23 +672,15 @@ public class CodeGenVisitor implements SimpleVisitor {
         } else {
             throw new Exception("Invalid Expression in if_exp");
         }
-
-
         node.getChild(1).accept(this);
-
         textSegment += "\t\tj " + ifFalseLabel + "exit" + "\n";
-
-
         textSegment += ifFalseLabel + ":\n";
-
         if (ifType.equals("if_else")) {
-
             //it is if_else stmt, so the third child must be visited
             node.getChild(2).accept(this);
         } else if (!ifType.equals("if")) {
             throw new Exception("invalid if");
         }
-
         textSegment += ifFalseLabel + "exit:\n";
     }
 
@@ -910,13 +691,8 @@ public class CodeGenVisitor implements SimpleVisitor {
         labels.push(label);
         //while Exp_stmt is the first child of the while statement so,
         textSegment += "\t\t" + label + ":" + "\n";
-
         node.getChild(0).accept(this);
-        //should check that it's an expression
-//        if (node.getChild(0).getSymbolInfo().getType().getAlign() == 1) {
         textSegment += "\t\tbeq $t0, $zero exit" + label + "\n";
-//        }
-        //after checking the exp_stmt in while, we should visit while body
         node.getChild(1).accept(this);
         textSegment += "\t\tj " + label + "\n";
         textSegment += "\t\texit" + label + ":\n";
@@ -929,7 +705,6 @@ public class CodeGenVisitor implements SimpleVisitor {
         String label = labelGenerator();
         label += "F";
         labels.push(label);
-
         int n_child = node.getChildren().size();
         if (n_child == 4) {
             node.getChild(0).accept(this);
@@ -949,11 +724,9 @@ public class CodeGenVisitor implements SimpleVisitor {
                 textSegment += "\t\tbeq $t0, $zero exit" + label + "\n";
                 node.getChild(2).accept(this);
                 textSegment += "\t\t" + label + "update:\n";
-//            node.getChild(3).accept(this);
                 textSegment += "\t\tj " + label + "\n";
                 textSegment += "\t\texit" + label + ":\n";
             } else {
-//                node.getChild(0).accept(this);
                 textSegment += "\t\t" + label + ":" + "\n";
                 node.getChild(0).accept(this);
                 textSegment += "\t\tbeq $t0, $zero exit" + label + "\n";
@@ -964,18 +737,14 @@ public class CodeGenVisitor implements SimpleVisitor {
                 textSegment += "\t\texit" + label + ":\n";
             }
         } else if (n_child == 2) {
-//            node.getChild(0).accept(this);
             textSegment += "\t\t" + label + ":" + "\n";
             node.getChild(0).accept(this);
             textSegment += "\t\tbeq $t0, $zero exit" + label + "\n";
             node.getChild(1).accept(this);
             textSegment += "\t\t" + label + "update:\n";
-//            node.getChild(3).accept(this);
             textSegment += "\t\tj " + label + "\n";
             textSegment += "\t\texit" + label + ":\n";
         }
-
-
         labels.pop();
     }
 
@@ -1035,11 +804,10 @@ public class CodeGenVisitor implements SimpleVisitor {
 
     private void visitClassDeclarationNode(ASTNode node) throws Exception {
         //TODO
-        //
         IdentifierNode idNode = (IdentifierNode) node.getChild(0);
         String className = idNode.getValue();
+        System.out.println("before class hello created");
         ClassDecaf.currentClass = findClass(className);
-        //type
         symbolTable.enterScope(className);
         visitAllChildren(node);
         symbolTable.leaveCurrentScope();
@@ -1072,46 +840,39 @@ public class CodeGenVisitor implements SimpleVisitor {
         String main_type = type;
         int tempReg = firstType == 4 ? tempRegsNumber : tempfRegsNumber;
         List<String> reg = firstType == 4 ? regs : fregs;
-
         if (firstType != 4 && type.equals("mod")) {
             throw new Exception("bad parameters for mod operation");
         } else if (type.equals("mod")) {
             main_type = "div";
         }
-
-        if (!(firstType == 4 || firstType == 8)) {
+        if (!(firstType == 4 || firstType == 8 || firstType==6)) {
             throw new Exception("bad parameters for type " + type);
         }
-
-
-        String op = firstType == 4 ? main_type + " " : main_type + ".s ";
-        String op2 = firstType == 4 ? "move " : "mov.s ";
-        String op3 = firstType == 4 ? "sw " : "s.s ";
-        String op4 = firstType == 4 ? "lw " : "l.s ";
-
-        textSegment += "\t\t" + op2 + reg.get(tempReg + 1) + ", " + reg.get(tempReg) + "\n";
-        textSegment += "\t\t" + op3 + reg.get(tempReg + 1) + ", 0($sp)\n";
-        textSegment += "\t\taddi $sp, $sp, 4\n";
-
-
-        setParentSymbolInfo(node, node.getChild(1));
-        SymbolInfo second = node.getSymbolInfo();
-        String secondType = second.getType().getSignature();
-
-        textSegment += "\t\taddi $sp, $sp, -4\n";
-        textSegment += "\t\t" + op4 + reg.get(tempReg + 1) + " 0($sp)\n";
-
-
-        if (isTypesEqual(first, second)) {
-            textSegment += "\t\t" + op + reg.get(tempReg + 1) + ", " + reg.get(tempReg + 1) + ", " + reg.get(tempReg) + "\n";
-            if (type.equals("mod")) {
-                textSegment += "\t\tmfhi $t1\n";
+        if (true) {
+            String op = firstType == 4 ? main_type + " " : main_type + ".s ";
+            String op2 = firstType == 4 ? "move " : "mov.s ";
+            String op3 = firstType == 4 ? "sw " : "s.s ";
+            String op4 = firstType == 4 ? "lw " : "l.s ";
+            textSegment += "\t\t" + op2 + reg.get(tempReg + 1) + ", " + reg.get(tempReg) + "\n";
+            textSegment += "\t\t" + op3 + reg.get(tempReg + 1) + ", 0($sp)\n";
+            textSegment += "\t\taddi $sp, $sp, 4\n";
+            setParentSymbolInfo(node, node.getChild(1));
+            SymbolInfo second = node.getSymbolInfo();
+            String secondType = second.getType().getSignature();
+            textSegment += "\t\taddi $sp, $sp, -4\n";
+            textSegment += "\t\t" + op4 + reg.get(tempReg + 1) + " 0($sp)\n";
+            if (isTypesEqual(first, second)) {
+                textSegment += "\t\t" + op + reg.get(tempReg + 1) + ", " + reg.get(tempReg + 1) + ", " + reg.get(tempReg) + "\n";
+                if (type.equals("mod")) {
+                    textSegment += "\t\tmfhi $t1\n";
+                }
+            } else {
+                throw new Exception("Type " + firstType + " & " + secondType + " are mismatched");
             }
-        } else {
-            throw new Exception("Type " + firstType + " & " + secondType + " are mismatched");
+            textSegment += "\t\t" + op2 + reg.get(tempReg) + ", " + reg.get(tempReg + 1) + "\n";
+        }else{
+            //dataSegment += "\t\t" + stringLabel + ":\t.asciiz\t\"" + dscp.getValue() + "\"\n";
         }
-
-        textSegment += "\t\t" + op2 + reg.get(tempReg) + ", " + reg.get(tempReg + 1) + "\n";
     }
 
     //**************************************************************
@@ -1125,42 +886,31 @@ public class CodeGenVisitor implements SimpleVisitor {
     private void visitAdditionNode(ASTNode node) throws Exception {
         ArithmeticOp1(node, "add");
     }
-
     //**************************************************************
 
 
     private void ArithmeticOp1(ASTNode node, String type) throws Exception {
-
-
         setParentSymbolInfo(node, node.getChild(0));
         SymbolInfo first = node.getSymbolInfo();
+        System.out.println((first.getType().getPrimitive())+" aya mifahmad?");
         int firstType = first.getType().getAlign();
-
-
         int tempReg = firstType == 4 ? tempRegsNumber : tempfRegsNumber;
         List<String> reg = firstType == 4 ? regs : fregs;
-
         if (!(firstType == 4 || firstType == 8)) {
             throw new Exception("bad parameters for this " + type);
         }
-
         String op = firstType == 4 ? type + " " : type + ".s ";
         String op2 = firstType == 4 ? "move " : "mov.s ";
         String op3 = firstType == 4 ? "sw " : "s.s ";
         String op4 = firstType == 4 ? "lw " : "l.s ";
-
         textSegment += "\t\t" + op2 + reg.get(tempReg + 1) + ", " + reg.get(tempReg) + "\n";
         textSegment += "\t\t" + op3 + reg.get(tempReg + 1) + ", 0($sp)\n";
         textSegment += "\t\taddi $sp, $sp, 4\n";
-
-
         setParentSymbolInfo(node, node.getChild(1));
         SymbolInfo second = node.getSymbolInfo();
         String secondType = second.getType().getSignature();
-
         textSegment += "\t\taddi $sp, $sp, -4\n";
         textSegment += "\t\t" + op4 + reg.get(tempReg + 1) + " 0($sp)\n";
-
         if (isTypesEqual(first, second)) {
             textSegment += "\t\t" + op + reg.get(tempReg + 1) + ", " + reg.get(tempReg + 1) + ", " + reg.get(tempReg) + "\n";
         } else {
@@ -1172,6 +922,7 @@ public class CodeGenVisitor implements SimpleVisitor {
     //**************************************************************
 
     private void visitLValueNode(ASTNode node) throws Exception {
+        System.out.println(node.getNodeType()+"/////////////lvalue");
         node.getChild(0).accept(this);
         if (node.getChildren().size() == 1) { //id
             IdentifierNode idNode = (IdentifierNode) node.getChild(0);
@@ -1179,6 +930,7 @@ public class CodeGenVisitor implements SimpleVisitor {
             SymbolInfo varType = (SymbolInfo) symbolTable.get(varName);
             SymbolInfo si = new SymbolInfo(node, varType.getType());
             si.setDimensionArray(varType.getDimensionArray());
+            si.setValue(varName);
             node.setSymbolInformation(si);
             switch (varType.getType().getAlign()) {
                 case 1: //bool
@@ -1233,7 +985,10 @@ public class CodeGenVisitor implements SimpleVisitor {
         setParentSymbolInfo(node, node.getChild(0));
         SymbolInfo varType = node.getChild(0).getSymbolInfo();
         textSegment += "\t\tla $a3, 0($a0) \n";
+        System.out.println(((varType)).value+" khodaya dorost bash");
+        //System.out.println("type of child one is "+node.getChild(0).getNodeType()+" type of second "+node.getChild(1).getNodeType());
         node.getChild(1).accept(this);
+
         SymbolInfo exprType = node.getChild(1).getSymbolInfo();
         if (exprType == null)
             throw new Exception("Assign Error");
@@ -1263,21 +1018,14 @@ public class CodeGenVisitor implements SimpleVisitor {
 
     private void visitExpressionNode(ASTNode node) throws Exception {
         tempRegsNumber = 8;
-
-//        textSegment += "\t\tmove $s0, $t1\n";
+        System.out.println(node.getChild(0).getNodeType()+" yano lvalue shode?");
         setParentSymbolInfo(node, node.getChild(0));
-//        textSegment += "\t\tmove $t1, $s0\n";
-
-
-//        visitAllChildren(node);
     }
 
     //**************************************************************
 
     private void visitStatementNode(ASTNode node) throws Exception {
         visitAllChildren(node);
-//        setParentSymbolInfo(node, node.getChild(0));
-
     }
 
     //**************************************************************
@@ -1289,6 +1037,7 @@ public class CodeGenVisitor implements SimpleVisitor {
     //**************************************************************
 
     private void visitArgumentsNode(ASTNode node) throws Exception {
+        System.out.println("argument");
         int argumentsLen = node.getChildren().size() * (-4);
         Function function = Function.currentFunction;
         if (argumentsLen < 0)
@@ -1326,27 +1075,23 @@ public class CodeGenVisitor implements SimpleVisitor {
     //**************************************************************
 
     private void visitStartNode(ASTNode node) throws Exception {
-        dataSegment += "\terror: .asciiz \"runtime ERROR\"\n";
+        dataSegment += "\terror_run_time: .asciiz \"runtime ERROR\"\n";
         textSegment += ".text\n" + "\t.globl main\n\n";
         textSegment += "\tmain:\n";
         textSegment += "\t\tjal global_main\n";
-
         textSegment += "\t\t#END OF PROGRAM\n";
         textSegment += "\t\tli $v0,10\n\t\tsyscall\n";
-
         textSegment += "\truntime_error:\n";
         textSegment += "\t\tli $v0, 4\n";
-        textSegment += "\t\tla $a0, error\n";
+        textSegment += "\t\tla $a0, error_run_time\n";
         textSegment += "\t\tsyscall\n";
-
         textSegment += "\t\t#END OF PROGRAM\n";
         textSegment += "\t\tli $v0,10\n\t\tsyscall\n";
-
         symbolTable.enterScope("global");
+        System.out.println(node.getChild(0).getChild(0).getNodeType()+" from start");
         visitAllChildren(node);
         stream.print(dataSegment + '\n' + textSegment);
     }
-
     //**************************************************************
 
     private void visitBlockNode(ASTNode node) throws Exception {
@@ -1358,7 +1103,6 @@ public class CodeGenVisitor implements SimpleVisitor {
             visitAllChildren(node);
         }
     }
-
     //**************************************************************
 
     private void visitVariableDeclaration(ASTNode node) throws Exception {
@@ -1372,8 +1116,10 @@ public class CodeGenVisitor implements SimpleVisitor {
                 Type typePrimitive = node.getSymbolInfo().getType();
                 if (dimensionArray == 0 && !typePrimitive.getSignature().equals(".ascii"))
                     dataSegment += "\t" + label + " " + typePrimitive.getSignature() + " " + typePrimitive.getPrimitive().getInitialValue() + "\n";
-                else
+                else {
                     dataSegment += "\t" + label + " .word 0" + "\n";
+                    System.out.println("string label");
+                }
             } else {
                 IdentifierNode typeNode = (IdentifierNode) node.getChild(0);
                 String typeName = typeNode.getValue();
@@ -1388,40 +1134,9 @@ public class CodeGenVisitor implements SimpleVisitor {
     }
 
     //**************************************************************
-
-    private void visitUnaryOperation() {
-    }
-
-    //**************************************************************
-
-    private void visitBinaryOperation(ASTNode node) {
-
-        ExpressionNode parent = (ExpressionNode) node.getParent();
-
-
-//        String result = "";
-//
-//        switch (resultType){
-//            case BOOL:
-//                break;
-//            case INT:
-//                break;
-//            case DOUBLE:
-//                break;
-//            case STRING:
-//                break;
-//
-//        }
-
-
-    }
-
-    //**************************************************************
-
     private void visitMethodDeclarationNode(ASTNode node) throws Exception {
         node.getChild(0).accept(this);
         SymbolInfo returnType = node.getChild(0).getSymbolInfo();
-
         //identifier
         IdentifierNode idNode = (IdentifierNode) node.getChild(1);
         String methodName = idNode.getValue();
@@ -1442,26 +1157,18 @@ public class CodeGenVisitor implements SimpleVisitor {
         textSegment += "\t\taddi $sp,$sp,-4\n";
         textSegment += "\t\tlw $ra,0($sp)\n";
         textSegment += "\t\tjr $ra\n";
-
         symbolTable.leaveCurrentScope();
     }
-
     //**************************************************************
 
     private void visitAllChildren(ASTNode node) throws Exception {
         for (ASTNode child : node.getChildren()) {
+            System.out.println(child.getNodeType());
             child.accept(this);
         }
     }
 
     //**************************************************************
-
-    private String getBlock() {
-        return "" + blockIndex++;
-    }
-
-    //**************************************************************
-
     private boolean isTypesEqual(SymbolInfo a, SymbolInfo b) {
         if (a.getType().getAlign() == b.getType().getAlign()) {
             if (a.getType().getSignature().equals(b.getType().getSignature())) {
@@ -1501,14 +1208,13 @@ public class CodeGenVisitor implements SimpleVisitor {
 
     private void setParentSymbolInfo(ASTNode node, ASTNode child) throws Exception {
         child.accept(this);
-//        System.err.print("Node is " + node + " Child is " + child);
         Type type = child.getSymbolInfo().getType();
+        //System.out.println(type.getAlign()+" setpar");
         SymbolInfo si = new SymbolInfo(node, type);
-//        System.err.println(" child type:" + type);
         si.setDimensionArray(child.getSymbolInfo().getDimensionArray());
+        si.setValue(child.getSymbolInfo().value);
         node.setSymbolInformation(si);
     }
-
     //**************************************************************
 
     private ClassDecaf findClass(String name) {
@@ -1518,5 +1224,4 @@ public class CodeGenVisitor implements SimpleVisitor {
         }
         return null;
     }
-
 }

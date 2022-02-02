@@ -1,5 +1,4 @@
 package compiler.Vtable;
-
 import compiler.AST.*;
 import compiler.codegen.*;
 import compiler.codegen.CodeGenVisitor;
@@ -9,13 +8,10 @@ import compiler.codegen.SymbolTable;
 
 import java.util.ArrayList;
 import java.util.List;
-
 public class VtableGenerator implements SimpleVisitor {
-
     public static List<Function> functions = new ArrayList<>();
     public static List<ClassDecaf> classes = new ArrayList<>();
     private SymbolTable symbolTable = new SymbolTable();
-
     @Override
     public void visit(ASTNode node) throws Exception {
         switch (node.getNodeType()) {
@@ -88,6 +84,7 @@ public class VtableGenerator implements SimpleVisitor {
     }
 
     private void visitClassDeclaration(ASTNode node) throws Exception {
+        System.out.println("hi from vtable class decl");
         //identifier
         IdentifierNode idNode = (IdentifierNode) node.getChild(0);
         String className = idNode.getValue();
@@ -129,6 +126,7 @@ public class VtableGenerator implements SimpleVisitor {
 
     private void visitStartNode(ASTNode node) throws Exception {
         symbolTable.enterScope("global");
+        System.out.println(node.getChild(0).getChild(0).getNodeType()+" from vtable startnode");
         visitAllChildren(node);
         boolean isMainExist = false;
         for (Function function : functions) {
@@ -198,6 +196,13 @@ public class VtableGenerator implements SimpleVisitor {
 
     private void visitAllChildren(ASTNode node) throws Exception {
         for (ASTNode child : node.getChildren()) {
+            if(child.getNodeType()==NodeType.Decls){
+                System.out.println("vvvvvvvvvvvvvvvvvvv");
+                for (ASTNode child1 : child.getChildren()){
+                    System.out.println(child1.getNodeType());
+                }
+                System.out.println("vvvvvvvvvvvvvvv");
+            }
             child.accept(this);
         }
     }

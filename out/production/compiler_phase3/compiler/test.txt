@@ -1,8 +1,8 @@
 int main(){
-string a;
-a = "hello ";
-int z ;
-string b;
-b = "world!";
-Print(a+b);
+  int a;
+  int b;
+  a=2;
+  b=a+3;
+
+
 }

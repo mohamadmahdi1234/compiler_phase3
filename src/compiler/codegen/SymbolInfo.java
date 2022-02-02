@@ -10,8 +10,12 @@ import compiler.AST.Type;
 public class SymbolInfo implements Symbol {
     private ASTNode node;
     private Type type;
+     public String value=null;
     private int dimensionArray = 0;
 
+    public void setValue(String value) {
+        this.value = value;
+    }
 
     public int getDimensionArray() {
         return dimensionArray;
