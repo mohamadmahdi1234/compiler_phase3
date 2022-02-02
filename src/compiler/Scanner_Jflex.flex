@@ -1,6 +1,7 @@
 package compiler;
 import java_cup.runtime.*;
 import java.io.*;
+import java.lang.reflect.*;
 %%
 %public
 %class Scanner_phase1
@@ -13,9 +14,14 @@ import java.io.*;
 
 public Symbol token (int tokenType) {
         System.out.println(yytext());
+        //System.out.println(yytext().getClass().getSimpleName());
 	    return new Symbol(tokenType,yytext());
 
 	}
+	public Symbol token (int tokenType , Object value) {
+    	    System.out.println(yytext());
+    	    return new Symbol(tokenType , value);
+    	}
 
 %}
 all_type_of_comment={comment_type_one}|{comment_type_two}
@@ -65,7 +71,7 @@ while                       {return token(sym.WHILE);}
                            return token(sym.T_STRINGLITERAL);  }
 /*handle boolean*/
 true|false                {
-                            return token(sym.T_BOOLEANLITERAL);}
+                            return token(sym.T_BOOLEANLITERAL,new Boolean(yytext()));}
 /*handle comments*/
 {all_type_of_comment}     {}
 /*handle whitespace*/
@@ -102,13 +108,13 @@ true|false                {
 "\["{white_space}*"\]"                        {return token(sym.OP_CL_BRACKET);}
 /*handle integer*/
 {integer} | {int16}                  {
-                                       return token(sym.T_INTLITERAL);}
+                                       return token(sym.T_INTLITERAL,new Integer(yytext()));}
 /*handle double*/
 {double} |{double1}                 {
-                                     return token(sym.T_DOUBLELITERAL);}
+                                     return token(sym.T_DOUBLELITERAL,new Float(yytext()));}
 /*handle identifiers*/
 {identifire}               {
-                            return token(sym.T_ID);}
+                            return token(sym.T_ID,new String(yytext()));}
 
 
 

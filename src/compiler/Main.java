@@ -1,5 +1,8 @@
 package compiler;
 
+import compiler.AST.Program;
+import compiler.Vtable.*;
+import compiler.codegen.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -27,6 +30,9 @@ public class Main {
         }
 
         try {
+            FileOutputStream fout=new FileOutputStream("file.txt");
+            //creating Printstream obj
+            PrintStream out=new PrintStream(fout);
             String input=contentBuilder.toString();
             System.out.println(input.length());
             Pre_Processor p=new Pre_Processor(input);
@@ -35,8 +41,13 @@ public class Main {
             Scanner_phase1 scanner=new Scanner_phase1(new StringReader(define_handeled.trim()));
             parser par=new parser(scanner);
             par.parse();
+            Program cu = par.getRoot();
+            cu.accept(new VtableGenerator());
+            cu.accept(new CodeGenVisitor(out));
+
             return true;
         } catch (Exception e ) {
+            System.out.println(e.getMessage());
             return false;
         }
         catch (Error e){

@@ -100,6 +100,7 @@ public class VtableGenerator implements SimpleVisitor {
         classes.add(classDecaf);
         symbolTable.enterScope(classDecaf.getName());
         if (node.getChild(node.getChildren().size() - 1).getNodeType().equals(NodeType.FIELDS)) {
+            System.out.println(node.getChild(node.getChildren().size() - 1).getNodeType());
             node.getChild(node.getChildren().size() - 1).accept(this);
             ClassDecaf.currentClass.setObjectSize(ClassDecaf.currentClass.getFields().size() * 4);
         }
@@ -124,15 +125,6 @@ public class VtableGenerator implements SimpleVisitor {
                     ClassDecaf.currentClass.getFields().add(field);
             }
         }
-//        symbolTable.enterScope(label);
-//        node.getChild(2).accept(this);
-//        symbolTable.leaveCurrentScope();
-//        if (symbolTable.getCurrentScopeName().equals("global")) {
-//            method.setAccessMode(AccessMode.Public);
-//        } else {
-//            method.setAccessMode(Field.currentAccessMode);
-//            ClassDecaf.currentClass.getMethods().add(method);
-//        }
     }
 
     private void visitStartNode(ASTNode node) throws Exception {
@@ -172,7 +164,6 @@ public class VtableGenerator implements SimpleVisitor {
     private void visitMethodDeclarationNode(ASTNode node) throws Exception {
         node.getChild(0).accept(this); //Type
         SymbolInfo returnType = node.getChild(0).getSymbolInfo();
-
         //identifier
         IdentifierNode idNode = (IdentifierNode) node.getChild(1);
         String methodName = idNode.getValue();
@@ -181,10 +172,10 @@ public class VtableGenerator implements SimpleVisitor {
             throw new Exception(methodName + " function declared before");
         }
         functions.add(method);
-
         Function.currentFunction = method;
         String label = symbolTable.getCurrentScopeName() + "_" + methodName;
         symbolTable.enterScope(label);
+        //System.out.println(node.getChild(2).getNodeType());
         node.getChild(2).accept(this);
         symbolTable.leaveCurrentScope();
         if (symbolTable.getCurrentScopeName().equals("global")) {
