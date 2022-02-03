@@ -1,3 +1,4 @@
+
 import compiler.*;
 import compiler.AST.*;
 import compiler.Vtable.*;
@@ -167,19 +168,13 @@ public class Main {
             //creating Printstream obj
             PrintStream out=new PrintStream(fout);
             String input=contentBuilder.toString();
-            System.out.println(input.length());
             Pre_Processor p=new Pre_Processor(input);
             String define_handeled=p.handle_define();
-
             Scanner_phase1 scanner=new Scanner_phase1(new StringReader(define_handeled.trim()));
             parser par=new parser(scanner);
             par.parse();
             Program cu = par.getRoot();
             cu.accept(new VtableGenerator());
-            for(Function ch:VtableGenerator.functions){
-                System.out.println(ch.getName());
-            }
-            System.out.println("hdsdridrid");
             cu.accept(new CodeGenVisitor(out));
 
             return true;
