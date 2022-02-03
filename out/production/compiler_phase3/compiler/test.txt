@@ -1,6 +1,18 @@
 int main(){
+<<<<<<< HEAD
     int a;
     int b;
     a=3;
     b=a+2;
+=======
+string a;
+string b;
+string s;
+s="fg";
+b="lk";
+a="hello ";
+a=s+b+b+a+" nadun";
+b=a+b;
+Print(b);
+>>>>>>> edit
 }

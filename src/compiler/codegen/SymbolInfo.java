@@ -11,8 +11,8 @@ public class SymbolInfo implements Symbol {
     private ASTNode node;
     private Type type;
     private int dimensionArray = 0;
-
-
+    public String value;
+    public String value1;
     public int getDimensionArray() {
         return dimensionArray;
     }

@@ -1,5 +1,4 @@
 package compiler.Vtable;
-
 import compiler.AST.*;
 import compiler.codegen.*;
 import compiler.codegen.CodeGenVisitor;
@@ -9,13 +8,10 @@ import compiler.codegen.SymbolTable;
 
 import java.util.ArrayList;
 import java.util.List;
-
 public class VtableGenerator implements SimpleVisitor {
-
     public static List<Function> functions = new ArrayList<>();
     public static List<ClassDecaf> classes = new ArrayList<>();
     private SymbolTable symbolTable = new SymbolTable();
-
     @Override
     public void visit(ASTNode node) throws Exception {
         switch (node.getNodeType()) {
@@ -88,6 +84,7 @@ public class VtableGenerator implements SimpleVisitor {
     }
 
     private void visitClassDeclaration(ASTNode node) throws Exception {
+        System.out.println("hi from vtable class decl");
         //identifier
         IdentifierNode idNode = (IdentifierNode) node.getChild(0);
         String className = idNode.getValue();
@@ -100,6 +97,7 @@ public class VtableGenerator implements SimpleVisitor {
         classes.add(classDecaf);
         symbolTable.enterScope(classDecaf.getName());
         if (node.getChild(node.getChildren().size() - 1).getNodeType().equals(NodeType.FIELDS)) {
+            System.out.println(node.getChild(node.getChildren().size() - 1).getNodeType());
             node.getChild(node.getChildren().size() - 1).accept(this);
             ClassDecaf.currentClass.setObjectSize(ClassDecaf.currentClass.getFields().size() * 4);
         }
@@ -124,19 +122,11 @@ public class VtableGenerator implements SimpleVisitor {
                     ClassDecaf.currentClass.getFields().add(field);
             }
         }
-//        symbolTable.enterScope(label);
-//        node.getChild(2).accept(this);
-//        symbolTable.leaveCurrentScope();
-//        if (symbolTable.getCurrentScopeName().equals("global")) {
-//            method.setAccessMode(AccessMode.Public);
-//        } else {
-//            method.setAccessMode(Field.currentAccessMode);
-//            ClassDecaf.currentClass.getMethods().add(method);
-//        }
     }
 
     private void visitStartNode(ASTNode node) throws Exception {
         symbolTable.enterScope("global");
+        System.out.println(node.getChild(0).getChild(0).getNodeType()+" from vtable startnode");
         visitAllChildren(node);
         boolean isMainExist = false;
         for (Function function : functions) {
@@ -172,7 +162,6 @@ public class VtableGenerator implements SimpleVisitor {
     private void visitMethodDeclarationNode(ASTNode node) throws Exception {
         node.getChild(0).accept(this); //Type
         SymbolInfo returnType = node.getChild(0).getSymbolInfo();
-
         //identifier
         IdentifierNode idNode = (IdentifierNode) node.getChild(1);
         String methodName = idNode.getValue();
@@ -181,10 +170,10 @@ public class VtableGenerator implements SimpleVisitor {
             throw new Exception(methodName + " function declared before");
         }
         functions.add(method);
-
         Function.currentFunction = method;
         String label = symbolTable.getCurrentScopeName() + "_" + methodName;
         symbolTable.enterScope(label);
+        //System.out.println(node.getChild(2).getNodeType());
         node.getChild(2).accept(this);
         symbolTable.leaveCurrentScope();
         if (symbolTable.getCurrentScopeName().equals("global")) {
@@ -207,6 +196,13 @@ public class VtableGenerator implements SimpleVisitor {
 
     private void visitAllChildren(ASTNode node) throws Exception {
         for (ASTNode child : node.getChildren()) {
+            if(child.getNodeType()==NodeType.Decls){
+                System.out.println("vvvvvvvvvvvvvvvvvvv");
+                for (ASTNode child1 : child.getChildren()){
+                    System.out.println(child1.getNodeType());
+                }
+                System.out.println("vvvvvvvvvvvvvvv");
+            }
             child.accept(this);
         }
     }
