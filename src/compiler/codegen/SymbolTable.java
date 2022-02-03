@@ -2,6 +2,7 @@ package compiler.codegen;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * A simple symbol table implementation.
@@ -45,28 +46,46 @@ public class SymbolTable implements Symbol {
         }
     }
 
-    void put(String id, SymbolInfo si) throws Exception {
+    public void put(String id, SymbolInfo si) throws Exception {
         if (currentScope.getVariables().containsKey(id)) {
             throw new Exception("current scope already contains an entry for " + id);
         }
 
         currentScope.getVariables().put(id, si);
+        System.out.println("current scope is : "+currentScope.getName()+" and var is : "+id );
     }
 
     public Symbol get(String id) throws Exception {
-        for (int i = scopes.size() - 1; i >= 0; i--) {
-            if (scopes.get(i).getVariables().containsKey(id))
-                return scopes.get(i).getVariables().get(id);
+        for (int i = allScopes.size() - 1; i >= 0; i--) {
+            if (allScopes.get(i).getVariables().containsKey(id))
+                return allScopes.get(i).getVariables().get(id);
         }
         throw new Exception("variable " + id + " did'nt declared ");
     }
 
-    String getScopeNameOfIdentifier(String id) {
-        for (int i = scopes.size() - 1; i >= 0; i--) {
-            if (scopes.get(i).getVariables().containsKey(id))
-                return scopes.get(i).getName();
+    String getScopeNameOfIdentifier(String id)throws Exception {
+        List<Scope>ss=new ArrayList<>();
+        for (int i = allScopes.size() - 1; i >= 0; i--) {
+            if (allScopes.get(i).getVariables().containsKey(id)){
+                ss.add(allScopes.get(i));
+            }
+
         }
-        return currentScope.getName();
+        if(ss.size()>0){
+            for(Scope s:ss){
+                if(s.getName().equals(currentScope.getName())){
+                    return currentScope.getName();
+                }
+            }
+            for(Scope s:ss){
+                if(scopes.contains(s)){
+                    return ss.get(0).getName();
+                }
+            }
+
+        }
+        throw new Exception("semantic error");
+        //return currentScope.getName();
     }
 
     public String getCurrentScopeName() {

@@ -40,6 +40,16 @@
 		sgt $t1, $t1, $t0
 		move $t0, $t1
 		beq $t0, $zero exitL1F
+		L1Fupdate:
+		la $a0, global_main_i
+		lw $t0, 0($a0)
+		li $v0, 1
+		add $a0, $t0, $zero
+		syscall
+		#print new Line
+		addi $a0, $0, 0xA
+		addi $v0, $0, 0xB
+		syscall 
 		la $a0, global_main_i
 		lw $t0, 0($a0)
 		la $a3, 0($a0) 
@@ -54,16 +64,6 @@
 		sub $t1, $t1, $t0
 		move $t0, $t1
 		sw $t0, 0($a3)
-		L1Fupdate:
-		la $a0, global_main_i
-		lw $t0, 0($a0)
-		li $v0, 1
-		add $a0, $t0, $zero
-		syscall
-		#print new Line
-		addi $a0, $0, 0xA
-		addi $v0, $0, 0xB
-		syscall 
 		j L1F
 		exitL1F:
 		addi $sp,$sp,-4

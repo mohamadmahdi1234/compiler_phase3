@@ -116,6 +116,13 @@ public class VtableGenerator implements SimpleVisitor {
                     ClassDecaf.currentClass.getFields().add(field);
             }
         }
+        if (ClassDecaf.currentClass == null || !symbolTable.getCurrentScopeName().equals(ClassDecaf.currentClass.getName())){
+            IdentifierNode idNode1 = (IdentifierNode) node.getChild(1);
+            String varName = idNode1.getValue();
+            String label = symbolTable.getCurrentScopeName() + "_" + varName + " :";
+            setParentSymbolInfo(node, node.getChild(0));
+            symbolTable.put(varName, node.getSymbolInfo());
+        }
     }
 
     private void visitStartNode(ASTNode node) throws Exception {

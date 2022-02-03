@@ -7,6 +7,7 @@
 	global_main_b : .word 0
 	StringLiteral_01: .asciiz "hello "
 	StringLiteral_11: .asciiz "world"
+		StringLiteral_21:	.asciiz	"hello world"
 
 .text
 	.globl main
@@ -40,6 +41,7 @@
 		lw $t0, 0($a0)
 		la $a0, global_main_b
 		lw $t0, 0($a0)
+	la	$t0, StringLiteral_21
 		li $v0, 4
 		add $a0, $t0, $zero
 		syscall

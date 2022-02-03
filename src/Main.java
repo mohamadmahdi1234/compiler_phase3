@@ -1,8 +1,9 @@
-package compiler;
-
 import compiler.AST.*;
+import compiler.Pre_Processor;
+import compiler.Scanner_phase1;
 import compiler.Vtable.*;
 import compiler.codegen.*;
+import compiler.parser;
 
 import java.io.IOException;
 import java.io.*;
@@ -86,7 +87,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         try {
             if (args.length < 4) {
-                System.out.println("Usage: java compiler.compiler.compiler.Main -i <input> -o <output>");
+                System.out.println("Usage: java compiler.compiler.Main -i <input> -o <output>");
                 return;
             }
             String inputFileName = null;
@@ -175,7 +176,7 @@ public class Main {
 
             return true;
         } catch (Exception e ) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
 
             return false;
         }
