@@ -84,7 +84,6 @@ public class VtableGenerator implements SimpleVisitor {
     }
 
     private void visitClassDeclaration(ASTNode node) throws Exception {
-        System.out.println("hi from vtable class decl");
         //identifier
         IdentifierNode idNode = (IdentifierNode) node.getChild(0);
         String className = idNode.getValue();
@@ -93,7 +92,6 @@ public class VtableGenerator implements SimpleVisitor {
         classes.add(classDecaf);
         symbolTable.enterScope(classDecaf.getName());
         if (node.getChild(node.getChildren().size() - 1).getNodeType().equals(NodeType.FIELDS)) {
-            System.out.println(node.getChild(node.getChildren().size() - 1).getNodeType());
             node.getChild(node.getChildren().size() - 1).accept(this);
             ClassDecaf.currentClass.setObjectSize(ClassDecaf.currentClass.getFields().size() * 4);
         }
@@ -122,7 +120,6 @@ public class VtableGenerator implements SimpleVisitor {
 
     private void visitStartNode(ASTNode node) throws Exception {
         symbolTable.enterScope("global");
-        System.out.println(node.getChild(0).getChild(0).getNodeType()+" from vtable startnode");
         visitAllChildren(node);
         boolean isMainExist = false;
         for (Function function : functions) {
@@ -167,9 +164,7 @@ public class VtableGenerator implements SimpleVisitor {
         }
         functions.add(method);
         Function.currentFunction = method;
-        System.out.println(symbolTable.getCurrentScopeName()+" to dige chera");
         String label = symbolTable.getCurrentScopeName() + "_" + methodName;
-        System.out.println(label+" paeen");
         symbolTable.enterScope(label);
         node.getChild(2).accept(this);
         symbolTable.leaveCurrentScope();
@@ -193,13 +188,6 @@ public class VtableGenerator implements SimpleVisitor {
 
     private void visitAllChildren(ASTNode node) throws Exception {
         for (ASTNode child : node.getChildren()) {
-            if(child.getNodeType()==NodeType.Decls){
-                System.out.println("vvvvvvvvvvvvvvvvvvv");
-                for (ASTNode child1 : child.getChildren()){
-                    System.out.println(child1.getNodeType());
-                }
-                System.out.println("vvvvvvvvvvvvvvv");
-            }
             child.accept(this);
         }
     }

@@ -1,14 +1,10 @@
-
-int test(int a, int b) {
-    return a * b;
-}
-
 int main() {
-    int a;
-    int b;
-
-    a = ReadInteger();
-    b = ReadInteger();
-
-    Print(test(a, b));
+    string s1;
+    string s2;
+    s1 = ReadLine();
+    s2 = ReadLine();
+    Print(s1 != s2);
+    s1 = ReadLine();
+    s2 = ReadLine();
+    Print(s1 != s2);
 }

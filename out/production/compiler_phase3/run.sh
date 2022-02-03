@@ -24,7 +24,7 @@ do
         echo "Code did not Compiler"
     else
         echo "Core compiled successfuly"
-        java -cp .:compiler/java-cup-11b-runtime.jar Main -i "$TEST_DIRECTORY$program_code" -o $output_asm
+        java -cp .:compiler/java-cup-11b-runtime.jar Main -i "$TEST_DIRECTORY$program_code" -o $OUTPUT_DIRECTORY$output_asm
         if [ $? -eq 0 ]; then
             echo "Code Compiled Successfuly!"
             spim -a -f "$OUTPUT_DIRECTORY$output_asm" < "$TEST_DIRECTORY$program_input" > "$OUTPUT_DIRECTORY$output_filename"

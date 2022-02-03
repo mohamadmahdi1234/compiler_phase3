@@ -1,0 +1,1 @@
+difference in line #1: file: out/t205-global-2.out -----> content: Semantic Error <> file: tests/t205-global-2.out -----> content: 33 

@@ -49,9 +49,6 @@ public class Pre_Processor {
             first_two=first_two_par_of_define.matcher(input);
         }
         input=input.trim();
-        for(String s:define_value.keySet()){
-            System.out.println(s);
-        }
 
     }
     public void change_defined_values(){
@@ -62,11 +59,9 @@ public class Pre_Processor {
             Matcher second=defined_variable.matcher(input);
             String s="";
             while (second.find()){
-                System.out.println(second.group());
                 a.add(second.start());
                 b.add(second.end());
             }
-            System.out.println("salam");
             int holder=0;
             for(int i=0;i<a.size();i++){
                 s+=input.substring(holder,a.get(i))+define_value.get(key);
@@ -80,10 +75,8 @@ public class Pre_Processor {
             }
             a.clear();
             b.clear();
-            System.out.println(input);
         }
         input.trim();
-        System.out.println("2///////////////////");
     }
 
     public static void main(String[] args) {

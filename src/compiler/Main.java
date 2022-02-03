@@ -1,21 +1,17 @@
+package compiler;
 
-import compiler.*;
 import compiler.AST.*;
 import compiler.Vtable.*;
 import compiler.codegen.*;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+
 import java.io.IOException;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
 import java.util.stream.Stream;
-import compiler.parser;
-import compiler.Pre_Processor;
+
 class Compiler_test {
     private PrintStream writer;
     private Scanner_phase1 scanner;
@@ -90,7 +86,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         try {
             if (args.length < 4) {
-                System.out.println("Usage: java compiler.Main -i <input> -o <output>");
+                System.out.println("Usage: java compiler.compiler.compiler.Main -i <input> -o <output>");
                 return;
             }
             String inputFileName = null;
@@ -179,7 +175,8 @@ public class Main {
 
             return true;
         } catch (Exception e ) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
+
             return false;
         }
         catch (Error e){
