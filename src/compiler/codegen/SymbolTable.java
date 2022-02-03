@@ -8,7 +8,7 @@ import java.util.HashMap;
  */
 
 public class SymbolTable implements Symbol {
-    private ArrayList<Scope> allScopes = new ArrayList<>();
+    public static ArrayList<Scope> allScopes = new ArrayList<>();
     private ArrayList<Scope> scopes = new ArrayList<>();
     private Scope currentScope;
 
@@ -82,7 +82,7 @@ public class SymbolTable implements Symbol {
     }
 
     public ArrayList<Scope> getScopes() {
-        return scopes;
+        return allScopes;
     }
 
 }

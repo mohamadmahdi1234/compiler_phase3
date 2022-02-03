@@ -89,10 +89,6 @@ public class VtableGenerator implements SimpleVisitor {
         IdentifierNode idNode = (IdentifierNode) node.getChild(0);
         String className = idNode.getValue();
         ClassDecaf classDecaf = new ClassDecaf(className);
-        if (node.getChild(1).getNodeType().equals(NodeType.EXTEND)) {
-            IdentifierNode idNode1 = (IdentifierNode) node.getChild(1).getChild(0);
-            classDecaf.setParentClassName(idNode1.getValue());
-        }
         ClassDecaf.currentClass = classDecaf;
         classes.add(classDecaf);
         symbolTable.enterScope(classDecaf.getName());
@@ -171,9 +167,10 @@ public class VtableGenerator implements SimpleVisitor {
         }
         functions.add(method);
         Function.currentFunction = method;
+        System.out.println(symbolTable.getCurrentScopeName()+" to dige chera");
         String label = symbolTable.getCurrentScopeName() + "_" + methodName;
+        System.out.println(label+" paeen");
         symbolTable.enterScope(label);
-        //System.out.println(node.getChild(2).getNodeType());
         node.getChild(2).accept(this);
         symbolTable.leaveCurrentScope();
         if (symbolTable.getCurrentScopeName().equals("global")) {

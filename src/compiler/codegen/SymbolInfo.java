@@ -13,6 +13,7 @@ public class SymbolInfo implements Symbol {
     private int dimensionArray = 0;
     public String value;
     public String value1;
+    public String for_new;
     public int getDimensionArray() {
         return dimensionArray;
     }

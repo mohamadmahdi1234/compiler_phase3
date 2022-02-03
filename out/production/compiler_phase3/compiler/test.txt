@@ -1,11 +1,14 @@
-int main(){
-string a;
-string b;
-string s;
-s="fg";
-b="lk";
-a="hello ";
-a=s+b+b+a+" nadun";
-b=a+b;
-Print(b);
+
+int test(int a, int b) {
+    return a * b;
+}
+
+int main() {
+    int a;
+    int b;
+
+    a = ReadInteger();
+    b = ReadInteger();
+
+    Print(test(a, b));
 }

@@ -23,7 +23,9 @@ public class CodeGenVisitor implements SimpleVisitor {
     private HashMap<String, String> stringLiterals = new HashMap<>();
     private HashMap<String, String> stringLiterals_rev = new HashMap<>();
     private HashMap<String, String> which_for_which = new HashMap<>();
+    private HashMap<String, String> new_holder = new HashMap<>();
     private SymbolTable symbolTable = new SymbolTable();
+    private List<Scope> all_scopes = SymbolTable.allScopes;
     private int blockIndex;
     private int arrayNumbers = 0;
     private int DtoItoBLabel = 0;
@@ -87,8 +89,7 @@ public class CodeGenVisitor implements SimpleVisitor {
             case NEW_ARRAY:
                 visitNewArrayNode(node);
                 break;
-            case NEW_IDENTIFIER:
-                break;
+
             case ITOB:
                 visitItoB(node);
                 break;
@@ -260,6 +261,9 @@ public class CodeGenVisitor implements SimpleVisitor {
                 break;
             case START:
                 visitStartNode(node);
+                break;
+            case NEW_IDENTIFIER:
+                setParentSymbolInfo(node, node.getChild(0));
                 break;
             default:
                 visitAllChildren(node);
@@ -604,6 +608,12 @@ public class CodeGenVisitor implements SimpleVisitor {
         String varName;
         Function method = null;
         int argNumber = 0;
+        System.out.println("****$$$$****");
+        for(Function ch:functions){
+            System.out.println(ch.getName());
+        }
+        //System.out.println(node.getChild(0).getChild(0).getChild(0).getSymbolInfo()+" kashki dorost bash");
+        System.out.println("******$$$************");
         for (ASTNode child : node.getChildren()) {
             if (child.getNodeType().equals(NodeType.IDENTIFIER)) {
                 IdentifierNode idNode = (IdentifierNode) child;
@@ -613,6 +623,7 @@ public class CodeGenVisitor implements SimpleVisitor {
                     throw new Exception(varName + " function doesn't exist");
             }
             if (child.getNodeType().equals(NodeType.ACTUALS)) {
+                System.out.println("salam");
                 for (ASTNode childChild : child.getChild(0).getChildren()) {
                     childChild.accept(this);
                     SymbolInfo si = childChild.getSymbolInfo();
@@ -926,6 +937,7 @@ public class CodeGenVisitor implements SimpleVisitor {
             }
             textSegment += "\t\t" + op2 + reg.get(tempReg) + ", " + reg.get(tempReg + 1) + "\n";
         }else{
+            wc=true;
             setParentSymbolInfo(node, node.getChild(1));
             SymbolInfo second = node.getSymbolInfo();
             String secondType = second.getType().getSignature();
@@ -984,15 +996,15 @@ public class CodeGenVisitor implements SimpleVisitor {
     //**************************************************************
 
     private void visitLValueNode(ASTNode node) throws Exception {
-        // System.out.println(node.getNodeType()+"/////////////lvalue");
         node.getChild(0).accept(this);
-        if (node.getChildren().size() == 1) { //id
+        if (node.getChildren().size() == 1) {
             IdentifierNode idNode = (IdentifierNode) node.getChild(0);
             String varName = idNode.getValue();
             SymbolInfo varType = (SymbolInfo) symbolTable.get(varName);
             SymbolInfo si = new SymbolInfo(node, varType.getType());
             si.setDimensionArray(varType.getDimensionArray());
             si.value1=idNode.getValue();
+            System.out.println(si.getType()+" from lvalue to check farzand");
             node.setSymbolInformation(si);
             switch (varType.getType().getAlign()) {
                 case 1: //bool
@@ -1046,24 +1058,25 @@ public class CodeGenVisitor implements SimpleVisitor {
     private void visitAssignNode(ASTNode node) throws Exception {
         setParentSymbolInfo(node, node.getChild(0));
         SymbolInfo varType = node.getChild(0).getSymbolInfo();
+        System.out.println(varType.getType()+" from assign check farzand");
         current_id=varType.value1;
-        //which_for_which.put(varType.value1,"StringLiteral_" + stringLiterals.keySet().size()+1);
-        //System.out.println((varType.value1)+" just test");
         textSegment += "\t\tla $a3, 0($a0) \n";
-        //System.out.println("type of child one is "+node.getChild(0).getNodeType()+" type of second "+node.getChild(1).getNodeType());
         node.getChild(1).accept(this);
         SymbolInfo exprType = node.getChild(1).getSymbolInfo();
+        System.out.println(node.getChild(1).getSymbolInfo()+" hey khoda");
         if(node.getChild(1).getChild(0).getNodeType()==NodeType.LITERAL){
-            //System.out.println(node.getChild(1).getChild(0).getNodeType());
             which_for_which.put(varType.value1,"StringLiteral_" + (stringLiterals.keySet().size()-1)+1);
         }else{
-            System.out.println(result+" res is");
-            String label = "StringLiteral_" + stringLiterals.keySet().size() + 1;
-            stringLiterals.put(result, label);
-            stringLiterals_rev.put( label,result);
-            dataSegment += "\t\t" + label + ":\t.asciiz\t\"" + result + "\"\n";
-            textSegment += "\tla\t$t0, " + label + '\n';
-            which_for_which.put(current_id,label);
+            if(wc){
+                String label = "StringLiteral_" + stringLiterals.keySet().size() + 1;
+                stringLiterals.put(result, label);
+                stringLiterals_rev.put( label,result);
+                dataSegment += "\t\t" + label + ":\t.asciiz\t\"" + result + "\"\n";
+                textSegment += "\tla\t$t0, " + label + '\n';
+                which_for_which.put(current_id,label);
+                wc=false;
+            }
+
         }
         System.out.println("*************************");
         for(String i:which_for_which.keySet()){
@@ -1073,6 +1086,7 @@ public class CodeGenVisitor implements SimpleVisitor {
         if (exprType == null)
             throw new Exception("Assign Error");
         //TODO
+        //System.out.println(varType.getType().getSignature()+"from assign");
         if (isTypesEqual(varType, exprType)) {
             switch (varType.getType().getAlign()) {
                 case 6: //string
@@ -1101,7 +1115,6 @@ public class CodeGenVisitor implements SimpleVisitor {
 
     private void visitExpressionNode(ASTNode node) throws Exception {
         tempRegsNumber = 8;
-        // System.out.println(node.getChild(0).getNodeType()+" yano lvalue shode?");
         setParentSymbolInfo(node, node.getChild(0));
     }
 
@@ -1194,6 +1207,8 @@ public class CodeGenVisitor implements SimpleVisitor {
             String varName = idNode.getValue();
             String label = symbolTable.getCurrentScopeName() + "_" + varName + " :";
             setParentSymbolInfo(node, node.getChild(0));
+            node.getChild(1).accept(this);
+            node.getChild(1).getSymbolInfo().for_new=node.getChild(0).getSymbolInfo().value1;
             int dimensionArray = node.getSymbolInfo().getDimensionArray();
             if (!node.getChild(0).getNodeType().equals(NodeType.IDENTIFIER)) {
                 Type typePrimitive = node.getSymbolInfo().getType();
@@ -1246,7 +1261,7 @@ public class CodeGenVisitor implements SimpleVisitor {
 
     private void visitAllChildren(ASTNode node) throws Exception {
         for (ASTNode child : node.getChildren()) {
-            // System.out.println(child.getNodeType());
+            System.out.println("hi ahay");
             child.accept(this);
         }
     }
@@ -1256,9 +1271,15 @@ public class CodeGenVisitor implements SimpleVisitor {
         if (a.getType().getAlign() == b.getType().getAlign()) {
             if (a.getType().getSignature().equals(b.getType().getSignature())) {
                 if (a.getDimensionArray() == b.getDimensionArray())
-                    return a.getType().getPrimitive().equals(b.getType().getPrimitive());
+                    if(a.getType().getPrimitive()!=null){
+                        return a.getType().getPrimitive().equals(b.getType().getPrimitive());
+                    }else{
+                        return a.for_new==b.for_new;
+                    }
+
             }
         }
+
         return false;
     }
 
@@ -1274,7 +1295,9 @@ public class CodeGenVisitor implements SimpleVisitor {
         Function method = null;
         for (Function function : functions) {
             if (function.getName().equals(varName)) {
-                for (Scope scope : symbolTable.getScopes()) {
+                System.out.println("ta inja dorost");
+                for (Scope scope : all_scopes) {
+                    System.out.println(symbolTable.getScopes().size()+" ghara");
                     if (scope.equals(function.getScope())) {
                         method = function;
                         break;
@@ -1290,13 +1313,19 @@ public class CodeGenVisitor implements SimpleVisitor {
     //**************************************************************
 
     private void setParentSymbolInfo(ASTNode node, ASTNode child) throws Exception {
+        if(child.getNodeType()==NodeType.NEW_IDENTIFIER){
+            System.out.println(child.getChild(0).getNodeType()+" lashi");
+        }
+
+
         child.accept(this);
+        System.out.println(child.getSymbolInfo());
         Type type = child.getSymbolInfo().getType();
-        //System.out.println(type.getAlign()+" setpar");
         SymbolInfo si = new SymbolInfo(node, type);
         si.setDimensionArray(child.getSymbolInfo().getDimensionArray());
         si.value = child.getSymbolInfo().value;
         si.value1=child.getSymbolInfo().value1;
+        si.for_new=child.getSymbolInfo().for_new;
         node.setSymbolInformation(si);
     }
     //**************************************************************
