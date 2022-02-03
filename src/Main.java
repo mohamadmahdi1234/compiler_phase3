@@ -122,11 +122,11 @@ public class Main {
             Pre_Processor p=new Pre_Processor(input);
             String define_handeled=p.handle_define();
             StringReader aa = new StringReader(define_handeled);
-            //Scanner_phase1 scanner=new Scanner_phase1(aa);
-            ///Compiler_test compiler = new Compiler_test(scanner,writer);
-            //compiler.run();
-            //writer.flush();
-            //writer.close();
+            Scanner_phase1 scanner=new Scanner_phase1(aa);
+            Compiler_test compiler = new Compiler_test(scanner,writer);
+            compiler.run();
+            writer.flush();
+            writer.close();
         }catch (Exception e){
            // e.printStackTrace();
             /*PrintStream writer;
