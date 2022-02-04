@@ -1,10 +1,16 @@
-class A{
- int a;
- void pr(){
- a=1;
-  Print(a);
- }
+
+class Test {
+    int f;
+
+    public void test() {
+        f = 145369;
+        Print(f);
+    }
 }
-int main(){
-pr();
+
+int main() {
+    Test t;
+    t = new Test;
+
+    t.test();
 }
