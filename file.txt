@@ -3,9 +3,8 @@
 	false : .asciiz "false"
 
 	error_run_time: .asciiz "runtime ERROR"
-	global_main_a :	.space	4
-	global_main_b : .word 0
-	A_pr_g : .word 0
+	global_main_t :	.space	4
+	Test_f : .word 0
 
 .text
 	.globl main
@@ -25,35 +24,21 @@
 	global_main:
 		sw $ra,0($sp)
 		addi $sp,$sp,4
-		la $a0, global_main_b
-		lw $t0, 0($a0)
 		la $a3, 0($a0) 
-		li $t0, 1
-		sw $t0, 0($a3)
-		la $a3, 0($a0) 
-		jal A_pr
+		jal Test_test
 		addi $sp, $sp, 0
-		la $a0, global_main_b
-		lw $t0, 0($a0)
-		li $v0, 1
-		add $a0, $t0, $zero
-		syscall
-		#print new Line
-		addi $a0, $0, 0xA
-		addi $v0, $0, 0xB
-		syscall 
 		addi $sp,$sp,-4
 		lw $ra,0($sp)
 		jr $ra
-	A_pr:
+	Test_test:
 		sw $ra,0($sp)
 		addi $sp,$sp,4
-		la $a0, A_pr_g
+		la $a0, Test_f
 		lw $t0, 0($a0)
 		la $a3, 0($a0) 
-		li $t0, 4
+		li $t0, 145369
 		sw $t0, 0($a3)
-		la $a0, A_pr_g
+		la $a0, Test_f
 		lw $t0, 0($a0)
 		li $v0, 1
 		add $a0, $t0, $zero
