@@ -1253,7 +1253,6 @@ public class CodeGenVisitor implements SimpleVisitor {
     //**************************************************************
 
     private void visitVariableDeclaration(ASTNode node) throws Exception {
-        System.out.println("az inja chi "+ClassDecaf.currentClass );
         if (ClassDecaf.currentClass == null || !symbolTable.getCurrentScopeName().equals(ClassDecaf.currentClass.getName())) {
             IdentifierNode idNode = (IdentifierNode) node.getChild(1);
             String varName = idNode.getValue();

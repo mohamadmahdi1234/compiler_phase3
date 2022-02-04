@@ -1,0 +1,1 @@
+difference in line #1: file: out/t139-cond-5.out -----> content: Hi == Hi! <> file: tests/t139-cond-5.out -----> content: Hi == Hi 
