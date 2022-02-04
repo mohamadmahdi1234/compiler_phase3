@@ -3,8 +3,10 @@
 	false : .asciiz "false"
 
 	error_run_time: .asciiz "runtime ERROR"
-	global_main_t :	.space	4
-	Test_f : .word 0
+	global_main_l : .word 0
+	global_func1_x : .word 0
+	block_0_z : .word 0
+	global_j_k : .word 0
 
 .text
 	.globl main
@@ -24,29 +26,63 @@
 	global_main:
 		sw $ra,0($sp)
 		addi $sp,$sp,4
+		la $a0, global_main_l
+		lw $t0, 0($a0)
 		la $a3, 0($a0) 
-		jal Test_test
+		li $t0, 2
+		sw $t0, 0($a3)
+		jal global_func1
 		addi $sp, $sp, 0
 		addi $sp,$sp,-4
 		lw $ra,0($sp)
 		jr $ra
-	Test_test:
+	global_func1:
 		sw $ra,0($sp)
 		addi $sp,$sp,4
-		la $a0, Test_f
+		la $a0, global_func1_x
 		lw $t0, 0($a0)
 		la $a3, 0($a0) 
-		li $t0, 145369
+		li $t0, 2
 		sw $t0, 0($a3)
-		la $a0, Test_f
+		L1:
+		la $a0, global_func1_x
 		lw $t0, 0($a0)
-		li $v0, 1
-		add $a0, $t0, $zero
-		syscall
-		#print new Line
-		addi $a0, $0, 0xA
-		addi $v0, $0, 0xB
-		syscall 
+		move $t1, $t0
+		sw $t1, 0($sp)
+		addi $sp, $sp, 4
+		li $t0, 1
+		addi $sp, $sp, -4
+		lw $t1 0($sp)
+		sgt $t1, $t1, $t0
+		move $t0, $t1
+		beq $t0, $zero exitL1
+		la $a0, global_func1_x
+		lw $t0, 0($a0)
+		la $a3, 0($a0) 
+		la $a0, global_func1_x
+		lw $t0, 0($a0)
+		move $t1, $t0
+		sw $t1, 0($sp)
+		addi $sp, $sp, 4
+		li $t0, 1
+		addi $sp, $sp, -4
+		lw $t1 0($sp)
+		sub $t1, $t1, $t0
+		move $t0, $t1
+		sw $t0, 0($a3)
+		j L1
+		exitL1:
+		addi $sp,$sp,-4
+		lw $ra,0($sp)
+		jr $ra
+	global_j:
+		sw $ra,0($sp)
+		addi $sp,$sp,4
+		la $a0, global_j_k
+		lw $t0, 0($a0)
+		la $a3, 0($a0) 
+		li $t0, 4
+		sw $t0, 0($a3)
 		addi $sp,$sp,-4
 		lw $ra,0($sp)
 		jr $ra

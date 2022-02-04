@@ -564,8 +564,10 @@ public class CodeGenVisitor implements SimpleVisitor {
     //**************************************************************
 
     private void visitNewArrayNode(ASTNode node) throws Exception {
+        setParentSymbolInfo(node, node.getChild(0));
         int literalNumber = ((IntegerLiteralNode) node.getChild(0).getChild(0)).getValue();
-        setParentSymbolInfo(node, node.getChild(1));
+        //int literalNumber = ((IntegerLiteralNode) node.getChild(1)).getValue();
+        //setParentSymbolInfo(node, node.getChild(0));
         node.getSymbolInfo().setDimensionArray(node.getSymbolInfo().getDimensionArray() + 1);
         if (literalNumber <= 0)
             throw new Exception("array size must be greater than zero");
@@ -854,10 +856,10 @@ public class CodeGenVisitor implements SimpleVisitor {
                     break;
             }
         }
-        if (exprType.getAlign() != 12) {
-            textSegment += "\t\t#print new Line\n";
-            textSegment += "\t\taddi $a0, $0, 0xA\n\t\taddi $v0, $0, 0xB\n\t\tsyscall \n";
-        }
+       // if (exprType.getAlign() != 12) {
+        textSegment += "\t\t#print new Line\n";
+        textSegment += "\t\taddi $a0, $0, 0xA\n\t\taddi $v0, $0, 0xB\n\t\tsyscall \n";
+        //}
     }
 
     //**************************************************************

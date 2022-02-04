@@ -59,15 +59,6 @@ public class SymbolTable implements Symbol {
     }
 
     public void putsss(String id, SymbolInfo si) throws Exception {
-        /*for(ClassDecaf cd:VtableGenerator.classes){
-            if(cd.getName().equals(currentScope.getName())){
-                for(Field f:cd.getFields()){
-                    if(f.getName().equals(id)){
-                        throw new Exception("current scope already contains an entry for " + id);
-                    }
-                }
-            }
-        }*/
         for(ClassDecaf cd:VtableGenerator.classes){
             if(cd.getName().equals(currentScope.getName())){
                 Field field = new Field(id);
@@ -77,12 +68,16 @@ public class SymbolTable implements Symbol {
                 cd.getFields().add(field);
             }
         }
-        //currentScope.getVariables().put(id, si);
-        //System.out.println("current scope is : "+currentScope.getName()+" and var is : "+id );
     }
 
     public Symbol get(String id) throws Exception {
         System.out.println();
+        for(Scope d:scopes){
+            System.out.println(d.getName());
+            for(String x:d.getVariables().keySet()){
+                System.out.println(x);
+            }
+        }
         System.out.println();
         System.out.println("variable to find "+id+" we are in scope "+currentScope);
         Symbol sy=null;
@@ -95,11 +90,20 @@ public class SymbolTable implements Symbol {
         }
         System.out.println("az avalin for gozasht and sy is "+sy);
         for (Scope s:allScopes) {
-            if(s.getVariables().containsKey(id))
+            if(s.getVariables().containsKey(id)) {
+                if(scopes.contains(s)){
+                System.out.println("variable found in whole in " + s.getName() + " id " + id + " symbol " + sy);
+                sy = s.getVariables().get(id);
+            }
+               }
+        }
+        for (Scope s:allScopes) {
+            if(s.getVariables().containsKey(id)) {
                 if(s.getName().equals(currentScope.getName())){
-                    System.out.println("variable found in whole in "+s.getName()+" id "+id+" symbol "+sy);
-                    sy = s.getVariables().get(id);
-                }
+                System.out.println("variable found in whole in " + s.getName() + " id " + id + " symbol " + sy);
+                sy = s.getVariables().get(id);
+            }
+             }
         }
         System.out.println("az dovim halghe gozasht and sy is "+sy);
         if(currentScope!=null){
@@ -134,9 +138,16 @@ public class SymbolTable implements Symbol {
                     sy = s.getName();
         }
         for (Scope s:allScopes) {
-            if(s.getVariables().containsKey(id))
-                if(s.getName().equals(currentScope.getName()))
+            if(s.getVariables().containsKey(id)) {
+                //if (s.getName().equals(currentScope.getName()))
                     sy = s.getName();
+            }
+        }
+        for (Scope s:allScopes) {
+            if(s.getVariables().containsKey(id)) {
+                if (s.getName().equals(currentScope.getName()))
+                    sy = s.getName();
+            }
         }
         if(currentScope!=null){
             ClassDecaf fimf=null;
