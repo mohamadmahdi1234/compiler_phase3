@@ -13,7 +13,8 @@ parser code {:
 scan with {:return scanner.next_token();:}
 init with {::}
 //keyword terminals
-terminal FUNC,LINE,BOOL,BREAK,BTOI,CLASS,CONTINUE,DEFINE,DOUBLE,
+terminal Integer LINE;
+terminal FUNC,BOOL,BREAK,BTOI,CLASS,CONTINUE,DEFINE,DOUBLE,
 DTOI,ELSE,FOR,IF,IMPORT,INT,ITOB,ITOD,NEW,NEWARRAY,NULL,PRINT,
 PRIVATE,PUBLIC,READINTEGER,READLINE,RETURN,STRING,THIS,VOID,WHILE;
 //IDENTIFIER terminals
@@ -793,10 +794,10 @@ Expr ::= LValue:l ASSIGN Expr:e
                      t.setParent(RESULT);
                      e.setParent(t);
                  :}
-         | LINE
+         | LINE:l
          {:
                     RESULT = new ExpressionNode();
-                    ASTNode t = new BaseASTNode(NodeType.LINE);
+                    ASTNode t = new LineNode(l);
                     RESULT.addChild(t);
                     t.setParent(RESULT);
                                       :}

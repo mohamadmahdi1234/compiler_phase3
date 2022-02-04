@@ -1,7 +1,10 @@
+class A{
+ int a;
+ void pr(){
+  a=1;
+  Print(a);
+ }
+}
 int main(){
-    if(true){
-        int a;
-        a = 3;
-    }
-    Print(a);
+pr();
 }

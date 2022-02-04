@@ -476,14 +476,19 @@ public class Scanner_phase1 implements java_cup.runtime.Scanner {
   /* user code: */
 
 public Symbol token (int tokenType) {
-        //System.out.println(yytext());
-        //System.out.println(yytext().getClass().getSimpleName());
+        if(tokenType==sym.LINE){
+            System.out.println(yyline);
+        }
 	    return new Symbol(tokenType,yytext());
 
 	}
 	public Symbol token (int tokenType , Object value) {
     	    return new Symbol(tokenType , value);
     	}
+    public Symbol token(int tokenType , int line){
+    System.out.println(line+" from third method");
+        return new Symbol(tokenType,line);
+    }
 
 
 
@@ -1203,7 +1208,7 @@ public Symbol token (int tokenType) {
             // fall through
           case 127: break;
           case 63:
-            { return token(sym.LINE);
+            { return token(sym.LINE,yyline+1);
             }
             // fall through
           case 128: break;

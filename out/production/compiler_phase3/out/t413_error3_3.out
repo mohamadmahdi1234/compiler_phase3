@@ -1,1 +1,1 @@
-The following symbols are undefined:global_f_a[0x004000c8]	0x3c010000  lui $1, 0 [global_f_a]          ; 54: la $a0, global_f_a
+Semantic Error

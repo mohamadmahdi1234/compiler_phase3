@@ -48,7 +48,7 @@ public class Pre_Processor {
             all_def=all_define_expression.matcher(input);
             first_two=first_two_par_of_define.matcher(input);
         }
-        input=input.trim();
+        //input=input.trim();
 
     }
     public void change_defined_values(){
@@ -76,7 +76,7 @@ public class Pre_Processor {
             a.clear();
             b.clear();
         }
-        input.trim();
+        //input.trim();
     }
 
     public static void main(String[] args) {

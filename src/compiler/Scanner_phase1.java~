@@ -476,8 +476,9 @@ public class Scanner_phase1 implements java_cup.runtime.Scanner {
   /* user code: */
 
 public Symbol token (int tokenType) {
-        System.out.println(yytext());
-        //System.out.println(yytext().getClass().getSimpleName());
+        if(tokenType==sym.LINE){
+            System.out.println(yyline);
+        }
 	    return new Symbol(tokenType,yytext());
 
 	}

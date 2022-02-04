@@ -107,7 +107,7 @@ public enum NodeType {
     EXPRESSIONS,
     START,
     FUNC,
-    LINE,
+    LLINE,
     Macros,
     Decls,
     MACRO_STATEMENT

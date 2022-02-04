@@ -222,6 +222,13 @@ public class CodeGenVisitor implements SimpleVisitor {
                 node.setSymbolInformation(ss);
                 node.getSymbolInfo().setDimensionArray(node.getChildren().size());
                 break;
+            case LLINE:
+                LineNode lnode = (LineNode)node;
+                SymbolInfo for_line=new SymbolInfo(node, new LineType(lnode.getValue()));
+                for_line.value_for_line=lnode.getValue();
+                node.setSymbolInformation(for_line);
+                textSegment += "\t\tli " + regs.get(tempRegsNumber) + ", " + for_line.value_for_line + "\n";
+                break;
             case METHOD_ACCESS:
                 break;
             case PRIVATE_ACCESS:
@@ -1354,6 +1361,7 @@ public class CodeGenVisitor implements SimpleVisitor {
         si.value = child.getSymbolInfo().value;
         si.value1=child.getSymbolInfo().value1;
         si.for_new=child.getSymbolInfo().for_new;
+        si.value_for_line=child.getSymbolInfo().value_for_line;
         node.setSymbolInformation(si);
     }
     //**************************************************************

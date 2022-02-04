@@ -1,9 +1,8 @@
+package compiler;
+
 import compiler.AST.*;
-import compiler.Pre_Processor;
-import compiler.Scanner_phase1;
 import compiler.Vtable.*;
 import compiler.codegen.*;
-import compiler.parser;
 
 import java.io.IOException;
 import java.io.*;
@@ -87,7 +86,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
         try {
             if (args.length < 4) {
-                System.out.println("Usage: java compiler.compiler.Main -i <input> -o <output>");
+                System.out.println("Usage: java compiler.compiler.compiler.Main -i <input> -o <output>");
                 return;
             }
             String inputFileName = null;
@@ -167,7 +166,7 @@ public class Main {
             String input=contentBuilder.toString();
             Pre_Processor p=new Pre_Processor(input);
             String define_handeled=p.handle_define();
-            Scanner_phase1 scanner=new Scanner_phase1(new StringReader(define_handeled.trim()));
+            Scanner_phase1 scanner=new Scanner_phase1(new StringReader(define_handeled));
             parser par=new parser(scanner);
             par.parse();
             Program cu = par.getRoot();

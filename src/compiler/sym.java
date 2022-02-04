@@ -48,7 +48,7 @@ public class sym {
   public static final int MODE = 37;
   public static final int CLOSEBRACKET = 64;
   public static final int T_STRINGLITERAL = 33;
-  public static final int LINE = 3;
+  public static final int LINE = 2;
   public static final int NULL = 21;
   public static final int BREAK = 5;
   public static final int CLOSECURLY = 62;
@@ -58,7 +58,7 @@ public class sym {
   public static final int OPENCURLY = 61;
   public static final int ELSE = 12;
   public static final int OPENBRACKET = 63;
-  public static final int FUNC = 2;
+  public static final int FUNC = 3;
   public static final int TIME_ASSIGN = 41;
   public static final int ITOD = 18;
   public static final int ITOB = 17;
@@ -77,8 +77,8 @@ public class sym {
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
-  "FUNC",
   "LINE",
+  "FUNC",
   "BOOL",
   "BREAK",
   "BTOI",

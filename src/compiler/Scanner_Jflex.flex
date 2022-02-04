@@ -13,12 +13,19 @@ import java.lang.reflect.*;
 %{
 
 public Symbol token (int tokenType) {
+        if(tokenType==sym.LINE){
+            System.out.println(yyline);
+        }
 	    return new Symbol(tokenType,yytext());
 
 	}
 	public Symbol token (int tokenType , Object value) {
     	    return new Symbol(tokenType , value);
     	}
+    public Symbol token(int tokenType , int line){
+    System.out.println(line+" from third method");
+        return new Symbol(tokenType,line);
+    }
 
 %}
 all_type_of_comment={comment_type_one}|{comment_type_two}
@@ -34,7 +41,7 @@ identifire=[a-zA-Z][a-zA-Z0-9_]*
 %%
 /*handle keywords*/
 __func__                  {return token(sym.FUNC);}
-__line__                  {return token(sym.LINE);}
+__line__                  {return token(sym.LINE,yyline+1);}
 bool                      {return token(sym.BOOL);}
 break                     {return token(sym.BREAK);}
 btoi                       {return token(sym.BTOI);}
