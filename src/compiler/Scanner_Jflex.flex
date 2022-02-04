@@ -13,8 +13,6 @@ import java.lang.reflect.*;
 %{
 
 public Symbol token (int tokenType) {
-        //System.out.println(yytext());
-        //System.out.println(yytext().getClass().getSimpleName());
 	    return new Symbol(tokenType,yytext());
 
 	}
