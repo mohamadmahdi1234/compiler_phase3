@@ -1,12 +1,16 @@
 class A{
- int a;
+int c;
  void pr(){
-  Print("salam");
+  int g;
+  g=4;
+  Print(g);
  }
 }
-void pr(){
-Print("salam");
-}
 int main(){
-
+A a;
+int b;
+b=1;
+a=new A;
+a.pr();
+Print(b);
 }

@@ -634,10 +634,20 @@ public class CodeGenVisitor implements SimpleVisitor {
         String varName;
         Function method = null;
         int argNumber = 0;
+        String addition="";
+        //EDIT TWO
+        if (node.getChild(0).getNodeType().equals(NodeType.EXPRESSION_STATEMENT)){
+            node.getChild(0).accept(this);
+            String check = symbolTable.getCurrentScopeName()+"_"+node.getChild(0).getSymbolInfo().value1;
+            if(new_holder.containsKey(check)){
+                addition+=new_holder.get(check)+"_";
+            }
+        }
         for (ASTNode child : node.getChildren()) {
             if (child.getNodeType().equals(NodeType.IDENTIFIER)) {
                 IdentifierNode idNode = (IdentifierNode) child;
                 varName = idNode.getValue();
+                varName=addition+varName;
                 method = findFunction(varName);
                 if (method == null)
                     throw new Exception(varName + " function doesn't exist");
@@ -669,12 +679,15 @@ public class CodeGenVisitor implements SimpleVisitor {
                 }
 
             }
+
         }
 
         if (argNumber != method.getArgumentsType().size())
             throw new Exception("expected " + method.getArgumentsType().size() + " args but " + argNumber + " passed");
         textSegment += "\t\tjal " + method.getScope().getName() + "_" + method.getName() + "\n";
         textSegment += "\t\taddi $sp, $sp, " + (argNumber) * (-4) + "\n";
+        symbolTable.enterScope(method.getScope().getName());
+        System.out.println("new scope is "+method.getScope().getName()+"_"+method.getName());
         node.setSymbolInformation(method.getReturnType());
     }
 
@@ -1100,7 +1113,8 @@ public class CodeGenVisitor implements SimpleVisitor {
         SymbolInfo varType = node.getChild(0).getSymbolInfo();
         current_id=varType.value1;
         textSegment += "\t\tla $a3, 0($a0) \n";
-        node.getChild(1).accept(this);
+        //node.getChild(1).accept(this);
+        setParentSymbolInfo(node, node.getChild(1));
         System.out.println(node.getChild(1).getSymbolInfo().getType()+" bayad read bashe");
         SymbolInfo exprType = node.getChild(1).getSymbolInfo();
         if(node.getChild(1).getChild(0).getNodeType()==NodeType.LITERAL){
@@ -1124,7 +1138,7 @@ public class CodeGenVisitor implements SimpleVisitor {
             throw new Exception("Assign Error");
         //TODO
         System.out.println(varType.getType()+" samte rasti");
-        System.out.println(exprType.getType()+" samte chapi");
+        System.out.println(exprType.for_new+" samte chapi");
         if (isTypesEqual(varType, exprType)) {
             switch (varType.getType().getAlign()) {
                 case 6: //string
@@ -1136,13 +1150,14 @@ public class CodeGenVisitor implements SimpleVisitor {
                     textSegment += "\t\ts.s $f0, 0($a3)\n";
                     break;
                 case 10:
+                    //new_holder.put(symbolTable.getCurrentScopeName()+"_"+current_id,varType.for_new);
                     //todo
                     break;
                 default:
                     break;
             }
         } else {
-            throw new Exception("Type " + varType + " & " + exprType + " Doesnt Match");
+            throw new Exception("Type " + varType + " & " + exprType + " Doesnt Match"+" "+varType.value1);
         }
         current_id="";
         result="";
@@ -1238,20 +1253,29 @@ public class CodeGenVisitor implements SimpleVisitor {
     //**************************************************************
 
     private void visitVariableDeclaration(ASTNode node) throws Exception {
-        System.out.println("az inja chi");
+        System.out.println("az inja chi "+ClassDecaf.currentClass );
         if (ClassDecaf.currentClass == null || !symbolTable.getCurrentScopeName().equals(ClassDecaf.currentClass.getName())) {
             IdentifierNode idNode = (IdentifierNode) node.getChild(1);
             String varName = idNode.getValue();
             String label = symbolTable.getCurrentScopeName() + "_" + varName + " :";
             setParentSymbolInfo(node, node.getChild(0));
-            node.getChild(1).accept(this);
+            System.out.println("bib bib "+node.getChild(0).getNodeType());
+            if(node.getChild(0).getSymbolInfo().getType().getAlign()==10){
+                setParentSymbolInfo(node, node.getChild(1));
+            }else{
+                node.getChild(1).accept(this);
+            }
             node.getChild(1).getSymbolInfo().for_new=node.getChild(0).getSymbolInfo().value1;
+            System.out.println("from v decl "+ node.getChild(1).getSymbolInfo().for_new);
+            System.out.println("to put in hash map "+symbolTable.getCurrentScopeName()+"_"+node.getChild(1).getSymbolInfo().value1+" and value is: "+node.getChild(1).getSymbolInfo().for_new);
+            new_holder.put(symbolTable.getCurrentScopeName()+"_"+node.getChild(1).getSymbolInfo().value1,node.getChild(1).getSymbolInfo().for_new);
             int dimensionArray = node.getSymbolInfo().getDimensionArray();
             if (!node.getChild(0).getNodeType().equals(NodeType.IDENTIFIER)) {
                 Type typePrimitive = node.getSymbolInfo().getType();
-                if (dimensionArray == 0 && !typePrimitive.getSignature().equals(".ascii"))
+                if (dimensionArray == 0 && !typePrimitive.getSignature().equals(".ascii")) {
+                    System.out.println(typePrimitive.getPrimitive());
                     dataSegment += "\t" + label + " " + typePrimitive.getSignature() + " " + typePrimitive.getPrimitive().getInitialValue() + "\n";
-                else {
+                }else {
                     dataSegment += "\t" + label + " .word 0" + "\n";
                 }
             } else {
@@ -1304,6 +1328,7 @@ public class CodeGenVisitor implements SimpleVisitor {
 
     //**************************************************************
     private boolean isTypesEqual(SymbolInfo a, SymbolInfo b) {
+        System.out.println("1111111111111");
         if(a.getType().getSignature().equals(".ascii")&&b.getType().getSignature().equals(".space")){
             return true;
         }
@@ -1314,11 +1339,15 @@ public class CodeGenVisitor implements SimpleVisitor {
             if (a.getType().getSignature().equals(b.getType().getSignature())) {
                 if (a.getDimensionArray() == b.getDimensionArray())
                     if(a.getType().getPrimitive()!=null){
+                        //System.out.println("vvared shod? "+a.getType().getPrimitive());
                         return a.getType().getPrimitive().equals(b.getType().getPrimitive());
-                    }else{
-                        return a.for_new==b.for_new;
                     }
-
+            }else{
+                if(a.getType().getAlign()==10&&b.getType().getAlign()==10){
+                    if (new_holder.containsKey(symbolTable.getCurrentScopeName()+"_"+a.value1)){
+                        return new_holder.get(symbolTable.getCurrentScopeName()+"_"+a.value1).equals(b.value1);
+                    }
+                }
             }
         }
 
@@ -1335,20 +1364,40 @@ public class CodeGenVisitor implements SimpleVisitor {
     //**************************************************************
 
     private Function findFunction(String varName) {
+        Function holder_method=null;
         Function method = null;
         for (Function function : functions) {
             if (function.getName().equals(varName)) {
-                for (Scope scope : all_scopes) {
+                //////EDIT ONE
+                if (function.getScope().getName().equals("global")){
+                    holder_method = function;
+                }else{
+                    String taeen_konnade=symbolTable.getCurrentScopeName().split("_")[0];
+                    if(symbolTable.getCurrentScopeName().split("_").length>2){
+                        taeen_konnade +=symbolTable.getCurrentScopeName().split("_")[1];
+                    }
+                    if(function.getScope().getName().equals(taeen_konnade)){
+                        method = function;
+                    }
+                }
+                /* for (Scope scope : all_scopes) {
                     if (scope.equals(function.getScope())) {
                         method = function;
                         break;
                     }
+                }*/
+                //if (method != null)
+                    //break;
+            }else{
+                if((function.getScope().getName()+"_"+function.getName()).equals(varName)){
+                    method = function;
                 }
-                if (method != null)
-                    break;
+            }
+            if(method!=null){
+                return method;
             }
         }
-        return method;
+        return holder_method;
     }
 
     //**************************************************************

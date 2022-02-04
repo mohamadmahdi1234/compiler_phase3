@@ -112,8 +112,11 @@ public class VtableGenerator implements SimpleVisitor {
                 field.setClassDecaf(ClassDecaf.currentClass);
                 if (ClassDecaf.currentClass.getFields().contains(field))
                     throw new Exception(fieldName + " declared before");
-                else
+                else {
                     ClassDecaf.currentClass.getFields().add(field);
+                   // ClassDecaf.currentClass.
+                }
+
             }
         }
         if (ClassDecaf.currentClass == null || !symbolTable.getCurrentScopeName().equals(ClassDecaf.currentClass.getName())){
