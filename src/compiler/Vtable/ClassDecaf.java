@@ -7,7 +7,6 @@ import java.util.List;
 
 public class ClassDecaf {
     String name;
-    ClassDecaf parentClass = null;
     List<Function> methods = new ArrayList<>();
     List<Field> fields = new ArrayList<>();
     int objectSize = 0;
@@ -24,14 +23,6 @@ public class ClassDecaf {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public ClassDecaf getParentClass() {
-        return parentClass;
-    }
-
-    public void setParentClass(ClassDecaf parentClass) {
-        this.parentClass = parentClass;
     }
 
     public List<Field> getFields() {
@@ -75,10 +66,6 @@ public class ClassDecaf {
 
     public String getParentClassName() {
         return parentClassName;
-    }
-
-    public void setParentClassName(String parentClassName) {
-        this.parentClassName = parentClassName;
     }
 
     @Override

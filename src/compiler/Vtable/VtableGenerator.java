@@ -139,24 +139,6 @@ public class VtableGenerator implements SimpleVisitor {
         }
         if (!isMainExist)
             throw new Exception("main does not exist");
-        for (ClassDecaf aClass : classes) {
-            if (!aClass.getParentClassName().equals("")) {
-                for (ClassDecaf bclassDecaf : classes) {
-                    if (aClass.getParentClassName().equals(bclassDecaf.getName())) {
-                        aClass.setParentClass(bclassDecaf);
-                        for (Field field : bclassDecaf.getFields()) {
-                            if (aClass.getFields().contains(field))
-                                throw new Exception("the variable declared in parent class");
-                            else
-                                aClass.getFields().addAll(bclassDecaf.getFields());
-                        }
-
-                    }
-                }
-                if (aClass.getParentClass() == null)
-                    throw new Exception("parent does not exist");
-            }
-        }
     }
 
     private void visitMethodDeclarationNode(ASTNode node) throws Exception {

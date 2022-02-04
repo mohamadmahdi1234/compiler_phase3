@@ -1,10 +1,12 @@
 class A{
  int a;
  void pr(){
-  a=1;
-  Print(a);
+  Print("salam");
  }
 }
+void pr(){
+Print("salam");
+}
 int main(){
-pr();
+
 }

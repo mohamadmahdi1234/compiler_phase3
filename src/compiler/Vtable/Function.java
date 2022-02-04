@@ -85,6 +85,8 @@ public class Function {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Function function = (Function) o;
+        System.out.println("function one is:"+Name+" and second is : "+function.Name);
+        System.out.println("difference in scope : "+scope.getName() +" and second is: "+ function.scope.getName());
         return Objects.equals(Name, function.Name) &&
                 Objects.equals(scope, function.scope);
     }
