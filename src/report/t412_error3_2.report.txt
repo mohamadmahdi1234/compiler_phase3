@@ -1,0 +1,1 @@
+different line count in these files! : file out/t412_error3_2.out : #0 , file tests/t412_error3_2.out : #1 
