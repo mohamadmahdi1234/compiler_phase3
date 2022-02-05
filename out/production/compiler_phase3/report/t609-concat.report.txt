@@ -1,1 +1,0 @@
-difference in line #1: file: out/t609-concat.out -----> content: Lexical Error <> file: tests/t609-concat.out -----> content: 6.25 

@@ -1,6 +1,7 @@
 package compiler.codegen;
 import compiler.AST.*;
 import java.io.PrintStream;
+import java.text.DecimalFormat;
 import java.util.*;
 import compiler.Vtable.ClassDecaf;
 import compiler.Vtable.Function;
@@ -581,7 +582,9 @@ public class CodeGenVisitor implements SimpleVisitor {
                 textSegment += "\t\tli " + regs.get(tempRegsNumber) + ", " + node + "\n";
                 break;
             case 8: //double
-                dataSegment += "\t" + symbolTable.getCurrentScopeName() + "_temp" + tempLiteralCounter + ": .float " + node + "\n";
+                DecimalFormat df = new DecimalFormat("#");
+                df.setMaximumFractionDigits(8);
+                dataSegment += "\t" + symbolTable.getCurrentScopeName() + "_temp" + tempLiteralCounter + ": .float " + String.format("%.8f", ((DoubleLiteralNode)node).getValue()) + "\n";
                 textSegment += "\t\tla $a0, " + symbolTable.getCurrentScopeName() + "_temp" + (tempLiteralCounter++) + '\n';
                 textSegment += "\t\tl.s $f0, 0($a0)\n";
                 break;
@@ -932,6 +935,9 @@ public class CodeGenVisitor implements SimpleVisitor {
             setParentSymbolInfo(node, node.getChild(1));
             SymbolInfo second = node.getSymbolInfo();
             String secondType = second.getType().getSignature();
+            if(!isTypesEqual(first,second)){
+                throw new Exception("Type " + firstType + " & " + secondType + " are mismatched");
+            }
             if(first.value!=null &&second.value!=null) {
                 String avval = first.value;
                 String dovom = second.value;

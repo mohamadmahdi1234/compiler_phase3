@@ -1,7 +1,4 @@
-int main(){
-    int a;
-    int b;
-    a = ReadInteger();
-    b = itod(a);
-    Print(b);
+int main() {
+    Print(1.1111111E-2);
+    Print(1.e10);
 }

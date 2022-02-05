@@ -1,1 +1,1 @@
-difference in line #1: file: out/t402_error1_3.out -----> content: Lexical Error <> file: tests/t402_error1_3.out -----> content: Semantic Error 
+OK 

@@ -1,0 +1,2 @@
+difference in line #2: file: out/t210-global-7.out -----> content: 16 <> file: tests/t210-global-7.out -----> content: 1 
+difference in line #4: file: out/t210-global-7.out -----> content: 16 <> file: tests/t210-global-7.out -----> content: 1 

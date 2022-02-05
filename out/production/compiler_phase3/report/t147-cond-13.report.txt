@@ -1,0 +1,1 @@
+difference in line #2: file: out/t147-cond-13.out -----> content: true <> file: tests/t147-cond-13.out -----> content: false 

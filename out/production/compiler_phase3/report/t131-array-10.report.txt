@@ -1,0 +1,1 @@
+different line count in these files! : file out/t131-array-10.out : #1 , file tests/t131-array-10.out : #6 
