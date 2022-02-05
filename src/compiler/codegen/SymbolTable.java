@@ -7,11 +7,6 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-/**
- * A simple symbol table implementation.
- */
-
 public class SymbolTable implements Symbol {
     public static ArrayList<Scope> allScopes = new ArrayList<>();
     private ArrayList<Scope> scopes = new ArrayList<>();
@@ -33,21 +28,6 @@ public class SymbolTable implements Symbol {
         if (currentScope != null)
             scopes.remove(currentScope);
         currentScope = scopes.get(scopes.size() - 1);
-    }
-
-    void leaveScopeType(String id) {
-        for (Scope scope : scopes) {
-            System.out.println("finded Scope: " + scope.getName());
-            if (scope.getName().equals(id)) {
-                scopes.remove(scope);
-                System.out.println("scope find:" + scope);
-                if (scope.equals(currentScope)) {
-
-                    currentScope = scopes.get(scopes.size() - 1);
-                }
-                break;
-            }
-        }
     }
 
     public void put(String id, SymbolInfo si) throws Exception {
@@ -172,13 +152,6 @@ public class SymbolTable implements Symbol {
         return currentScope.getName();
     }
 
-    boolean contains(String id) {
-        for (int i = scopes.size() - 1; i >= 0; i--) {
-            if (scopes.get(i).getVariables().containsKey(id))
-                return true;
-        }
-        return false;
-    }
 
     public ArrayList<Scope> getScopes() {
         return allScopes;

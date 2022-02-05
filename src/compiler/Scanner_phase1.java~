@@ -485,6 +485,10 @@ public Symbol token (int tokenType) {
 	public Symbol token (int tokenType , Object value) {
     	    return new Symbol(tokenType , value);
     	}
+    public Symbol token(int tokenType , int line){
+    System.out.println(line+" from third method");
+        return new Symbol(tokenType,line);
+    }
 
 
 
@@ -1204,7 +1208,7 @@ public Symbol token (int tokenType) {
             // fall through
           case 127: break;
           case 63:
-            { return token(sym.LINE);
+            { return token(sym.LINE,yyline+1);
             }
             // fall through
           case 128: break;

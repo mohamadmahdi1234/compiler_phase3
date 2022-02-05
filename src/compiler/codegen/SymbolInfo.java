@@ -3,10 +3,6 @@ package compiler.codegen;
 import compiler.AST.ASTNode;
 import compiler.AST.PrimitiveType;
 import compiler.AST.Type;
-
-/**
- * Descriptor of identifiers
- */
 public class SymbolInfo implements Symbol {
     private ASTNode node;
     private Type type;
@@ -28,10 +24,10 @@ public class SymbolInfo implements Symbol {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         SymbolInfo that = (SymbolInfo) o;
-
-        if (node != null ? !node.equals(that.node) : that.node != null) return false;
+        if (node != null ? !node.equals(that.node) : that.node != null) {
+            return false;
+        }
         return type != null ? type.equals(that.type) : that.type == null;
     }
 
@@ -63,8 +59,6 @@ public class SymbolInfo implements Symbol {
     public void setType(Type type) {
         this.type = type;
     }
-
-
     public String toString() {
         String str = "SymbolInfo: " + type;
         return str;

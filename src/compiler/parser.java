@@ -2129,14 +2129,35 @@ class CUP$parser$actions {
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-                    ASTNode t = new BaseASTNode(NodeType.ADD_ASSIGN);
+                    /*ASTNode t = new BaseASTNode(NodeType.ADD_ASSIGN);
                     t.addChild(l);
                     t.addChild(e);
                     l.setParent(t);
                     e.setParent(t);
                     RESULT = new ExpressionNode();
                     RESULT.addChild(t);
+                    t.setParent(RESULT);*/
+                    ASTNode t = new BaseASTNode(NodeType.ASSIGN);
+                    t.addChild(l);
+                    ASTNode z =new ExpressionNode();
+                    t.addChild(z);
+                    l.setParent(t);
+                    z.setParent(t);
+                    RESULT = new ExpressionNode();
+                    RESULT.addChild(t);
                     t.setParent(RESULT);
+                    ASTNode c=new BaseASTNode(NodeType.ADDITION);
+                    z.addChild(c);
+                    c.setParent(z);
+                    ASTNode kk = new BaseASTNode(NodeType.EXPRESSION_STATEMENT);
+                    ASTNode hh = new BaseASTNode(NodeType.LVALUE);
+                    kk=e;
+                    hh=l;
+                    c.addChild(hh);
+                    c.addChild(kk);
+                    kk.setParent(c);
+                    hh.setParent(c);
+
          
               CUP$parser$result = parser.getSymbolFactory().newSymbol("Expr",20, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2153,14 +2174,34 @@ class CUP$parser$actions {
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-                             ASTNode t = new BaseASTNode(NodeType.SUB_ASSIGN);
+                             /*ASTNode t = new BaseASTNode(NodeType.SUB_ASSIGN);
                              t.addChild(l);
                              t.addChild(e);
                              l.setParent(t);
                              e.setParent(t);
                              RESULT = new ExpressionNode();
                              RESULT.addChild(t);
+                             t.setParent(RESULT);*/
+                             ASTNode t = new BaseASTNode(NodeType.ASSIGN);
+                             t.addChild(l);
+                             ASTNode z =new ExpressionNode();
+                             t.addChild(z);
+                             l.setParent(t);
+                             z.setParent(t);
+                             RESULT = new ExpressionNode();
+                             RESULT.addChild(t);
                              t.setParent(RESULT);
+                             ASTNode c=new BaseASTNode(NodeType.SUBTRACTION);
+                             z.addChild(c);
+                             c.setParent(z);
+                             ASTNode kk = new BaseASTNode(NodeType.EXPRESSION_STATEMENT);
+                             ASTNode hh = new BaseASTNode(NodeType.LVALUE);
+                             kk=e;
+                             hh=l;
+                             c.addChild(hh);
+                             c.addChild(kk);
+                             kk.setParent(c);
+                             hh.setParent(c);
                   
               CUP$parser$result = parser.getSymbolFactory().newSymbol("Expr",20, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2177,14 +2218,34 @@ class CUP$parser$actions {
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-                             ASTNode t = new BaseASTNode(NodeType.MULT_ASSIGN);
+                             /*ASTNode t = new BaseASTNode(NodeType.MULT_ASSIGN);
                              t.addChild(l);
                              t.addChild(e);
                              l.setParent(t);
                              e.setParent(t);
                              RESULT = new ExpressionNode();
                              RESULT.addChild(t);
-                             t.setParent(RESULT);
+                             t.setParent(RESULT);*/
+                             ASTNode t = new BaseASTNode(NodeType.ASSIGN);
+                                                 t.addChild(l);
+                                                 ASTNode z =new ExpressionNode();
+                                                 t.addChild(z);
+                                                 l.setParent(t);
+                                                 z.setParent(t);
+                                                 RESULT = new ExpressionNode();
+                                                 RESULT.addChild(t);
+                                                 t.setParent(RESULT);
+                                                 ASTNode c=new BaseASTNode(NodeType.MULTIPLICATION);
+                                                 z.addChild(c);
+                                                 c.setParent(z);
+                                                 ASTNode kk = new BaseASTNode(NodeType.EXPRESSION_STATEMENT);
+                                                 ASTNode hh = new BaseASTNode(NodeType.LVALUE);
+                                                 kk=e;
+                                                 hh=l;
+                                                 c.addChild(hh);
+                                                 c.addChild(kk);
+                                                 kk.setParent(c);
+                                                 hh.setParent(c);
                   
               CUP$parser$result = parser.getSymbolFactory().newSymbol("Expr",20, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2201,14 +2262,34 @@ class CUP$parser$actions {
 		int eright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		ASTNode e = (ASTNode)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-                            ASTNode t = new BaseASTNode(NodeType.DIV_ASSIGN);
+                           /* ASTNode t = new BaseASTNode(NodeType.DIV_ASSIGN);
                             t.addChild(l);
                             t.addChild(e);
                             l.setParent(t);
                             e.setParent(t);
                             RESULT = new ExpressionNode();
                             RESULT.addChild(t);
-                            t.setParent(RESULT);
+                            t.setParent(RESULT);*/
+                            ASTNode t = new BaseASTNode(NodeType.ASSIGN);
+                                                t.addChild(l);
+                                                ASTNode z =new ExpressionNode();
+                                                t.addChild(z);
+                                                l.setParent(t);
+                                                z.setParent(t);
+                                                RESULT = new ExpressionNode();
+                                                RESULT.addChild(t);
+                                                t.setParent(RESULT);
+                                                ASTNode c=new BaseASTNode(NodeType.DIVISION);
+                                                z.addChild(c);
+                                                c.setParent(z);
+                                                ASTNode kk = new BaseASTNode(NodeType.EXPRESSION_STATEMENT);
+                                                ASTNode hh = new BaseASTNode(NodeType.LVALUE);
+                                                kk=e;
+                                                hh=l;
+                                                c.addChild(hh);
+                                                c.addChild(kk);
+                                                kk.setParent(c);
+                                                hh.setParent(c);
                            
               CUP$parser$result = parser.getSymbolFactory().newSymbol("Expr",20, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }

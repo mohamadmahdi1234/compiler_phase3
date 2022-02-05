@@ -1,1 +1,0 @@
-difference in line #1: file: out/t413_error3_3.out -----> content: 4 <> file: tests/t413_error3_3.out -----> content: Semantic Error 

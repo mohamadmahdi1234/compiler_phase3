@@ -491,47 +491,128 @@ Expr ::= LValue:l ASSIGN Expr:e
          :}
          | LValue:l PLUS_ASSIGN Expr:e
          {:
-                    ASTNode t = new BaseASTNode(NodeType.ADD_ASSIGN);
+                    /*ASTNode t = new BaseASTNode(NodeType.ADD_ASSIGN);
                     t.addChild(l);
                     t.addChild(e);
                     l.setParent(t);
                     e.setParent(t);
                     RESULT = new ExpressionNode();
                     RESULT.addChild(t);
+                    t.setParent(RESULT);*/
+                    ASTNode t = new BaseASTNode(NodeType.ASSIGN);
+                    t.addChild(l);
+                    ASTNode z =new ExpressionNode();
+                    t.addChild(z);
+                    l.setParent(t);
+                    z.setParent(t);
+                    RESULT = new ExpressionNode();
+                    RESULT.addChild(t);
                     t.setParent(RESULT);
+                    ASTNode c=new BaseASTNode(NodeType.ADDITION);
+                    z.addChild(c);
+                    c.setParent(z);
+                    ASTNode kk = new BaseASTNode(NodeType.EXPRESSION_STATEMENT);
+                    ASTNode hh = new BaseASTNode(NodeType.LVALUE);
+                    kk=e;
+                    hh=l;
+                    c.addChild(hh);
+                    c.addChild(kk);
+                    kk.setParent(c);
+                    hh.setParent(c);
+
          :}
          | LValue:l MINUS_ASSIGN Expr:e
          {:
-                             ASTNode t = new BaseASTNode(NodeType.SUB_ASSIGN);
+                             /*ASTNode t = new BaseASTNode(NodeType.SUB_ASSIGN);
                              t.addChild(l);
                              t.addChild(e);
                              l.setParent(t);
                              e.setParent(t);
                              RESULT = new ExpressionNode();
                              RESULT.addChild(t);
+                             t.setParent(RESULT);*/
+                             ASTNode t = new BaseASTNode(NodeType.ASSIGN);
+                             t.addChild(l);
+                             ASTNode z =new ExpressionNode();
+                             t.addChild(z);
+                             l.setParent(t);
+                             z.setParent(t);
+                             RESULT = new ExpressionNode();
+                             RESULT.addChild(t);
                              t.setParent(RESULT);
+                             ASTNode c=new BaseASTNode(NodeType.SUBTRACTION);
+                             z.addChild(c);
+                             c.setParent(z);
+                             ASTNode kk = new BaseASTNode(NodeType.EXPRESSION_STATEMENT);
+                             ASTNode hh = new BaseASTNode(NodeType.LVALUE);
+                             kk=e;
+                             hh=l;
+                             c.addChild(hh);
+                             c.addChild(kk);
+                             kk.setParent(c);
+                             hh.setParent(c);
                   :}
          | LValue:l TIME_ASSIGN Expr:e
          {:
-                             ASTNode t = new BaseASTNode(NodeType.MULT_ASSIGN);
+                             /*ASTNode t = new BaseASTNode(NodeType.MULT_ASSIGN);
                              t.addChild(l);
                              t.addChild(e);
                              l.setParent(t);
                              e.setParent(t);
                              RESULT = new ExpressionNode();
                              RESULT.addChild(t);
-                             t.setParent(RESULT);
+                             t.setParent(RESULT);*/
+                             ASTNode t = new BaseASTNode(NodeType.ASSIGN);
+                                                 t.addChild(l);
+                                                 ASTNode z =new ExpressionNode();
+                                                 t.addChild(z);
+                                                 l.setParent(t);
+                                                 z.setParent(t);
+                                                 RESULT = new ExpressionNode();
+                                                 RESULT.addChild(t);
+                                                 t.setParent(RESULT);
+                                                 ASTNode c=new BaseASTNode(NodeType.MULTIPLICATION);
+                                                 z.addChild(c);
+                                                 c.setParent(z);
+                                                 ASTNode kk = new BaseASTNode(NodeType.EXPRESSION_STATEMENT);
+                                                 ASTNode hh = new BaseASTNode(NodeType.LVALUE);
+                                                 kk=e;
+                                                 hh=l;
+                                                 c.addChild(hh);
+                                                 c.addChild(kk);
+                                                 kk.setParent(c);
+                                                 hh.setParent(c);
                   :}
          | LValue :l DIVIDE_ASSIGN Expr:e
          {:
-                            ASTNode t = new BaseASTNode(NodeType.DIV_ASSIGN);
+                           /* ASTNode t = new BaseASTNode(NodeType.DIV_ASSIGN);
                             t.addChild(l);
                             t.addChild(e);
                             l.setParent(t);
                             e.setParent(t);
                             RESULT = new ExpressionNode();
                             RESULT.addChild(t);
-                            t.setParent(RESULT);
+                            t.setParent(RESULT);*/
+                            ASTNode t = new BaseASTNode(NodeType.ASSIGN);
+                                                t.addChild(l);
+                                                ASTNode z =new ExpressionNode();
+                                                t.addChild(z);
+                                                l.setParent(t);
+                                                z.setParent(t);
+                                                RESULT = new ExpressionNode();
+                                                RESULT.addChild(t);
+                                                t.setParent(RESULT);
+                                                ASTNode c=new BaseASTNode(NodeType.DIVISION);
+                                                z.addChild(c);
+                                                c.setParent(z);
+                                                ASTNode kk = new BaseASTNode(NodeType.EXPRESSION_STATEMENT);
+                                                ASTNode hh = new BaseASTNode(NodeType.LVALUE);
+                                                kk=e;
+                                                hh=l;
+                                                c.addChild(hh);
+                                                c.addChild(kk);
+                                                kk.setParent(c);
+                                                hh.setParent(c);
                            :}
          | Constant:c
          {:

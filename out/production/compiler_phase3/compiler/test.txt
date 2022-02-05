@@ -1,8 +1,10 @@
-void f(int x){
-    Print(x+a);
-}
-int main(){
+import "file-to-import.d"
+
+int main() {
     int a;
-    a = 2;
-    f(a);
+    int b;
+    a = ReadInteger();
+    b = ReadInteger();
+    sum = add(a, b);
+    Print(sum);
 }

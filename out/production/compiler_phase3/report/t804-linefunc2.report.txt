@@ -1,1 +1,1 @@
-different line count in these files! : file out/t804-linefunc2.out : #1 , file tests/t804-linefunc2.out : #3 
+difference in line #3: file: out/t804-linefunc2.out -----> content: Line number plus input is even! <> file: tests/t804-linefunc2.out -----> content: Line number plus input is odd! 
