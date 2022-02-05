@@ -1,1 +1,1 @@
-OK 
+difference in line #1: file: out/t503-semantic-error_type1_1.out -----> content: Lexical Error <> file: tests/t503-semantic-error_type1_1.out -----> content: Semantic Error 

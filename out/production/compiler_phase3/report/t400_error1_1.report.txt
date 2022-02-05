@@ -1,1 +1,1 @@
-OK 
+difference in line #1: file: out/t400_error1_1.out -----> content: Lexical Error <> file: tests/t400_error1_1.out -----> content: Semantic Error 

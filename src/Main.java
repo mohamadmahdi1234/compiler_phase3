@@ -29,12 +29,29 @@ class Compiler_test {
         Program cu;
         try {
             cu = parse();
+        } catch (Exception e) {
+            String textSegment = "";
+            textSegment += ".data\n";
+            textSegment += "\terror: .asciiz \"Lexical Error\"\n";
+            textSegment += ".text\n" + "\t.globl main\n\n";
+            textSegment += "\tmain:\n";
+            textSegment += "\t\tli $v0, 4\n";
+            textSegment += "\t\tla $a0, error\n";
+            textSegment += "\t\tsyscall\n";
+            textSegment += "\t\t#END OF PROGRAM\n";
+            textSegment += "\t\tli $v0,10\n\t\tsyscall\n";
+            writer.print(textSegment);
+            return;
+        }
+
+
+        try {
             vtableAnalysis(cu);
             generateCode(cu);
         } catch (Exception e) {
             String textSegment = "";
             textSegment += ".data\n";
-            textSegment += "\terror: .asciiz \"Lexical Error\"\n";
+            textSegment += "\terror: .asciiz \"Semantic Error\"\n";
             textSegment += ".text\n" + "\t.globl main\n\n";
             textSegment += "\tmain:\n";
             textSegment += "\t\tli $v0, 4\n";

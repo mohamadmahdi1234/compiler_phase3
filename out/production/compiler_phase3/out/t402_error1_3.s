@@ -1,5 +1,5 @@
 .data
-	error: .asciiz "Semantic Error"
+	error: .asciiz "Lexical Error"
 .text
 	.globl main
 

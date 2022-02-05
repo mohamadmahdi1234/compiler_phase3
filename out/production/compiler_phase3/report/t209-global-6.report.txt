@@ -1,1 +1,0 @@
-different line count in these files! : file out/t209-global-6.out : #3 , file tests/t209-global-6.out : #5 
