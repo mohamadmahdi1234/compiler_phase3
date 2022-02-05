@@ -1,4 +1,4 @@
-void main () {
+int main () {
     double a;
     a = 5.5;
     a += 4.7;
