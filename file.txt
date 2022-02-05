@@ -3,8 +3,9 @@
 	false : .asciiz "false"
 
 	error_run_time: .asciiz "runtime ERROR"
-	global_main_d : .float 0.0
-	global_main_temp0: .asciiz "0.01111111"
+	global_main_a : .float 0.0
+	global_main_temp0: .float 5.50000000
+	global_main_temp1: .float 4.69999981
 
 .text
 	.globl main
@@ -24,22 +25,31 @@
 	global_main:
 		sw $ra,0($sp)
 		addi $sp,$sp,4
-		la $a0, global_main_d
+		la $a0, global_main_a
 		l.s $f0, 0($a0)
 		la $a3, 0($a0) 
-		s.s $f0, 0($a3)
-		la $t0, global_main_temp0
-		li $v0, 4
-		add $a0, $t0, $zero
-		syscall
-		#print new Line
-		addi $a0, $0, 0xA
-		addi $v0, $0, 0xB
-		syscall 
-		la $a0, global_main_d
+		la $a0, global_main_temp0
 		l.s $f0, 0($a0)
-		li $v0, 4
-		add $a0, $t0, $zero
+		s.s $f0, 0($a3)
+		la $a0, global_main_a
+		l.s $f0, 0($a0)
+		la $a3, 0($a0) 
+		la $a0, global_main_a
+		l.s $f0, 0($a0)
+		mov.s $f1, $f0
+		s.s $f1, 0($sp)
+		addi $sp, $sp, 4
+		la $a0, global_main_temp1
+		l.s $f0, 0($a0)
+		addi $sp, $sp, -4
+		l.s $f1 0($sp)
+		add.s $f1, $f1, $f0
+		mov.s $f0, $f1
+		s.s $f0, 0($a3)
+		la $a0, global_main_a
+		l.s $f0, 0($a0)
+		li $v0, 2
+		mov.d	$f12, $f0
 		syscall
 		#print new Line
 		addi $a0, $0, 0xA

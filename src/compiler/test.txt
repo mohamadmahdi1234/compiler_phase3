@@ -1,6 +1,6 @@
-int main() {
-double d;
-d=1.e10;
-    Print(1.1111111E-2);
-    Print(d);
+int main () {
+    double a;
+    a = 5.5;
+    a += 4.7;
+    Print(a);
 }
