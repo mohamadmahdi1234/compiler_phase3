@@ -458,7 +458,7 @@ public class CodeGenVisitor implements SimpleVisitor {
                     textSegment += "\t\tL_CondFalse" + tempLabelCounter + ": li $t0 1\n";
                 }
                 textSegment += "\t\tL_CondEnd" + tempLabelCounter++ + ":\n";
-            }else if(node.getChild(0).getSymbolInfo().getType().getAlign() == 6||node.getChild(0).getSymbolInfo().getType().getAlign() == 12){
+            }else if((node.getChild(0).getSymbolInfo().getType().getAlign() == 6||node.getChild(0).getSymbolInfo().getType().getAlign() == 12 )&&type.equals("ne")){
                label_counter++;
                 textSegment+="loop"+label_counter+":\n" +
                         "\t\tlb $t3($t1)  \n" +
@@ -476,6 +476,25 @@ public class CodeGenVisitor implements SimpleVisitor {
                         "\t\tcheckt2"+label_counter+":\n" +
                         "\t\tbnez $t4,missmatch"+label_counter+"\n" +
                         "\t\tadd $t1,$zero,$zero\n" +
+                        "\t\tendfunction"+label_counter+":\n";
+            }else if((node.getChild(0).getSymbolInfo().getType().getAlign() == 6||node.getChild(0).getSymbolInfo().getType().getAlign() == 12 )&&type.equals("eq")){
+                label_counter++;
+                textSegment+="loop"+label_counter+":\n" +
+                        "\t\tlb $t3($t1)  \n" +
+                        "\t\tlb $t4($t0)\n" +
+                        "\t\tbeqz $t3,checkt2"+label_counter+" \n" +
+                        "\t\tbeqz $t4,missmatch"+label_counter+"\n" +
+                        "\t\tslt $t5,$t3,$t4  \n" +
+                        "\t\tbnez $t5,missmatch"+label_counter+"\n" +
+                        "\t\taddi $t1,$t1,1  \n" +
+                        "\t\taddi $t0,$t0,1\n" +
+                        "\t\tj loop"+label_counter+"\n" +
+                        "\t\tmissmatch"+label_counter+": \n" +
+                        "\t\tadd $t1,$zero,$zero\n" +
+                        "\t\tj endfunction"+label_counter+"\n" +
+                        "\t\tcheckt2"+label_counter+":\n" +
+                        "\t\tbnez $t4,missmatch"+label_counter+"\n" +
+                        "\t\taddi $t1,$zero,1\n" +
                         "\t\tendfunction"+label_counter+":\n";
             }
             else {
