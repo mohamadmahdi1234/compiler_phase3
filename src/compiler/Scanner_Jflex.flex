@@ -71,8 +71,14 @@ this                        {return token(sym.THIS);}
 void                        {return token(sym.VOID);}
 while                       {return token(sym.WHILE);}
 /*handle string*/
-{string}                  {
-                           return token(sym.T_STRINGLITERAL);  }
+{string}                  {String newline = System.getProperty("line.separator");
+                            System.out.println("befire "+yytext());
+                            String define_handeled= yytext().replace("\\n", newline);
+                            //define_handeled=define_handeled.replace("\\\\\"","\\\"");
+                            //define_handeled=define_handeled.replace("\\\\\\\\\\\\\\","\\\\");
+                            define_handeled=define_handeled.replace("\\'","'");
+                            System.out.println(define_handeled);
+                           return token(sym.T_STRINGLITERAL,define_handeled);  }
 /*handle boolean*/
 true|false                {
                             return token(sym.T_BOOLEANLITERAL,new Boolean(yytext()));}

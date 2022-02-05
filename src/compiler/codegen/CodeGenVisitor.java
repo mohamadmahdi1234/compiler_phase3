@@ -199,6 +199,7 @@ public class CodeGenVisitor implements SimpleVisitor {
             case LITERAL:
                 visitLiteralNode(node);
                 break;
+            case THIS:
             case ARGUMENT:
                 break;
             case ARGUMENTS:
@@ -645,6 +646,7 @@ public class CodeGenVisitor implements SimpleVisitor {
                 for (ASTNode childChild : child.getChild(0).getChildren()) {
                     childChild.accept(this);
                     SymbolInfo si = childChild.getSymbolInfo();
+                    System.out.println(si.getType().getSignature()+" lanati khaste shodam");
                     if (!isTypesEqual(si, method.getArgumentsType().get(argNumber)))
                         throw new Exception("types doesn't match");
 
@@ -655,6 +657,7 @@ public class CodeGenVisitor implements SimpleVisitor {
                         case 6: //String
                         case 10:
                         case 8:
+                        case 12:
                             //TODO
                             textSegment += "\t\tsw $t0, 0($sp)\n";
                             textSegment += "\t\taddi $sp, $sp, " + 4 + "\n";
@@ -1302,16 +1305,29 @@ public class CodeGenVisitor implements SimpleVisitor {
             return true;
         }
         if (a.getType().getAlign() == b.getType().getAlign()) {
+            System.out.println("align is yeki "+b.getType().getSignature());
             if (a.getType().getSignature().equals(b.getType().getSignature())) {
+                System.out.println("salam barabar");
                 if (a.getDimensionArray() == b.getDimensionArray())
                     if(a.getType().getPrimitive()!=null){
                         return a.getType().getPrimitive().equals(b.getType().getPrimitive());
                     }
             }else{
+                System.out.println("salam yeki");
                 if(a.getType().getAlign()==10&&b.getType().getAlign()==10){
-                    if (new_holder.containsKey(symbolTable.getCurrentScopeName()+"_"+a.value1)){
-                        return new_holder.get(symbolTable.getCurrentScopeName()+"_"+a.value1).equals(b.value1);
+                    for(String s:new_holder.keySet()){
+                        System.out.println(" key is : "+s+" and value is : "+new_holder.get(s));
                     }
+                    if(b.value1!=null){
+                        if (new_holder.containsKey(symbolTable.getCurrentScopeName()+"_"+a.value1)){
+                            return new_holder.get(symbolTable.getCurrentScopeName()+"_"+a.value1).equals(b.value1);
+                        }
+                    }else{
+                        if (new_holder.containsKey(symbolTable.getCurrentScopeName()+"_"+a.value1)){
+                            return new_holder.get(symbolTable.getCurrentScopeName()+"_"+a.value1).equals(b.getType().getSignature());
+                        }
+                    }
+
                 }
             }
         }
@@ -1363,16 +1379,20 @@ public class CodeGenVisitor implements SimpleVisitor {
     }
 
     private void setParentSymbolInfo(ASTNode node, ASTNode child) throws Exception {
-        child.accept(this);
-        Type type = child.getSymbolInfo().getType();
-        SymbolInfo si = new SymbolInfo(node, type);
-        si.setDimensionArray(child.getSymbolInfo().getDimensionArray());
-        si.value = child.getSymbolInfo().value;
-        si.value1=child.getSymbolInfo().value1;
-        si.for_new=child.getSymbolInfo().for_new;
-        si.value_for_line=child.getSymbolInfo().value_for_line;
-        si.for_func_f = child.getSymbolInfo().for_func_f;
-        node.setSymbolInformation(si);
+        System.out.println(node.getNodeType());
+        System.out.println("/////////////////////////");
+        if(child!=null) {
+                child.accept(this);
+                Type type = child.getSymbolInfo().getType();
+                SymbolInfo si = new SymbolInfo(node, type);
+                si.setDimensionArray(child.getSymbolInfo().getDimensionArray());
+                si.value = child.getSymbolInfo().value;
+                si.value1 = child.getSymbolInfo().value1;
+                si.for_new = child.getSymbolInfo().for_new;
+                si.value_for_line = child.getSymbolInfo().value_for_line;
+                si.for_func_f = child.getSymbolInfo().for_func_f;
+                node.setSymbolInformation(si);
+        }
     }
     private ClassDecaf findClass(String name) {
         for (ClassDecaf aClass : classes) {

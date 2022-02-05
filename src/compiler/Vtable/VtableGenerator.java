@@ -174,6 +174,7 @@ public class VtableGenerator implements SimpleVisitor {
         for (int i = argumentsLen / (-4); i >= 1; i--) {
             ASTNode ArgumentNode = node.getChild(i - 1);
             ArgumentNode.accept(this);
+            System.out.println("in vtable visitargumant "+ArgumentNode.getChild(0).getSymbolInfo().getType().getSignature());
             function.getArgumentsType().add(ArgumentNode.getChild(0).getSymbolInfo());
         }
     }

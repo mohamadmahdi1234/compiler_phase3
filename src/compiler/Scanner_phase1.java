@@ -1008,7 +1008,14 @@ public Symbol token (int tokenType) {
             // fall through
           case 87: break;
           case 23:
-            { return token(sym.T_STRINGLITERAL);
+            { String newline = System.getProperty("line.separator");
+                            System.out.println("befire "+yytext());
+                            String define_handeled= yytext().replace("\\n", newline);
+                            //define_handeled=define_handeled.replace("\\\\\"","\\\"");
+                            //define_handeled=define_handeled.replace("\\\\\\\\\\\\\\","\\\\");
+                            define_handeled=define_handeled.replace("\\'","'");
+                            System.out.println(define_handeled);
+                           return token(sym.T_STRINGLITERAL,define_handeled);
             }
             // fall through
           case 88: break;

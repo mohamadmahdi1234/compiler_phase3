@@ -1,0 +1,1 @@
+difference in line #4: file: out/t102-string-5.out -----> content: There are two backslashs after me:\\\" <> file: tests/t102-string-5.out -----> content: There are two backslashs after me:\\ 

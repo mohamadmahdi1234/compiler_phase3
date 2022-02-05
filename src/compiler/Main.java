@@ -162,6 +162,7 @@ public class Main {
             return false;
         }
         catch (Error e){
+            e.printStackTrace();
             return false;
         }
 
