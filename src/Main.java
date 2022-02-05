@@ -41,6 +41,7 @@ class Compiler_test {
             textSegment += "\t\t#END OF PROGRAM\n";
             textSegment += "\t\tli $v0,10\n\t\tsyscall\n";
             writer.print(textSegment);
+            System.out.println("salam");
             return;
         }
 
@@ -49,6 +50,7 @@ class Compiler_test {
             vtableAnalysis(cu);
             generateCode(cu);
         } catch (Exception e) {
+            System.out.println("salam from two");
             String textSegment = "";
             textSegment += ".data\n";
             textSegment += "\terror: .asciiz \"Semantic Error\"\n";
