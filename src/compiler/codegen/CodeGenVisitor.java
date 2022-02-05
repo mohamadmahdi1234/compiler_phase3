@@ -19,6 +19,7 @@ public class CodeGenVisitor implements SimpleVisitor {
     String current_id="";
     String result="";
     int label_counter=0;
+    int count_func_f =0;
     private List<Function> functions = VtableGenerator.functions;
     private List<ClassDecaf> classes = VtableGenerator.classes;
     private HashMap<String, String> stringLiterals = new HashMap<>();
@@ -221,6 +222,26 @@ public class CodeGenVisitor implements SimpleVisitor {
                 ss.value1=idNode.getValue();
                 node.setSymbolInformation(ss);
                 node.getSymbolInfo().setDimensionArray(node.getChildren().size());
+                break;
+            case FUNC:
+                String ans="";
+                for(int i=symbolTable.getScopes().size()-1;i>=0;i--){
+                    //System.out.println();
+                    for(Function f:functions){
+                        //System.out.println(f.getScope().getName());
+                        if(f.getScope().getName().equals(symbolTable.getScopes().get(i).getName())){
+                            ans = f.getName();
+                        }
+                    }
+                }
+                System.out.println("ans is "+symbolTable.getScopes().size());
+                func_node fn = (func_node) node;
+                SymbolInfo for_func=new SymbolInfo(node, new func_type(ans));
+                for_func.for_func_f=ans;
+                node.setSymbolInformation(for_func);
+                count_func_f++;
+                dataSegment += "\t" + ans+count_func_f + ": .asciiz " +"\""+ ans + "\"\n";
+                textSegment += "\tla\t$t0, " + ans+count_func_f+ '\n';
                 break;
             case LLINE:
                 LineNode lnode = (LineNode)node;
@@ -1433,6 +1454,7 @@ public class CodeGenVisitor implements SimpleVisitor {
         si.value1=child.getSymbolInfo().value1;
         si.for_new=child.getSymbolInfo().for_new;
         si.value_for_line=child.getSymbolInfo().value_for_line;
+        si.for_func_f = child.getSymbolInfo().for_func_f;
         node.setSymbolInformation(si);
     }
     //**************************************************************

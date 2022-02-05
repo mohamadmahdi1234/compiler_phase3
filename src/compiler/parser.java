@@ -2811,7 +2811,7 @@ class CUP$parser$actions {
               ASTNode RESULT =null;
 		
                     RESULT = new ExpressionNode();
-                    ASTNode t = new BaseASTNode(NodeType.FUNC);
+                    ASTNode t = new func_node("");
                     RESULT.addChild(t);
                     t.setParent(RESULT);
                              

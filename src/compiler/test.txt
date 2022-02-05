@@ -1,20 +1,15 @@
-void j(){
-int k;
-k=4;
-}
-void func1() {
-    int x;
-    x=2;
-    while(x>1){
-    int z;
-    x=x-1;
-    }
-}
-
+define funcName __func__
+import "file-to-import.d"
+define lineNumber __line__
 
 int main() {
-    //Print(x);
-    int l;
-    l=2;
-    func1();
+    int line;
+    string dummyVar;
+    line = __line__;
+    Print(line);
+}
+
+void anotherFunction() {
+    Print("Function Name: ", funcName);
+    Print(funcName == __func__, "\n");
 }

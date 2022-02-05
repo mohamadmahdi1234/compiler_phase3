@@ -15,6 +15,7 @@ public class SymbolInfo implements Symbol {
     public String value1;
     public String for_new;
     public int value_for_line=-1;
+    public String for_func_f = "";
     public int getDimensionArray() {
         return dimensionArray;
     }
