@@ -709,7 +709,7 @@ public class CodeGenVisitor implements SimpleVisitor {
             throw new Exception("expected " + method.getArgumentsType().size() + " args but " + argNumber + " passed");
         textSegment += "\t\tjal " + method.getScope().getName() + "_" + method.getName() + "\n";
         textSegment += "\t\taddi $sp, $sp, " + (argNumber) * (-4) + "\n";
-        //symbolTable.enterScope(method.getScope().getName());
+        symbolTable.enterScope(method.getScope().getName());
         node.setSymbolInformation(method.getReturnType());
     }
 

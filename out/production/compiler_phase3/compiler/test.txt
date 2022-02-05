@@ -1,15 +1,8 @@
-define funcName __func__
-import "file-to-import.d"
-define lineNumber __line__
-
-int main() {
-    int line;
-    string dummyVar;
-    line = __line__;
-    Print(line);
+void f(int x){
+    Print(x+a);
 }
-
-void anotherFunction() {
-    Print("Function Name: ", funcName);
-    Print(funcName == __func__, "\n");
+int main(){
+    int a;
+    a = 2;
+    f(a);
 }
