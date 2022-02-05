@@ -3,11 +3,11 @@
 	false : .asciiz "false"
 
 	error_run_time: .asciiz "runtime ERROR"
-	global_main_temp0: .float 6.0
+	global_main_temp0: .float 6.00000000
 	StringLiteral_01: .asciiz "true"
 	StringLiteral_11: .asciiz "false"
-	global_main_temp1: .float 6.0
-	global_num_temp2: .float 6.5
+	global_main_temp1: .float 6.00000000
+	global_num_temp2: .float 6.50000000
 
 .text
 	.globl main

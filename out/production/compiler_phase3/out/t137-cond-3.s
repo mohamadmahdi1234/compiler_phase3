@@ -3,32 +3,32 @@
 	false : .asciiz "false"
 
 	error_run_time: .asciiz "runtime ERROR"
-	global_main_temp0: .float 5.5
-	global_main_temp1: .float 6.5
+	global_main_temp0: .float 5.50000000
+	global_main_temp1: .float 6.50000000
 	StringLiteral_01: .asciiz "5.5 > 6.5!"
-	global_main_temp2: .float 5.5
-	global_main_temp3: .float 6.5
+	global_main_temp2: .float 5.50000000
+	global_main_temp3: .float 6.50000000
 	StringLiteral_11: .asciiz "5.5 >= 6.5!"
-	global_main_temp4: .float 5.5
-	global_main_temp5: .float 6.5
+	global_main_temp4: .float 5.50000000
+	global_main_temp5: .float 6.50000000
 	StringLiteral_21: .asciiz "5.5 <= 6.5!"
-	global_main_temp6: .float 6.5
-	global_main_temp7: .float 5.5
+	global_main_temp6: .float 6.50000000
+	global_main_temp7: .float 5.50000000
 	StringLiteral_31: .asciiz "6.5 > 5.5!"
-	global_main_temp8: .float 6.5
-	global_main_temp9: .float 5.5
+	global_main_temp8: .float 6.50000000
+	global_main_temp9: .float 5.50000000
 	StringLiteral_41: .asciiz "6.5 < 5.5!"
-	global_main_temp10: .float 5.5
-	global_main_temp11: .float 5.5
+	global_main_temp10: .float 5.50000000
+	global_main_temp11: .float 5.50000000
 	StringLiteral_51: .asciiz "5.5 >= 5.5!"
-	global_main_temp12: .float 4.5
-	global_main_temp13: .float 4.5
+	global_main_temp12: .float 4.50000000
+	global_main_temp13: .float 4.50000000
 	StringLiteral_61: .asciiz "4.5 == 4.5!"
-	global_main_temp14: .float 4.5
-	global_main_temp15: .float 4.5
+	global_main_temp14: .float 4.50000000
+	global_main_temp15: .float 4.50000000
 	StringLiteral_71: .asciiz "4.5 != 4.5!"
-	global_main_temp16: .float 6.5
-	global_main_temp17: .float 1.5
+	global_main_temp16: .float 6.50000000
+	global_main_temp17: .float 1.50000000
 	StringLiteral_81: .asciiz "6.5 != 1.5!"
 
 .text

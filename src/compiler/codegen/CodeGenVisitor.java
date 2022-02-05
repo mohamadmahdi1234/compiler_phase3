@@ -465,7 +465,7 @@ public class CodeGenVisitor implements SimpleVisitor {
                         "\t\tlb $t4($t0)\n" +
                         "\t\tbeqz $t3,checkt2"+label_counter+" \n" +
                         "\t\tbeqz $t4,missmatch"+label_counter+"\n" +
-                        "\t\tbne $t3,$t4 , missmatch1"+label_counter+"\n" +
+                        "\t\tbne $t3,$t4 , missmatch"+label_counter+"\n" +
                         "\t\taddi $t1,$t1,1  \n" +
                         "\t\taddi $t0,$t0,1\n" +
                         "\t\tj loop"+label_counter+"\n" +
@@ -483,7 +483,7 @@ public class CodeGenVisitor implements SimpleVisitor {
                         "\t\tlb $t4($t0)\n" +
                         "\t\tbeqz $t3,checkt2"+label_counter+" \n" +
                         "\t\tbeqz $t4,missmatch"+label_counter+"\n" +
-                        "\t\tbne $t3,$t4 , missmatch1"+label_counter+"\n" +
+                        "\t\tbne $t3,$t4 , missmatch"+label_counter+"\n" +
                         "\t\taddi $t1,$t1,1  \n" +
                         "\t\taddi $t0,$t0,1\n" +
                         "\t\tj loop"+label_counter+"\n" +

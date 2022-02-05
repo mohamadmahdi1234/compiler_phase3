@@ -39,8 +39,7 @@ loop1:
 		lb $t4($t0)
 		beqz $t3,checkt21 
 		beqz $t4,missmatch1
-		slt $t5,$t3,$t4  
-		bnez $t5,missmatch1
+		bne $t3,$t4 , missmatch1
 		addi $t1,$t1,1  
 		addi $t0,$t0,1
 		j loop1
@@ -85,8 +84,7 @@ loop2:
 		lb $t4($t0)
 		beqz $t3,checkt22 
 		beqz $t4,missmatch2
-		slt $t5,$t3,$t4  
-		bnez $t5,missmatch2
+		bne $t3,$t4 , missmatch2
 		addi $t1,$t1,1  
 		addi $t0,$t0,1
 		j loop2

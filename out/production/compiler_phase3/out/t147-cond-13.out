@@ -1,1 +1,1 @@
-falsetrue
+The following symbols are undefined:missmatch11missmatch12[0x00400084]	0x156c0000  bne $11, $12, 0 [missmatch11-0x00400084]; 42: bne $t3,$t4 , missmatch11

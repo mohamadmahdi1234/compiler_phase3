@@ -43,17 +43,16 @@ loop1:
 		lb $t4($t0)
 		beqz $t3,checkt21 
 		beqz $t4,missmatch1
-		slt $t5,$t3,$t4  
-		bnez $t5,missmatch1
+		bne $t3,$t4 , missmatch11
 		addi $t1,$t1,1  
 		addi $t0,$t0,1
 		j loop1
 		missmatch1: 
-		addi $t1,$zero,1
+		add $t1,$zero,$zero
 		j endfunction1
 		checkt21:
 		bnez $t4,missmatch1
-		add $t1,$zero,$zero
+		addi $t1,$zero,1
 		endfunction1:
 		move $t0, $t1
 		beq $t0, 0, L1
@@ -80,17 +79,16 @@ loop2:
 		lb $t4($t0)
 		beqz $t3,checkt22 
 		beqz $t4,missmatch2
-		slt $t5,$t3,$t4  
-		bnez $t5,missmatch2
+		bne $t3,$t4 , missmatch12
 		addi $t1,$t1,1  
 		addi $t0,$t0,1
 		j loop2
 		missmatch2: 
-		addi $t1,$zero,1
+		add $t1,$zero,$zero
 		j endfunction2
 		checkt22:
 		bnez $t4,missmatch2
-		add $t1,$zero,$zero
+		addi $t1,$zero,1
 		endfunction2:
 		move $t0, $t1
 		beq $t0, 0, L2
@@ -117,17 +115,16 @@ loop3:
 		lb $t4($t0)
 		beqz $t3,checkt23 
 		beqz $t4,missmatch3
-		slt $t5,$t3,$t4  
-		bnez $t5,missmatch3
+		bne $t3,$t4 , missmatch13
 		addi $t1,$t1,1  
 		addi $t0,$t0,1
 		j loop3
 		missmatch3: 
-		addi $t1,$zero,1
+		add $t1,$zero,$zero
 		j endfunction3
 		checkt23:
 		bnez $t4,missmatch3
-		add $t1,$zero,$zero
+		addi $t1,$zero,1
 		endfunction3:
 		move $t0, $t1
 		beq $t0, 0, L3
@@ -154,8 +151,7 @@ loop4:
 		lb $t4($t0)
 		beqz $t3,checkt24 
 		beqz $t4,missmatch4
-		slt $t5,$t3,$t4  
-		bnez $t5,missmatch4
+		bne $t3,$t4 , missmatch14
 		addi $t1,$t1,1  
 		addi $t0,$t0,1
 		j loop4
@@ -191,8 +187,7 @@ loop5:
 		lb $t4($t0)
 		beqz $t3,checkt25 
 		beqz $t4,missmatch5
-		slt $t5,$t3,$t4  
-		bnez $t5,missmatch5
+		bne $t3,$t4 , missmatch15
 		addi $t1,$t1,1  
 		addi $t0,$t0,1
 		j loop5

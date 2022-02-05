@@ -43,8 +43,7 @@ loop1:
 		lb $t4($t0)
 		beqz $t3,checkt21 
 		beqz $t4,missmatch1
-		slt $t5,$t3,$t4  
-		bnez $t5,missmatch1
+		bne $t3,$t4 , missmatch1
 		addi $t1,$t1,1  
 		addi $t0,$t0,1
 		j loop1
@@ -80,8 +79,7 @@ loop2:
 		lb $t4($t0)
 		beqz $t3,checkt22 
 		beqz $t4,missmatch2
-		slt $t5,$t3,$t4  
-		bnez $t5,missmatch2
+		bne $t3,$t4 , missmatch2
 		addi $t1,$t1,1  
 		addi $t0,$t0,1
 		j loop2
@@ -117,8 +115,7 @@ loop3:
 		lb $t4($t0)
 		beqz $t3,checkt23 
 		beqz $t4,missmatch3
-		slt $t5,$t3,$t4  
-		bnez $t5,missmatch3
+		bne $t3,$t4 , missmatch3
 		addi $t1,$t1,1  
 		addi $t0,$t0,1
 		j loop3
@@ -154,8 +151,7 @@ loop4:
 		lb $t4($t0)
 		beqz $t3,checkt24 
 		beqz $t4,missmatch4
-		slt $t5,$t3,$t4  
-		bnez $t5,missmatch4
+		bne $t3,$t4 , missmatch4
 		addi $t1,$t1,1  
 		addi $t0,$t0,1
 		j loop4
@@ -191,8 +187,7 @@ loop5:
 		lb $t4($t0)
 		beqz $t3,checkt25 
 		beqz $t4,missmatch5
-		slt $t5,$t3,$t4  
-		bnez $t5,missmatch5
+		bne $t3,$t4 , missmatch5
 		addi $t1,$t1,1  
 		addi $t0,$t0,1
 		j loop5
